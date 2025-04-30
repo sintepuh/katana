@@ -67,7 +67,7 @@ const TaskViewSwitcher = ({ hideProjectFilter, isLoading}: TaskViewSwitcherProps
 
   return (
     <Tabs
-      className="flex-1 w-full rounded-lg border"
+      className="flex-1 w-full rounded-lg border bg-card"
       defaultValue={view}
       onValueChange={setView}
     >

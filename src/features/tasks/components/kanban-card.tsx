@@ -15,7 +15,7 @@ type KanbanCardProps = {
 
 const KanbanCard = ({ task }: KanbanCardProps) => {
   return (
-    <div className="bg-white p-2.5 m-1.5 rounded shadow-sm space-y-3">
+    <div className="bg-accent-foreground p-2.5 m-1.5 rounded shadow-sm space-y-3">
       <div className="flex items-start justify-between gap-x-2">
         <p className="text-sm line-clamp-2">{task.name}</p>
         <TaskAction id={task.$id} projectId={task.projectId}>

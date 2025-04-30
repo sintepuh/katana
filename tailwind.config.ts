@@ -10,14 +10,17 @@ const config: Config = {
 	],
 	theme: {
 		extend: {
-			backgroundImage: {
-				gradientWhiteFromLeft: 'var(--gradientWhiteFromLeft)',
-			},
 			colors: {
-				background: 'var(--background-primary)',
-				foreground: 'var(--foreground)',
+				background: {
+					DEFAULT: 'var(--background)',
+					foreground: 'var(--background-foreground)',
+				},
 				text: 'var(--text)',
-				sidebar: 'var(--background-secondary)',
+				sidebar: {
+					DEFAULT: 'var(--sidebar)',
+					foreground: 'var(--sidebar-foreground)',
+					accent: 'var(--sidebar-accent)',
+				},
 				skeleton: 'var(--skeleton)',
 				card: {
 					DEFAULT: 'var(--card)',

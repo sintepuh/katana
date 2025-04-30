@@ -108,7 +108,7 @@ const CreateTaskForm = ({
                   <FormItem>
                     <FormLabel>Task title</FormLabel>
                     <FormControl>
-                      <Input className="bg-card-foreground" {...field} placeholder="Enter task name" />
+                      <Input className="bg-card" {...field} placeholder="Enter task name" />
                     </FormControl>
                   </FormItem>
                 )}
@@ -122,7 +122,7 @@ const CreateTaskForm = ({
                   <FormItem>
                     <FormLabel>Due Date</FormLabel>
                     <FormControl>
-                      <DatePicker className="bg-card-foreground h-12" {...field} />
+                      <DatePicker className="bg-card h-12" {...field} />
                     </FormControl>
                   </FormItem>
                 )}
@@ -140,7 +140,7 @@ const CreateTaskForm = ({
                       onValueChange={field.onChange}
                     >
                       <FormControl>
-                        <SelectTrigger className="bg-card-foreground">
+                        <SelectTrigger>
                           <SelectValue placeholder="Select assignee" />
                         </SelectTrigger>
                       </FormControl>
@@ -171,7 +171,7 @@ const CreateTaskForm = ({
                       onValueChange={field.onChange}
                     >
                       <FormControl>
-                        <SelectTrigger className="bg-card-foreground">
+                        <SelectTrigger>
                           <SelectValue placeholder="Select assignee" />
                         </SelectTrigger>
                       </FormControl>
@@ -199,7 +199,7 @@ const CreateTaskForm = ({
                       onValueChange={field.onChange}
                     >
                       <FormControl>
-                        <SelectTrigger className="bg-card-foreground ">
+                        <SelectTrigger>
                           <SelectValue placeholder="Select Project" />
                         </SelectTrigger>
                       </FormControl>

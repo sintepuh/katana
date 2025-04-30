@@ -83,7 +83,7 @@ const EditWorkspaceForm = ({
   };
 
   if (isLoading)
-    return <Skeleton className="rounded-xl border bg-card-foreground w-full border-none shadow-none h-[650px]" />
+    return <Skeleton className="rounded-xl border bg-card w-full border-none shadow-none h-[650px]" />
 
   return (
     <div className="flex flex-col gap-y-4">

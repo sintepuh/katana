@@ -123,7 +123,7 @@ const EditTaskForm = ({
                   <FormItem>
                     <FormLabel>Due Date</FormLabel>
                     <FormControl>
-                      <DatePicker {...field} />
+                      <DatePicker className={'min-h-[48px]'} {...field} />
                     </FormControl>
                   </FormItem>
                 )}

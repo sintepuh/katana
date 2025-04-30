@@ -60,7 +60,7 @@ const MembersList = ({ workspaceId }: MembersListProps) => {
   };
 
   if (!data || isLoading) {
-    return <Skeleton className="rounded-xl border bg-card-foreground w-full border-none shadow-none h-[300px]" />;
+    return <Skeleton className="rounded-xl border bg-card w-full border-none shadow-none h-[300px]" />;
   }
 
   return (

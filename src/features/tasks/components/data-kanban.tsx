@@ -152,7 +152,7 @@ const DataKanban = ({ data, onChange }: DataKanbanProps) => {
           return (
             <div
               key={board}
-              className="flex-1 mx-2 bg-muted p-1.5 rounded-md min-w-[200px]"
+              className="flex-1 mx-2 bg-accent p-1.5 rounded-md min-w-[200px] h-max"
             >
               <KanbanColumnHeader
                 board={board}
@@ -163,7 +163,7 @@ const DataKanban = ({ data, onChange }: DataKanbanProps) => {
                   <div
                     {...provided.droppableProps}
                     ref={provided.innerRef}
-                    className="min-h-[200px] py-1.5"
+                    className="py-1.5"
                   >
                     {tasks[board].map((task, index) => (
                       <Draggable
