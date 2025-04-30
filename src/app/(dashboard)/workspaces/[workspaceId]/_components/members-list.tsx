@@ -8,14 +8,20 @@ import MemberAvatar from "@/features/members/components/member-avatar";
 import { Member } from "@/features/members/types";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { getAvatarUrl } from "@/lib/helpers/get-avatarUrl";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type MemberListProps = {
-  data: Member[];
-  total: number;
+  data?: Member[];
+  total?: number;
+  isLoading?: boolean
 };
 
-const MembersList = ({ data, total }: MemberListProps) => {
+const MembersList = ({ data, total, isLoading }: MemberListProps) => {
   const workspaceId = useWorkspaceId();
+
+  if (!data || isLoading) {
+    return <Skeleton className="bg-card rounded-lg p-4 h-[220px]" />;
+  }
 
   return (
     <div className="flex flex-col gap-y-4 col-span-1">

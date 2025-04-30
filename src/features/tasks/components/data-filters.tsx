@@ -24,14 +24,12 @@ type DataFiltersProps = {
 
 const DataFilters = ({ hideProjectFilter }: DataFiltersProps) => {
   const workspaceId = useWorkspaceId();
-  const { data: projects, isLoading: isLoadingProjects } = useGetProjects({
+  const { data: projects } = useGetProjects({
     workspaceId,
   });
-  const { data: members, isLoading: isLoadingMembers } = useGetMembers({
+  const { data: members } = useGetMembers({
     workspaceId,
   });
-
-  const isLoading = isLoadingProjects || isLoadingMembers;
 
   const projectOptions = projects?.documents.map((project) => ({
     id: project.$id,
@@ -58,13 +56,11 @@ const DataFilters = ({ hideProjectFilter }: DataFiltersProps) => {
     setFilters({ [key]: value === "all" ? null : (value as string) });
   };
 
-  if (isLoading) return null;
-
   return (
     <div className="flex flex-col lg:flex-row gap-2">
       <Select onValueChange={onStatusChange} defaultValue={status ?? undefined}>
-        <SelectTrigger className="w-full lg:w-auto h-8">
-          <div className="flex items-center pr-2">
+        <SelectTrigger className="w-full lg:w-auto h-8 border-border">
+          <div className="flex items-center pr-2 ">
             <ListCheckIcon className="size-4 mr-2" />
             <SelectValue placeholder="All Status" />
           </div>
@@ -83,7 +79,7 @@ const DataFilters = ({ hideProjectFilter }: DataFiltersProps) => {
         onValueChange={(value) => onValueChange("assigneeId", value)}
         defaultValue={assigneeId ?? undefined}
       >
-        <SelectTrigger className="w-full lg:w-auto h-8">
+        <SelectTrigger className="w-full lg:w-auto h-8 border-border">
           <div className="flex items-center pr-2">
             <UserIcon className="size-4 mr-2" />
             <SelectValue placeholder="All assignees" />
@@ -108,7 +104,7 @@ const DataFilters = ({ hideProjectFilter }: DataFiltersProps) => {
           onValueChange={(value) => onValueChange("projectId", value)}
           defaultValue={projectId ?? undefined}
         >
-          <SelectTrigger className="w-full lg:w-auto h-8">
+          <SelectTrigger className="w-full lg:w-auto h-8 border-border">
             <div className="flex items-center pr-2">
               <ListCheckIcon className="size-4 mr-2" />
               <SelectValue placeholder="All Projects" />
@@ -132,7 +128,7 @@ const DataFilters = ({ hideProjectFilter }: DataFiltersProps) => {
         onChange={(value) =>
           setFilters({ dueDate: value ? value.toISOString() : null })
         }
-        className="h=8 w-full lg:w-auto"
+        className="h-8 w-full lg:w-auto border-border"
       />
     </div>
   );

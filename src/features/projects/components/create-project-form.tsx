@@ -55,8 +55,8 @@ const CreateProjectForm = ({ onCancel }: CreateProjectFormProps) => {
       {
         onSuccess: ({ data }) => {
           form.reset();
+          onCancel?.()
 
-          // Redirect to the project page
           router.push(`/workspaces/${workspaceId}/projects/${data.$id}`);
 
           if (inputRef.current) {
@@ -72,7 +72,6 @@ const CreateProjectForm = ({ onCancel }: CreateProjectFormProps) => {
 
     if (!file) return;
 
-    // Check if file is more than 1MB
     if (file.size > 1024 * 1024) {
       toast.error("File size should not exceed 1MB");
       return;
@@ -82,7 +81,7 @@ const CreateProjectForm = ({ onCancel }: CreateProjectFormProps) => {
   };
 
   return (
-    <Card className="w-full h-full border-none shadow-none">
+    <Card className="w-full h-full border-none shadow-none !bg-card">
       <CardHeader className="flex p-7">
         <CardTitle className="font-bold text-xl">Create a project</CardTitle>
       </CardHeader>
@@ -103,7 +102,7 @@ const CreateProjectForm = ({ onCancel }: CreateProjectFormProps) => {
                   <FormItem>
                     <FormLabel>Project Name</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="Enter project name" />
+                      <Input {...field} placeholder="Enter project name" className="border-border" />
                     </FormControl>
                   </FormItem>
                 )}
@@ -123,10 +122,10 @@ const CreateProjectForm = ({ onCancel }: CreateProjectFormProps) => {
                             src={
                               field.value instanceof Blob
                                 ? URL.createObjectURL(
-                                    new File([field.value], "image", {
-                                      type: field.value.type,
-                                    })
-                                  )
+                                  new File([field.value], "image", {
+                                    type: field.value.type,
+                                  })
+                                )
                                 : field.value
                             }
                             alt="Project Icon"

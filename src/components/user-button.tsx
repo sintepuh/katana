@@ -1,6 +1,6 @@
 "use client";
 
-import { Loader, LogOut } from "lucide-react";
+import { LogOut } from "lucide-react";
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useCurrent } from "@/features/auth/api/use-current";
@@ -12,7 +12,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import DottedSeparator from "@/components//dotted-separator";
 import { useLogout } from "@/features/auth/api/use-logout";
-import { ThemeSwithcer } from "./theme-switcher/ui/theme-switcher";
+import { ThemeSwitcher } from "./theme-switcher/ui/theme-switcher";
+import { Skeleton } from "./ui/skeleton";
 
 const UserButton = () => {
   const { data: user, isLoading } = useCurrent();
@@ -20,9 +21,7 @@ const UserButton = () => {
 
   if (isLoading) {
     return (
-      <div className="size-10 rounded-full flex justify-center items-center bg-neutral-200 border border-neutral-300">
-        <Loader className="animate-spin text-muted-foreground size-4" />
-      </div>
+      <Skeleton className="!rounded-full size-10"/>
     );
   }
 
@@ -59,9 +58,9 @@ const UserButton = () => {
           </div>
         </div>
         <DottedSeparator className="mb-1" />
-        <ThemeSwithcer />
+        <ThemeSwitcher />
         <DropdownMenuItem
-          className="h-10 flex items-center justify-center text-amber-700 font-medium cursor-pointer"
+          className="h-10 flex items-center justify-center text-[#e13a60] font-medium cursor-pointer"
           onClick={() => logout()}
         >
           <LogOut className="size-4 mr-2" /> Logout

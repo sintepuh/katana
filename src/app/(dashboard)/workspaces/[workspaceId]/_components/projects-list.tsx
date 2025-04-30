@@ -8,16 +8,22 @@ import ProjectAvatar from "@/features/projects/components/project-avatar";
 import { useCreateProjectModel } from "@/features/projects/hooks/use-create-project-model";
 import { Project } from "@/features/projects/types";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type ProjectListProps = {
-  data: Project[];
-  total: number;
+  data?: Project[];
+  total?: number;
+  isLoading?: boolean
 };
 
-const ProjectList = ({ data, total }: ProjectListProps) => {
+const ProjectList = ({ data, total, isLoading }: ProjectListProps) => {
   const { open: createProject } = useCreateProjectModel();
 
   const workspaceId = useWorkspaceId();
+
+  if (!data || isLoading) {
+    return <Skeleton className="bg-card rounded-lg p-4 h-[280px]" />;
+  }
 
   return (
     <div className="flex flex-col gap-y-4 col-span-1">

@@ -54,6 +54,7 @@ const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
         onSuccess: ({ data }) => {
           form.reset();
           router.push(`/workspaces/${data.$id}`);
+          onCancel?.()
           if (inputRef.current) {
             inputRef.current.value = "";
           }
@@ -118,10 +119,10 @@ const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
                             src={
                               field.value instanceof Blob
                                 ? URL.createObjectURL(
-                                    new File([field.value], "image", {
-                                      type: field.value.type,
-                                    })
-                                  )
+                                  new File([field.value], "image", {
+                                    type: field.value.type,
+                                  })
+                                )
                                 : field.value
                             }
                             alt="Workspace Icon"

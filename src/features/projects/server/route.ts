@@ -112,7 +112,7 @@ const projectApp = new Hono()
           uploadFile
         );
 
-        const arrayBuffer = await storage.getFilePreview(
+        const arrayBuffer = await storage.getFileDownload(
           IMAGES_BUCKET_ID,
           file.$id
         );
@@ -188,7 +188,7 @@ const projectApp = new Hono()
           uploadFile
         );
 
-        const arrayBuffer = await storage.getFilePreview(
+        const arrayBuffer = await storage.getFileDownload(
           IMAGES_BUCKET_ID,
           file.$id
         );

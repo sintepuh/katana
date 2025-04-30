@@ -1,4 +1,3 @@
-import { cn } from "@/lib/utils";
 import React from "react";
 
 interface SkeletonProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -6,22 +5,13 @@ interface SkeletonProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;
 }
 
-function Skeleton({ className, loading, children, ...props }: SkeletonProps) {
-  if (!loading) return <>{children}</>;
-
+function Skeleton({ className, children, ...props }: SkeletonProps) {
   return (
     <div
-      className={cn(
-        "animate-pulse bg-skeleton rounded-md",
-        className
-      )}
+      className={`animate-pulse rounded-md bg-skeleton ${className}`}
       {...props}
     >
-      {children && React.isValidElement(children) ? (
-        <div className={cn(children.props.className, "invisible")}>
-          {children}
-        </div>
-      ) : null}
+      {children}
     </div>
   );
 }

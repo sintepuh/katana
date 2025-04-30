@@ -3,7 +3,7 @@ import { client } from "@/lib/rpc";
 
 export const useUpdateTheme = () => {
   const mutation = useMutation({
-    mutationFn: async (theme: "light" | "dark") => {
+    mutationFn: async (theme: "light" | "dark" | "system") => {
       const response = await client.api.theme.$post({
         json: { theme },
       });

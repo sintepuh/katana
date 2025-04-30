@@ -22,7 +22,7 @@ export const useLogin = () => {
       return await res.json();
     },
     onSuccess: () => {
-      router.refresh();
+      router.push("/");
       queryClient.invalidateQueries({ queryKey: [QueryKeys.USER] });
     },
     onError: () => {

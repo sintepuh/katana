@@ -24,15 +24,18 @@ import { Input } from "@/components/ui/input";
 import { useUpdateWorkspace } from "../api/use-update-workspace";
 import { updateWorkspaceSchema, UpdateWorkspaceSchemaType } from "../schemas";
 import { Workspace } from "../types";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type EditWorkspaceFormProps = {
   onCancel?: () => void;
   initialValues: Workspace;
+  isLoading?: boolean
 };
 
 const EditWorkspaceForm = ({
   onCancel,
   initialValues,
+  isLoading
 }: EditWorkspaceFormProps) => {
   const form = useForm<UpdateWorkspaceSchemaType>({
     resolver: zodResolver(updateWorkspaceSchema),
@@ -56,6 +59,7 @@ const EditWorkspaceForm = ({
       {
         onSuccess: () => {
           form.reset();
+          onCancel?.()
           if (inputRef.current) {
             inputRef.current.value = "";
           }
@@ -77,6 +81,9 @@ const EditWorkspaceForm = ({
 
     form.setValue("image", file);
   };
+
+  if (isLoading)
+    return <Skeleton className="rounded-xl border bg-card-foreground w-full border-none shadow-none h-[650px]" />
 
   return (
     <div className="flex flex-col gap-y-4">
@@ -134,10 +141,10 @@ const EditWorkspaceForm = ({
                               src={
                                 field.value instanceof Blob
                                   ? URL.createObjectURL(
-                                      new File([field.value], "image", {
-                                        type: field.value.type,
-                                      })
-                                    )
+                                    new File([field.value], "image", {
+                                      type: field.value.type,
+                                    })
+                                  )
                                   : field.value
                               }
                               alt="Workspace Icon"

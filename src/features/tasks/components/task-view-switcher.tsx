@@ -14,17 +14,19 @@ import { columns } from "./columns";
 import DataFilters from "./data-filters";
 import DataKanban from "./data-kanban";
 import { DataTable } from "./data-table";
-import { useCallback } from "react";
+import { useCallback} from "react";
 import { TaskStatus } from "../types";
 import { useBuildUpdateTask } from "../api/use-bulk-update-task";
 import DataCalender from "./calender/data-calender";
 import { useProjectId } from "@/features/projects/hooks/use-project-id";
+import TasksLoadingPage from "@/app/(dashboard)/workspaces/[workspaceId]/tasks/loading";
 
 type TaskViewSwitcherProps = {
   hideProjectFilter?: boolean;
+  isLoading?: boolean
 };
 
-const TaskViewSwitcher = ({ hideProjectFilter }: TaskViewSwitcherProps) => {
+const TaskViewSwitcher = ({ hideProjectFilter, isLoading}: TaskViewSwitcherProps) => {
   const [view, setView] = useQueryState("task-view", {
     defaultValue: "table",
   });
@@ -52,13 +54,16 @@ const TaskViewSwitcher = ({ hideProjectFilter }: TaskViewSwitcherProps) => {
         position: number;
       }[]
     ) => {
-      console.log(tasks);
       mutate({
         json: { tasks },
       });
     },
     [mutate]
   );
+
+  if (!tasks || isLoadingTasks || isLoading) {
+    return <TasksLoadingPage />
+  }
 
   return (
     <Tabs

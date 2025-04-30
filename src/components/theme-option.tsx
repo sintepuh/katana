@@ -1,27 +1,29 @@
 import { useUpdateTheme } from "./theme-switcher/api/use-update-theme";
 
-interface ThemeSwithcerProps {
-    theme: "light" | "dark";
-    children?: React.ReactNode;
+interface ThemeOptionProps {
+  theme: "light" | "dark" | "system";
+  activeTheme: "light" | "dark" | "system";
+  onClick: (theme: "light" | "dark" | "system") => void;
+  children?: React.ReactNode;
 }
 
-export const ThemeOption = ({
-    theme,
-    children
-}: ThemeSwithcerProps) => {
+export const ThemeOption = ({ theme, activeTheme, onClick, children }: ThemeOptionProps) => {
+  const { mutate } = useUpdateTheme();
+  const isActive = theme === activeTheme;
 
-    const { mutate } = useUpdateTheme();
-    const setTheme = () => {
-        document.querySelector("body")?.setAttribute("data-theme", theme);
-        mutate(theme);
-    };
+  const handleClick = () => {
+    onClick(theme);
+    mutate(theme);
+  };
 
-    return (
-        <div
-            className="h-full flex-grow hover:bg-slate-300 flex items-center justify-center rounded-sm"
-            onClick={setTheme}
-        >
-            {children}
-        </div>
-    );
+  return (
+    <div
+      className={`h-full flex-grow flex items-center justify-center rounded-sm cursor-pointer transition hover:bg-accent ${
+        isActive ? "border-2 border-[#e13a60]" : ""
+      }`}
+      onClick={handleClick}
+    >
+      {children}
+    </div>
+  );
 };

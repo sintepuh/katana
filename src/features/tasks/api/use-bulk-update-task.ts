@@ -26,6 +26,12 @@ export const useBuildUpdateTask = () => {
     onSuccess: () => {
       toast.success("Tasks updated!");
       queryClient.invalidateQueries({
+        queryKey: [QueryKeys.PROJECT_ANALYTICS],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QueryKeys.WORKSPACE_ANALYTICS],
+      });
+      queryClient.invalidateQueries({
         queryKey: [QueryKeys.TASKS],
       });
     },

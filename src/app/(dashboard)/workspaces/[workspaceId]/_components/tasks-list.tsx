@@ -8,15 +8,21 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useCreateTaskModel } from "@/features/tasks/hooks/use-create-task-model";
 import { Task } from "@/features/tasks/types";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type TaskListProps = {
-  data: Task[];
-  total: number;
+  data?: Task[];
+  total?: number;
+  isLoading?: boolean
 };
 
-const TaskList = ({ data, total }: TaskListProps) => {
+const TaskList = ({ data, total, isLoading }: TaskListProps) => {
   const { open: createTask } = useCreateTaskModel();
   const workspaceId = useWorkspaceId();
+
+  if (!data || isLoading) {
+    return <Skeleton className="bg-card rounded-lg p-4 h-[450px]" />;
+  }
 
   return (
     <div className="flex flex-col gap-y-4 col-span-1">
@@ -30,7 +36,7 @@ const TaskList = ({ data, total }: TaskListProps) => {
 
         <DottedSeparator className="my-4" />
         <ul className="flex flex-col gap-y-4">
-          {data.slice(0,3).map((task) => (
+          {data.slice(0, 3).map((task) => (
             <li key={task.$id} className="">
               <Link href={`/workspaces/${workspaceId}/tasks/${task.$id}`}>
                 <Card className="shadow-none rounded-lg  hover:opacity-75 transition">

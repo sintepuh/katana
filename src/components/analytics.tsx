@@ -2,8 +2,19 @@ import { ProjectAnalyticsResponseType } from "@/features/projects/api/use-get-pr
 import { ScrollArea, ScrollBar } from "./ui/scroll-area";
 import AnalyticsCard from "./analytics-card";
 import DottedSeparator from "./dotted-separator";
+import { Skeleton } from "./ui/skeleton";
 
-const Analytics = ({ data }: ProjectAnalyticsResponseType) => {
+type ProjectAnalyticsResponseTypeProps = {
+  data?: ProjectAnalyticsResponseType["data"];
+  isLoading?: boolean
+};
+
+const Analytics = ({ data, isLoading }: ProjectAnalyticsResponseTypeProps) => {
+
+  if (!data || isLoading) {
+    return <Skeleton className="rounded-lg w-full whitespace-nowrap shrink-0 h-[120px]" />;
+  }
+
   return (
     <ScrollArea className="border rounded-lg w-full whitespace-nowrap shrink-0">
       <div className="w-full flex flex-row">

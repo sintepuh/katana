@@ -10,7 +10,6 @@ import ProjectsList from "./_components/projects-list";
 import TasksList from "./_components/tasks-list";
 import MembersList from "./_components/members-list";
 import Analytics from "@/components/analytics";
-import { Skeleton } from "@/components/ui/skeleton";
 
 const WorkspaceId = () => {
   const workspaceId = useWorkspaceId();
@@ -33,23 +32,13 @@ const WorkspaceId = () => {
     isLoadingProjects ||
     isLoadingMembers;
 
-  if (!analytics || !tasks || !projects || !members) return null;
-
   return (
     <div className="h-full flex flex-col space-y-4">
-      <Skeleton loading={true}>
-        <Analytics data={analytics} />
-      </Skeleton>
+      <Analytics data={analytics} isLoading={isLoading} />
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
-        <Skeleton loading={true}>
-          <TasksList data={tasks.documents} total={tasks.total} />
-        </Skeleton>
-        <Skeleton loading={true}>
-          <ProjectsList data={projects.documents} total={projects.total} />
-        </Skeleton>
-        <Skeleton loading={true}>
-          <MembersList data={members.documents} total={members.total} />
-        </Skeleton>
+        <TasksList data={tasks?.documents} total={tasks?.total} isLoading={isLoading} />
+        <ProjectsList data={projects?.documents} total={projects?.total} isLoading={isLoading} />
+        <MembersList data={members?.documents} total={members?.total} isLoading={isLoading} />
       </div>
     </div>
   );

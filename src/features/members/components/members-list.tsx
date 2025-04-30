@@ -21,6 +21,7 @@ import { useGetMembers } from "../api/use-get-members";
 import { useUpdateMember } from "../api/use-update-member";
 import { MemberRole } from "../types";
 import MemberAvatar from "./member-avatar";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type MembersListProps = {
   workspaceId: string;
@@ -29,7 +30,7 @@ type MembersListProps = {
 const MembersList = ({ workspaceId }: MembersListProps) => {
   const router = useRouter();
 
-  const { data } = useGetMembers({ workspaceId });
+  const { data, isLoading } = useGetMembers({ workspaceId });
   const [ConfirmDialog, confirm] = useConfirm(
     "Remove member",
     "Are you sure you want to remove this member?",
@@ -57,6 +58,10 @@ const MembersList = ({ workspaceId }: MembersListProps) => {
   const handleUpdate = (memberId: string, role: MemberRole) => {
     updateMember({ param: { memberId }, json: { role } });
   };
+
+  if (!data || isLoading) {
+    return <Skeleton className="rounded-xl border bg-card-foreground w-full border-none shadow-none h-[300px]" />;
+  }
 
   return (
     <Card className="w-full h-full border-none shadow-none">
@@ -109,7 +114,7 @@ const MembersList = ({ workspaceId }: MembersListProps) => {
                     Set as Member
                   </DropdownMenuItem>
                   <DropdownMenuItem
-                    className="font-medium text-amber-700"
+                    className="font-medium text-[#e13a60]"
                     onClick={() => handleDelete(member.$id)}
                     disabled={isUpdating || isDeleting}
                   >

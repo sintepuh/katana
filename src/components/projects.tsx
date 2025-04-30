@@ -9,14 +9,29 @@ import { useCreateProjectModel } from "@/features/projects/hooks/use-create-proj
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { Skeleton } from "./ui/skeleton";
 
 const Projects = () => {
   const pathname = usePathname();
 
   const workspaceId = useWorkspaceId();
-  const { data } = useGetProjects({ workspaceId });
+  const { data, isLoading } = useGetProjects({ workspaceId });
 
   const { open } = useCreateProjectModel();
+
+  if (isLoading)
+    return <div className="flex flex-col gap-y-2">
+      <div className="flex items-center justify-between">
+        <p className="text-xs uppercase text-neutral-500">Projects</p>
+        <RiAddCircleFill
+          onClick={open}
+          className="size-5 text-neutral-500 hover:opacity-75 transition cursor-pointer"
+        />
+      </div>
+      <Skeleton className="h-[44px] w-full" />
+      <Skeleton className="h-[44px] w-full" />
+      <Skeleton className="h-[44px] w-full" />
+    </div>
 
   return (
     <div className="flex flex-col gap-y-2">
@@ -37,7 +52,7 @@ const Projects = () => {
             href={href}
             className={cn(
               "flex items-center gap-2.5 p-2.5 rounded-md hover:opacity-75 transition cursor-pointer text-neutral-500",
-              isActive && "bg-white shadow-sm hover:opacity-100 text-primary"
+              isActive && "bg-card-foreground shadow-sm hover:opacity-100 text-primary"
             )}
           >
             <ProjectAvatar name={project.name} image={project.imageUrl} />

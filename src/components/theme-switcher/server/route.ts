@@ -5,7 +5,7 @@ import { z } from "zod";
 import { zValidator } from "@hono/zod-validator";
 
 const themeSchema = z.object({
-  theme: z.enum(["light", "dark"]).default("light"),
+  theme: z.enum(["light", "dark", "system"]).default("system"),
 });
 
 const themeApp = new Hono()
@@ -14,7 +14,7 @@ const themeApp = new Hono()
       const { account } = await createSessionClient();
       const prefs = await account.getPrefs();
 
-      const theme = prefs?.theme ?? "light";
+      const theme = prefs?.theme ?? "system";
 
       return c.json({ theme });
     } catch (error) {
