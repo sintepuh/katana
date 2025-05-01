@@ -132,7 +132,7 @@ const SignUpCard = () => {
           onClick={() => signUpWithGoogle()}
           disabled={isPending}
         >
-          <FcGoogle className="mr-2 size-5" /> Login with Google
+          <FcGoogle className="mr-2 size-5" /> Sign up with Google
         </Button>
         <Button
           variant="secondary"
@@ -142,7 +142,7 @@ const SignUpCard = () => {
           disabled={isPending}
         >
           <FaGithub className="mr-2 size-5" />
-          Login with Github
+          Sign up with Github
         </Button>
       </CardContent>
 
