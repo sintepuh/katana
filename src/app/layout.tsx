@@ -8,7 +8,8 @@ import "./globals.css";
 import "@radix-ui/themes/styles.css";
 import { Inter } from "next/font/google";
 import { cn } from "@/lib/utils";
-import ThemeProvider from "@/components/theme-switcher/ui/theme-provider";
+import ThemeProvider from "@/features/theme/ui/theme-provider";
+import { StoreProvider } from "./store/StoreProvider";
 
 export const metadata: Metadata = {
   title: "Katana",
@@ -23,9 +24,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={cn("antialiased min-h-screen", inter.className)}
-        suppressHydrationWarning>
+    <StoreProvider>
+      <html lang="en">
+        <body className={cn("antialiased min-h-screen", inter.className)}
+          suppressHydrationWarning>
           <QueryProviders>
             <ThemeProvider>
               {children}
@@ -33,7 +35,9 @@ export default function RootLayout({
               <ReactQueryDevtools />
             </ThemeProvider>
           </QueryProviders>
-      </body>
-    </html>
+        </body>
+      </html>
+    </StoreProvider>
+
   );
 }

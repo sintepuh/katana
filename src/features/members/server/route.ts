@@ -44,10 +44,13 @@ const membersApp = new Hono()
       const populatedMembers = await Promise.all(
         members.documents.map(async (member) => {
           const user = await users.get(member.userId);
+          const prefs = await users.getPrefs(member.userId); // Получаем prefs пользователя
+
           return {
             ...member,
             name: user.name || user.email,
             email: user.email,
+            imageUrl: prefs?.imageUrl || null, // Добавляем imageUrl из prefs
           };
         })
       );

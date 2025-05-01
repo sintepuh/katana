@@ -42,7 +42,7 @@ const MembersList = ({ data, total, isLoading }: MemberListProps) => {
               <Card className="shadow-none rounded-lg overflow-hidden">
                 <CardContent className="p-3 flex items-center flex-col gap-x-2.5">
                   <MemberAvatar
-                    avatarUrl={getAvatarUrl(member.userId)}
+                    avatarUrl={member.imageUrl}
                     name={member.name}
                     className="size-12"
                     fallbackClassName="text-lg"

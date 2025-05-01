@@ -52,7 +52,7 @@ const EventCard = ({
       >
         <p>{title}</p>
         <div className="flex items-center gap-x-1">
-          <MemberAvatar name={assignee?.name} />
+          <MemberAvatar avatarUrl={assignee.imageUrl} name={assignee?.name} />
           <div className="size-1 rounded-full bg-neutral-300" />
           <ProjectAvatar name={project?.name} image={project?.imageUrl} />
         </div>

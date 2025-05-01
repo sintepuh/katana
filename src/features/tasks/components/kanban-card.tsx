@@ -26,8 +26,10 @@ const KanbanCard = ({ task }: KanbanCardProps) => {
       </div>
       <DottedSeparator />
 
+
       <div className="flex items-center gap-x-1.5">
         <MemberAvatar
+          avatarUrl={task.assignee.imageUrl}
           name={task.assignee.name}
           fallbackClassName="text-[10px]"
         />

@@ -3,7 +3,7 @@ import { ID, Query } from "node-appwrite";
 import { z } from "zod";
 import { zValidator } from "@hono/zod-validator";
 
-import { DATABASE_ID, IMAGES_BUCKET_ID, PROJECTS_ID, TASKS_ID } from "@/config";
+import { APPWRITE_ENDPOINT, DATABASE_ID, IMAGES_BUCKET_ID, PROJECT_ID, PROJECTS_ID, TASKS_ID } from "@/config";
 import { getMember } from "@/features/members/utils";
 import { sessionMiddleware } from "@/lib/session-middleware";
 
@@ -94,32 +94,20 @@ const projectApp = new Hono()
         return c.json({ error: "Unauthorized" }, 401);
       }
 
-      let uploadedImageUrl: string | undefined;
+      let uploadedImageUrl: string | null = null;
 
       if (image instanceof Blob) {
         const fileId = ID.unique();
-        const extStr = image.type.split("/")[1];
+        const ext = image.type.split("/")[1] || "png";
+        const fileName = `${fileId}.${ext}`;
 
-        const uploadFile = new File(
-          [image],
-          `${fileId}.${extStr.indexOf("svg") != -1 ? "svg" : extStr}`,
-          { type: image.type }
-        );
-
-        const file = await storage.createFile(
+        await storage.createFile(
           IMAGES_BUCKET_ID,
           fileId,
-          uploadFile
+          new File([image], fileName, { type: image.type })
         );
 
-        const arrayBuffer = await storage.getFileDownload(
-          IMAGES_BUCKET_ID,
-          file.$id
-        );
-
-        uploadedImageUrl = `data:${file.mimeType};base64,${Buffer.from(
-          arrayBuffer
-        ).toString("base64")}`;
+        uploadedImageUrl = `${APPWRITE_ENDPOINT}/storage/buckets/${IMAGES_BUCKET_ID}/files/${fileId}/view?project=${PROJECT_ID}`;
       }
 
       const project = await databases.createDocument(
@@ -170,34 +158,20 @@ const projectApp = new Hono()
         );
       }
 
-      let uploadedImageUrl: string | undefined;
+      let uploadedImageUrl: string | null = null;
 
       if (image instanceof Blob) {
         const fileId = ID.unique();
-        const extStr = image.type.split("/")[1];
+        const ext = image.type.split("/")[1] || "png";
+        const fileName = `${fileId}.${ext}`;
 
-        const uploadFile = new File(
-          [image],
-          `${fileId}.${extStr.indexOf("svg") != -1 ? "svg" : extStr}`,
-          { type: image.type }
-        );
-
-        const file = await storage.createFile(
+        await storage.createFile(
           IMAGES_BUCKET_ID,
           fileId,
-          uploadFile
+          new File([image], fileName, { type: image.type })
         );
 
-        const arrayBuffer = await storage.getFileDownload(
-          IMAGES_BUCKET_ID,
-          file.$id
-        );
-
-        uploadedImageUrl = `data:${file.mimeType};base64,${Buffer.from(
-          arrayBuffer
-        ).toString("base64")}`;
-      } else {
-        uploadedImageUrl = image;
+        uploadedImageUrl = `${APPWRITE_ENDPOINT}/storage/buckets/${IMAGES_BUCKET_ID}/files/${fileId}/view?project=${PROJECT_ID}`;
       }
 
       const workspace = await databases.updateDocument(

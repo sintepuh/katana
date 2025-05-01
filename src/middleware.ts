@@ -5,6 +5,7 @@ import { getWorkspaces } from "./features/workspaces/queries";
 export async function middleware(request: NextRequest) {
   const url = request.nextUrl;
 
+  // Игнорируем статические файлы и API-роуты
   const ignoreResourcesExt = ["ico", "css", "js", "svg", "png"];
   if (
     url.href.includes("static") ||
@@ -15,40 +16,19 @@ export async function middleware(request: NextRequest) {
   }
 
   const user = await getCurrentUser();
-
   const authRoutes = ["/sign-in", "/sign-up"];
+  const publicRoutes: string[] = []; // Добавьте сюда публичные маршруты при необходимости
+
+  // Обработка authRoutes
   if (authRoutes.includes(url.pathname)) {
     const searchParams = new URLSearchParams(url.search);
     const redirectUrl = searchParams.get("q") ?? "/";
-
-    if (user) {
-      return NextResponse.redirect(new URL(redirectUrl, url.origin));
-    }
-
+    if (user) return NextResponse.redirect(new URL(redirectUrl, url.origin));
     return NextResponse.next();
   }
 
-  if (!user) {
-    const currentUrl = encodeURI(url.pathname);
-    return NextResponse.redirect(
-      new URL(`/sign-in?q=${currentUrl}`, url.origin)
-    );
-  }
-
-  // workspace-related routes only for authenticated users
-  const workspaces = await getWorkspaces();
-
-  if (workspaces.total === 0) {
-    return NextResponse.redirect(new URL("/workspaces/create", url.origin));
-  } else if (url.pathname === "/") {
-    return NextResponse.redirect(
-      new URL(`/workspaces/${workspaces.documents[0].$id}`, url.origin)
-    );
-  }
-
-  const publicRoute: string[] = [];
-
-  if (publicRoute.includes(url.pathname)) {
+  // Публичные маршруты доступны без авторизации
+  if (publicRoutes.includes(url.pathname)) {
     return NextResponse.next();
   }
 

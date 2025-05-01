@@ -1,6 +1,6 @@
 import "server-only";
 
-import { Client, Account, Databases, Users } from "node-appwrite";
+import { Client, Account, Databases, Users, Storage } from "node-appwrite";
 import { cookies } from "next/headers";
 import { AUTH_COOKIE_NAME } from "./constants";
 
@@ -24,6 +24,10 @@ export async function createSessionClient() {
     get databases() {
       return new Databases(client);
     },
+    get storage() {
+      return new Storage(client);
+    },
+    
   };
 }
 

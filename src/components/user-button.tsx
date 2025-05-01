@@ -2,7 +2,7 @@
 
 import { LogOut } from "lucide-react";
 
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useCurrent } from "@/features/auth/api/use-current";
 import {
   DropdownMenu,
@@ -12,16 +12,32 @@ import {
 } from "@/components/ui/dropdown-menu";
 import DottedSeparator from "@/components//dotted-separator";
 import { useLogout } from "@/features/auth/api/use-logout";
-import { ThemeSwitcher } from "./theme-switcher/ui/theme-switcher";
+import { ThemeSwitcher } from "../features/theme/ui/theme-switcher";
 import { Skeleton } from "./ui/skeleton";
+import { useDispatch } from 'react-redux'
+import { setUser } from "@/features/auth/module/slice/userSlice";
+import { useEffect } from "react";
+import { useEditProfileModel } from "@/features/profile/hooks/use-edit-profile-model";
+import Image from "next/image";
+import { cn } from "@/lib/utils";
+
 
 const UserButton = () => {
-  const { data: user, isLoading } = useCurrent();
+  const { data: user, isLoading, isSuccess } = useCurrent();
   const { mutate: logout } = useLogout();
+  const { open } = useEditProfileModel();
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch(setUser(user));
+    }
+  }, [user]);
 
   if (isLoading) {
     return (
-      <Skeleton className="!rounded-full size-10"/>
+      <Skeleton className="!rounded-full size-10" />
     );
   }
 
@@ -32,7 +48,8 @@ const UserButton = () => {
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger className="outline-none relative">
-        <Avatar className="size-10 hover:opacity-75 transition border border-neutral-300">
+        <Avatar className="size-10 hover:opacity-75 transition border">
+          <AvatarImage src={user.prefs.imageUrl} alt="avatar" />
           <AvatarFallback className="bg-neutral-200 font-medium text-neutral-500 flex items-center justify-center">
             {user.name ? user.name[0] : user.email[0] ?? "U"}
           </AvatarFallback>
@@ -45,13 +62,14 @@ const UserButton = () => {
         sideOffset={10}
       >
         <div className="flex flex-col items-center justify-center gap-2 px-2.5 py-4">
-          <Avatar className="size-[52px] border-neutral-300">
+          <Avatar className="size-[52px] border cursor-pointer" onClick={open}>
+            <AvatarImage src={user.prefs.imageUrl} alt="avatar" />
             <AvatarFallback className="bg-neutral-200 text-xl font-medium text-neutral-500 flex items-center justify-center">
               {user?.name ? user.name[0] : user?.email[0] ?? "U"}
             </AvatarFallback>
           </Avatar>
           <div className="flex flex-col items-center justify-center">
-            <p className="text-sm font-medium text-neutral-900">
+            <p className="text-sm font-medium text">
               {user.name ?? "User"}
             </p>
             <p className="text-sm text-neutral-500">{user.email}</p>

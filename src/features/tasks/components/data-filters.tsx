@@ -40,6 +40,7 @@ const DataFilters = ({ hideProjectFilter }: DataFiltersProps) => {
   const membersOptions = members?.documents.map((member) => ({
     id: member.$id,
     name: member.name,
+    imageUrl: member.imageUrl
   }));
 
   const [{ projectId, assigneeId, dueDate, status }, setFilters] =
@@ -91,7 +92,7 @@ const DataFilters = ({ hideProjectFilter }: DataFiltersProps) => {
           {membersOptions?.map((member) => (
             <SelectItem key={member.id} value={member.id}>
               <div className="flex items-center gap-x-2">
-                <MemberAvatar name={member.name} />
+                <MemberAvatar avatarUrl={member.imageUrl} name={member.name} />
                 {member.name}
               </div>
             </SelectItem>

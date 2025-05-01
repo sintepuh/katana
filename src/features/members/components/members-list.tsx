@@ -84,6 +84,7 @@ const MembersList = ({ workspaceId }: MembersListProps) => {
           <Fragment key={member.$id}>
             <div className="flex items-center gap-2">
               <MemberAvatar
+                avatarUrl={member.imageUrl}
                 name={member.name}
                 className="size-10"
                 fallbackClassName="text-lg"

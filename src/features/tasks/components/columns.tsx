@@ -80,6 +80,7 @@ export const columns: ColumnDef<Task>[] = [
       return (
         <div className="flex items-center gap-x-2  font-medium">
           <MemberAvatar
+            avatarUrl={assignee.imageUrl}
             fallbackClassName="text-xs"
             className="size-6"
             name={assignee.name}
@@ -132,13 +133,13 @@ export const columns: ColumnDef<Task>[] = [
     cell: ({ row }) => {
       const id = row.original.$id;
       const projectId = row.original.projectId;
-    
+
       return <TaskAction id={id} projectId={projectId}>
         <Button variant="ghost" className="size-8 p-0">
           <MoreVerticalIcon className="size-4" />
         </Button>
       </TaskAction>;
-    
+
     },
   }
 ];

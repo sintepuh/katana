@@ -41,6 +41,7 @@ type EditTaskFormProps = {
   membersOptions: {
     id: string;
     name: string;
+    imageUrl: string;
   }[];
 };
 
@@ -150,7 +151,7 @@ const EditTaskForm = ({
                         {membersOptions.map((member) => (
                           <SelectItem key={member.id} value={member.id}>
                             <div className="flex items-center gap-x-2">
-                              <MemberAvatar name={member.name} />
+                              <MemberAvatar avatarUrl={member.imageUrl} name={member.name} />
                               {member.name}
                             </div>
                           </SelectItem>

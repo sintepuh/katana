@@ -17,6 +17,7 @@ type TaskOverviewProps = {
 
 const TaskOverview = ({ task }: TaskOverviewProps) => {
   const { open } = useEditTaskModel();
+  console.log(task.assigneeImageUrl)
 
   return (
     <div className="flex flex-col gap-y-4 col-span-1">
@@ -32,7 +33,7 @@ const TaskOverview = ({ task }: TaskOverviewProps) => {
 
         <div className="flex flex-col gap-y-4">
           <OverviewProperty label="Assignee">
-            <MemberAvatar className="size-6" name={task.assignee.name} />
+            <MemberAvatar avatarUrl={task.assignee.imageUrl} className="size-6" name={task.assignee.name} />
             <p className="text-sm font-medium">{task.assignee.name}</p>
           </OverviewProperty>
           <OverviewProperty label="Due date">

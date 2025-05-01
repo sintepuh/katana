@@ -1,11 +1,20 @@
 "use client";
 
+import { RootState } from "@/app/store/store";
 import { useEffect, useState } from "react";
-import { useGetTheme } from "../api/use-get-theme";
+import { useSelector } from "react-redux";
+
+// const getTheme = async () => {
+//     const { account } = await createSessionClient();
+//     const theme = await account.getPrefs()
+//     return theme
+// }
+
 
 export default function ThemeProvider({ children }: { children: React.ReactNode }) {
-    const { data: themeFromServer, refetch } = useGetTheme();
     const [appliedTheme, setAppliedTheme] = useState<string | null>(null);
+    const themeFromServer = useSelector((state: RootState) => state.user.user?.prefs.theme)
+
 
     useEffect(() => {
         const storedTheme = localStorage.getItem("theme");
@@ -13,10 +22,6 @@ export default function ThemeProvider({ children }: { children: React.ReactNode 
             document.body.setAttribute("data-theme", storedTheme);
             setAppliedTheme(storedTheme);
         }
-    }, []);
-
-    useEffect(() => {
-        refetch();
     }, []);
 
     useEffect(() => {
