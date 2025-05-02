@@ -18,6 +18,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
@@ -58,7 +59,7 @@ const EditProjectForm = ({ onCancel, initialValues }: EditProjectFormProps) => {
 
     // Check if file is more than 1MB
     if (file.size > 1024 * 1024) {
-      toast.error("File size should not exceed 1MB");
+      toast.error("Максимальный размер 1 МБ");
       return;
     }
 
@@ -67,7 +68,7 @@ const EditProjectForm = ({ onCancel, initialValues }: EditProjectFormProps) => {
 
   return (
     <div className="flex flex-col gap-y-4">
-      <Card className="w-full h-full border-none shadow-none">
+      <Card className="w-full h-full border shadow-none">
         <CardHeader className="flex flex-row items-center gap-x-4 space-y-0 p-7">
           <Button
             size="sm"
@@ -76,12 +77,12 @@ const EditProjectForm = ({ onCancel, initialValues }: EditProjectFormProps) => {
               onCancel
                 ? onCancel
                 : () =>
-                    router.push(
-                      `/workspaces/${initialValues.workspaceId}/projects/${initialValues.$id}`
-                    )
+                  router.push(
+                    `/dashboard/workspaces/${initialValues.workspaceId}/projects/${initialValues.$id}`
+                  )
             }
           >
-            <ArrowLeftIcon className="size-4 mr-2" /> Back
+            <ArrowLeftIcon className="size-4 mr-2" /> Назад
           </Button>
           <CardTitle className="font-bold text-xl">
             {initialValues.name}
@@ -100,14 +101,17 @@ const EditProjectForm = ({ onCancel, initialValues }: EditProjectFormProps) => {
                   control={form.control}
                   disabled={isPending}
                   name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Project Name</FormLabel>
-                      <FormControl>
-                        <Input {...field} placeholder="Enter project name" />
-                      </FormControl>
-                    </FormItem>
-                  )}
+                  render={({ field }) => {
+                    return (
+                      <FormItem>
+                        <FormLabel>Название</FormLabel>
+                        <FormControl>
+                          <Input {...field} placeholder="Введите название" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    );
+                  }}
                 />
 
                 <FormField
@@ -124,13 +128,13 @@ const EditProjectForm = ({ onCancel, initialValues }: EditProjectFormProps) => {
                               src={
                                 field.value instanceof Blob
                                   ? URL.createObjectURL(
-                                      new File([field.value], "image", {
-                                        type: field.value.type,
-                                      })
-                                    )
+                                    new File([field.value], "image", {
+                                      type: field.value.type,
+                                    })
+                                  )
                                   : field.value
                               }
-                              alt="Project Icon"
+                              alt="Иконка проекта"
                             />
                           </div>
                         ) : (
@@ -142,9 +146,9 @@ const EditProjectForm = ({ onCancel, initialValues }: EditProjectFormProps) => {
                         )}
 
                         <div className="flex flex-col">
-                          <p className="text-sm">Project Icon</p>
+                          <p className="text-sm">Иконка проекта</p>
                           <p className="text-sm text-muted-foreground">
-                            JPG, JPEG, PNG, SVG. Max size of 1MB
+                            JPG, JPEG, PNG, SVG. Максимальный размер 1 МБ
                           </p>
                           <input
                             ref={inputRef}
@@ -169,7 +173,7 @@ const EditProjectForm = ({ onCancel, initialValues }: EditProjectFormProps) => {
                               className="w-fit mt-2"
                               variant="destructive"
                             >
-                              Remove Image
+                              Удалить изображение
                             </Button>
                           ) : (
                             <Button
@@ -178,9 +182,9 @@ const EditProjectForm = ({ onCancel, initialValues }: EditProjectFormProps) => {
                               onClick={() => inputRef.current?.click()}
                               size="xs"
                               className="w-fit mt-2"
-                              variant="tertiary"
+
                             >
-                              Upload Image
+                              Загрузить изображение
                             </Button>
                           )}
                         </div>
@@ -193,7 +197,7 @@ const EditProjectForm = ({ onCancel, initialValues }: EditProjectFormProps) => {
 
               <div className="flex items-center justify-between flex-row-reverse">
                 <Button disabled={isPending} size="lg">
-                  Save Changes
+                  Сохранить изменения
                 </Button>
 
                 {onCancel && (
@@ -204,7 +208,7 @@ const EditProjectForm = ({ onCancel, initialValues }: EditProjectFormProps) => {
                     size="lg"
                     onClick={onCancel}
                   >
-                    Cancel
+                    Отмена
                   </Button>
                 )}
               </div>

@@ -8,15 +8,14 @@ import "./globals.css";
 import "@radix-ui/themes/styles.css";
 import { Inter } from "next/font/google";
 import { cn } from "@/lib/utils";
-import ThemeProvider from "@/features/theme/ui/theme-provider";
 import { StoreProvider } from "./store/StoreProvider";
+import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata: Metadata = {
   title: "Katana",
   description: "Project manager Katana",
 };
 const inter = Inter({ subsets: ["latin"] });
-
 
 export default function RootLayout({
   children,
@@ -29,7 +28,7 @@ export default function RootLayout({
         <body className={cn("antialiased min-h-screen", inter.className)}
           suppressHydrationWarning>
           <QueryProviders>
-            <ThemeProvider>
+            <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
               {children}
               <Toaster />
               <ReactQueryDevtools />

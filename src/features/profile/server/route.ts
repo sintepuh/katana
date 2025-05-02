@@ -1,24 +1,45 @@
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { ID } from "node-appwrite";
-import { z } from "zod";
 import {
   APPWRITE_ENDPOINT,
-  DATABASE_ID,
   IMAGES_BUCKET_ID,
   PROJECT_ID,
-  PROJECTS_ID,
-  WORKSPACES_ID,
 } from "@/config";
 import { sessionMiddleware } from "@/lib/session-middleware";
-import { updateProfileSchema } from "../schemas";
+import { updateProfileSchema, updateThemeSchema } from "../schemas";
 import { createSessionClient } from "@/lib/appwrite";
 
-const themeSchema = z.object({
-  theme: z.enum(["light", "dark", "system"]).default("system"),
-});
-
 const profileApp = new Hono()
+  .patch(
+    "/update-theme",
+    sessionMiddleware,
+    zValidator("form", updateThemeSchema),
+    async (c) => {
+
+      const {
+        theme,
+      } = c.req.valid("form");
+
+      const { account } = await createSessionClient();
+      const currentPrefs = await account.getPrefs();
+
+      if (theme) {
+        account.updatePrefs({
+          ...currentPrefs,
+          theme
+        });
+      }
+
+      return c.json({
+        success: true,
+        data: {
+          ...currentPrefs,
+          theme,
+        }
+      });
+    }
+  )
   .patch(
     "/",
     sessionMiddleware,
@@ -27,7 +48,6 @@ const profileApp = new Hono()
 
       const {
         name,
-        theme,
         image,
         currentPassword,
         newPassword
@@ -53,12 +73,6 @@ const profileApp = new Hono()
 
         imageUrl = `${APPWRITE_ENDPOINT}/storage/buckets/${IMAGES_BUCKET_ID}/files/${fileId}/view?project=${PROJECT_ID}`;
       }
-      if (theme) {
-        updates.push(account.updatePrefs({
-          ...currentPrefs,
-          theme
-        }));
-      }
 
       if (imageUrl) {
         updates.push(account.updatePrefs({
@@ -83,7 +97,6 @@ const profileApp = new Hono()
         success: true,
         data: {
           name,
-          theme,
           imageUrl,
           newPassword,
         }

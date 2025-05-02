@@ -20,8 +20,8 @@ const TaskBreadcrumbs = ({ project, task }: TaskBreadcrumbsProps) => {
   const router = useRouter();
 
   const [ConfirmDialog, confirmDelete] = useConfirm(
-    "Delete task",
-    "Are you sure you want to delete this task?",
+    "Удалить задачу",
+    "Вы уверены, что хотите удалить эту задачу?",
     "destructive"
   );
 
@@ -36,7 +36,7 @@ const TaskBreadcrumbs = ({ project, task }: TaskBreadcrumbsProps) => {
       { param: { taskId: task.$id } },
       {
         onSuccess: () => {
-          router.push(`/workspaces/${workspaceId}/tasks`);
+          router.push(`/dashboard/workspaces/${workspaceId}/tasks`);
         },
       }
     );
@@ -50,7 +50,7 @@ const TaskBreadcrumbs = ({ project, task }: TaskBreadcrumbsProps) => {
         image={project.imageUrl}
         className="size-6 lg:size-8"
       />
-      <Link href={`/workspaces/${workspaceId}/projects/${project.$id}`}>
+      <Link href={`/dashboard/workspaces/${workspaceId}/projects/${project.$id}`}>
         <p className="text-sm lg:text-lg font-semibold text-muted-foreground hover:opacity-75 transition">
           {project.name}
         </p>
@@ -65,7 +65,7 @@ const TaskBreadcrumbs = ({ project, task }: TaskBreadcrumbsProps) => {
         onClick={handleDelete}
       >
         <TrashIcon className="size-4 lg:mr-2" />
-        <span className="hidden lg:block">Delete Task</span>
+        <span className="hidden lg:block">Удалить задачу</span>
       </Button>
     </div>
   );

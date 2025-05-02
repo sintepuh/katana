@@ -91,7 +91,7 @@ const EditTaskForm = ({
   return (
     <Card className="w-full h-full border-none shadow-none">
       <CardHeader className="flex p-7">
-        <CardTitle className="font-bold text-xl">Edit Task</CardTitle>
+        <CardTitle className="font-bold text-xl">Редактировать задачу</CardTitle>
       </CardHeader>
 
       <div className="px-7">
@@ -108,10 +108,11 @@ const EditTaskForm = ({
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Task title</FormLabel>
+                    <FormLabel>Навание</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="Enter task name" />
+                      <Input {...field} placeholder="Введите название" />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -122,10 +123,11 @@ const EditTaskForm = ({
                 name="dueDate"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Due Date</FormLabel>
+                    <FormLabel>Срок выполнения</FormLabel>
                     <FormControl>
                       <DatePicker className={'min-h-[48px]'} {...field} />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -136,14 +138,14 @@ const EditTaskForm = ({
                 name="assigneeId"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Assignee</FormLabel>
+                    <FormLabel>Ответственный</FormLabel>
                     <Select
                       defaultValue={field.value}
                       onValueChange={field.onChange}
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select assignee" />
+                          <SelectValue placeholder="Выберите ответственного" />
                         </SelectTrigger>
                       </FormControl>
                       <FormMessage />
@@ -167,14 +169,14 @@ const EditTaskForm = ({
                 name="status"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Status</FormLabel>
+                    <FormLabel>Статус</FormLabel>
                     <Select
                       defaultValue={field.value}
                       onValueChange={field.onChange}
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select assignee" />
+                          <SelectValue placeholder="Выберите статус" />
                         </SelectTrigger>
                       </FormControl>
                       <FormMessage />
@@ -195,14 +197,14 @@ const EditTaskForm = ({
                 name="projectId"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Project</FormLabel>
+                    <FormLabel>Проект</FormLabel>
                     <Select
                       defaultValue={field.value}
                       onValueChange={field.onChange}
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select Project" />
+                          <SelectValue placeholder="Выберите проект" />
                         </SelectTrigger>
                       </FormControl>
                       <FormMessage />
@@ -228,7 +230,7 @@ const EditTaskForm = ({
 
             <div className="flex items-center justify-between flex-row-reverse">
               <Button disabled={isPending} size="lg">
-                Save Changes
+                Сохранить
               </Button>
 
               {onCancel && (
@@ -239,7 +241,7 @@ const EditTaskForm = ({
                   size="lg"
                   onClick={onCancel}
                 >
-                  Cancel
+                  Отмена
                 </Button>
               )}
             </div>

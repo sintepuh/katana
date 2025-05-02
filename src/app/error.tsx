@@ -9,9 +9,9 @@ const ErrorPage = () => {
   return (
     <div className="h-screen flex items-center justify-center flex-col gap-3">
       <AlertTriangle className="size-10" />
-      <p className="text-sm">Something went wrong</p>
+      <p className="text-sm">Что-то пошло не так</p>
       <Button variant="secondary" size="sm" asChild>
-        <Link href="/">Back to home</Link>
+        <Link href="/">На главный экран</Link>
       </Button>
     </div>
   );

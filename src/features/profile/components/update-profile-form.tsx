@@ -17,6 +17,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { UpdateProfileSchemaType, updateProfileSchema } from '../schemas'
@@ -26,11 +27,11 @@ type UpdateProfileFormProps = {
   onCancel?: () => void;
 };
 
-function removeUndefined(obj: any) {
+function removeUndefined<T extends Record<string, unknown>>(obj: T): Partial<T> {
   return Object.fromEntries(
     Object.entries(obj)
-      .filter(([_, value]) => value !== undefined)
-  );
+      .filter(([, value]) => value !== undefined)
+  ) as Partial<T>;
 }
 
 const UpdateProfileForm = ({ onCancel }: UpdateProfileFormProps) => {
@@ -51,6 +52,9 @@ const UpdateProfileForm = ({ onCancel }: UpdateProfileFormProps) => {
       ...data,
       image: data.image instanceof File ? data.image : undefined
     });
+
+    console.log(finalData)
+
     mutate(
       { form: finalData },
       {
@@ -70,9 +74,8 @@ const UpdateProfileForm = ({ onCancel }: UpdateProfileFormProps) => {
 
     if (!file) return;
 
-    // Check if file is more than 1MB
     if (file.size > 1024 * 1024) {
-      toast.error("File size should not exceed 1MB");
+      toast.error("Максимальный размер 1 МБ");
       return;
     }
 
@@ -82,7 +85,7 @@ const UpdateProfileForm = ({ onCancel }: UpdateProfileFormProps) => {
   return (
     <Card className="w-full h-full border-none shadow-none">
       <CardHeader className="flex p-7">
-        <CardTitle className="font-bold text-xl">Update Profile</CardTitle>
+        <CardTitle className="font-bold text-xl">Изменить профиль</CardTitle>
       </CardHeader>
 
       <div className="px-7">
@@ -99,10 +102,11 @@ const UpdateProfileForm = ({ onCancel }: UpdateProfileFormProps) => {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Name</FormLabel>
+                    <FormLabel>Имя</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="Enter profile name" />
+                      <Input {...field} placeholder="Введите имя" />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -115,8 +119,9 @@ const UpdateProfileForm = ({ onCancel }: UpdateProfileFormProps) => {
                   <FormItem>
                     <FormLabel>Новый пароль</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="Enter password" />
+                      <Input {...field} placeholder="Введите новый пароль" />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -129,8 +134,9 @@ const UpdateProfileForm = ({ onCancel }: UpdateProfileFormProps) => {
                   <FormItem>
                     <FormLabel>Старый пароль</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="Enter password" />
+                      <Input {...field} placeholder="Введите старый пароль" />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -155,7 +161,7 @@ const UpdateProfileForm = ({ onCancel }: UpdateProfileFormProps) => {
                                 )
                                 : field.value
                             }
-                            alt="Workspace Icon"
+                            alt="Иконка профиля"
                           />
                         </div>
                       ) : (
@@ -167,9 +173,9 @@ const UpdateProfileForm = ({ onCancel }: UpdateProfileFormProps) => {
                       )}
 
                       <div className="flex flex-col">
-                        <p className="text-sm">Profile Avatar</p>
+                        <p className="text-sm">Иконка профиля</p>
                         <p className="text-sm text-muted-foreground">
-                          JPG, JPEG, PNG, SVG. Max size of 1MB
+                          JPG, JPEG, PNG, SVG. Максимальный размер 1 МБ
                         </p>
                         <input
                           ref={inputRef}
@@ -193,7 +199,7 @@ const UpdateProfileForm = ({ onCancel }: UpdateProfileFormProps) => {
                             className="w-fit mt-2"
                             variant="destructive"
                           >
-                            Remove Image
+                            Удалить изображение
                           </Button>
                         ) : (
                           <Button
@@ -202,9 +208,8 @@ const UpdateProfileForm = ({ onCancel }: UpdateProfileFormProps) => {
                             onClick={() => inputRef.current?.click()}
                             size="xs"
                             className="w-fit mt-2"
-                            variant="tertiary"
                           >
-                            Upload Image
+                            Загрузить изображение
                           </Button>
                         )}
                       </div>
@@ -217,7 +222,7 @@ const UpdateProfileForm = ({ onCancel }: UpdateProfileFormProps) => {
 
             <div className="flex items-center justify-between flex-row-reverse">
               <Button disabled={isPending} size="lg">
-                Update Profile
+                Сохранить изменения
               </Button>
 
               {onCancel && (
@@ -228,7 +233,7 @@ const UpdateProfileForm = ({ onCancel }: UpdateProfileFormProps) => {
                   size="lg"
                   onClick={onCancel}
                 >
-                  Cancel
+                  Отмена
                 </Button>
               )}
             </div>

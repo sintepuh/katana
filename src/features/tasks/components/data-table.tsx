@@ -23,6 +23,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
+import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -37,7 +38,7 @@ export function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
     []
   )
- 
+
 
   const table = useReactTable({
     data,
@@ -56,9 +57,9 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-       <div className="flex items-center py-4">
+      <div className="flex items-center py-4">
         <Input
-          placeholder="Filter name..."
+          placeholder="Найти по названию ..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)
@@ -77,9 +78,9 @@ export function DataTable<TData, TValue>({
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                     </TableHead>
                   );
                 })}
@@ -109,7 +110,7 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  Нет результатов.
                 </TableCell>
               </TableRow>
             )}
@@ -120,18 +121,21 @@ export function DataTable<TData, TValue>({
         <Button
           variant="outline"
           size="sm"
+          className="w-1/2 sm:w-[110px]"
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
         >
-          Previous
+          <ArrowLeftIcon className="size-2 mr-2" /> Назад
         </Button>
         <Button
           variant="outline"
           size="sm"
+          className="w-1/2 sm:w-[110px]"
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
         >
-          Next
+          Вперед
+          <ArrowRightIcon className="size-2 mr-2" />
         </Button>
       </div>
     </div>

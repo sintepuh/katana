@@ -22,7 +22,7 @@ const Projects = () => {
   if (isLoading)
     return <div className="flex flex-col gap-y-2">
       <div className="flex items-center justify-between">
-        <p className="text-xs uppercase text-neutral-500">Projects</p>
+        <p className="text-xs uppercase text-neutral-500">Проекты</p>
         <RiAddCircleFill
           onClick={open}
           className="size-5 text-neutral-500 hover:opacity-75 transition cursor-pointer"
@@ -36,14 +36,14 @@ const Projects = () => {
   return (
     <div className="flex flex-col gap-y-2">
       <div className="flex items-center justify-between">
-        <p className="text-xs uppercase text-neutral-500">Projects</p>
+        <p className="text-xs uppercase text-neutral-500">Проекты</p>
         <RiAddCircleFill
           onClick={open}
           className="size-5 text-neutral-500 hover:opacity-75 transition cursor-pointer"
         />
       </div>
       {data?.documents.map((project) => {
-        const href = `/workspaces/${workspaceId}/projects/${project.$id}`;
+        const href = `/dashboard/workspaces/${workspaceId}/projects/${project.$id}`;
         const isActive = pathname === href;
 
         return (

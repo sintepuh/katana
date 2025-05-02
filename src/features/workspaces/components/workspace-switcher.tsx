@@ -25,14 +25,14 @@ const WorkspaceSwitcher = () => {
 
   const onSelect = (value: string) => {
     if (value !== "none") {
-      router.push(`/workspaces/${value}`);
+      router.push(`/dashboard/workspaces/${value}`);
     }
   };
 
   return (
     <div className="flex flex-col gap-y-2">
       <div className="flex items-center justify-between">
-        <p className="text-xs uppercase text-neutral-500">Workspaces</p>
+        <p className="text-xs uppercase text-neutral-500">Рабочие пространства</p>
         <RiAddCircleFill
           onClick={open}
           className="size-5 text-neutral-500 hover:opacity-75 transition cursor-pointer"
@@ -47,7 +47,7 @@ const WorkspaceSwitcher = () => {
           {isLoading && (
             <SelectItem disabled value="none">
               <div className="flex text-neutral-700">
-                <Loader2 className="mr-2 animate-spin size-5" /> Loading...
+                <Loader2 className="mr-2 animate-spin size-5" /> Загрузка...
               </div>
             </SelectItem>
           )}
@@ -66,7 +66,7 @@ const WorkspaceSwitcher = () => {
             ))}
           {!isLoading && !workspaces?.documents.length && (
             <SelectItem disabled value="none">
-              <span>No Workspaces</span>
+              <span>У вас рабочих пространств.</span>
             </SelectItem>
           )}
         </SelectContent>

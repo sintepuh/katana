@@ -63,11 +63,11 @@ const DataFilters = ({ hideProjectFilter }: DataFiltersProps) => {
         <SelectTrigger className="w-full lg:w-auto h-8 border-border">
           <div className="flex items-center pr-2 ">
             <ListCheckIcon className="size-4 mr-2" />
-            <SelectValue placeholder="All Status" />
+            <SelectValue placeholder="Все статусы" />
           </div>
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="all">All Status</SelectItem>
+          <SelectItem value="all">Все статусы</SelectItem>
           <SelectSeparator />
           {Object.values(TaskStatus).map((status) => (
             <SelectItem key={status} value={status}>
@@ -83,11 +83,11 @@ const DataFilters = ({ hideProjectFilter }: DataFiltersProps) => {
         <SelectTrigger className="w-full lg:w-auto h-8 border-border">
           <div className="flex items-center pr-2">
             <UserIcon className="size-4 mr-2" />
-            <SelectValue placeholder="All assignees" />
+            <SelectValue placeholder="Все ответственные" />
           </div>
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="all">All assignees</SelectItem>
+          <SelectItem value="all">Все ответственные</SelectItem>
           <SelectSeparator />
           {membersOptions?.map((member) => (
             <SelectItem key={member.id} value={member.id}>
@@ -108,11 +108,11 @@ const DataFilters = ({ hideProjectFilter }: DataFiltersProps) => {
           <SelectTrigger className="w-full lg:w-auto h-8 border-border">
             <div className="flex items-center pr-2">
               <ListCheckIcon className="size-4 mr-2" />
-              <SelectValue placeholder="All Projects" />
+              <SelectValue placeholder="Все проекты" />
             </div>
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Projects</SelectItem>
+            <SelectItem value="all">Все проекты</SelectItem>
             <SelectSeparator />
             {projectOptions?.map((project) => (
               <SelectItem key={project.id} value={project.id}>
@@ -124,7 +124,7 @@ const DataFilters = ({ hideProjectFilter }: DataFiltersProps) => {
       )}
 
       <DatePicker
-        placeholder="Due Date"
+        placeholder="Срок выполнения"
         value={dueDate ? new Date(dueDate) : undefined}
         onChange={(value) =>
           setFilters({ dueDate: value ? value.toISOString() : null })

@@ -11,6 +11,7 @@ export const getWorkspaces = async () => {
   const { account, databases } = await createSessionClient();
 
   const user = await account.get();
+  console.log(user)
 
   const members = await databases.listDocuments(DATABASE_ID, MEMBERS_ID, [
     Query.equal("userId", user.$id),

@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const createWorkspaceSchema = z.object({
-  name: z.string().trim().min(1, "Required"),
+  name: z.string().trim().min(1, "Обязательное поле"),
   image: z
     .union([
       z.instanceof(Blob),
@@ -13,7 +13,7 @@ export const createWorkspaceSchema = z.object({
 export type CreateWorkspaceSchemaType = z.infer<typeof createWorkspaceSchema>;
 
 export const updateWorkspaceSchema = z.object({
-  name: z.string().trim().min(1, "Must be at least 1 character").optional(),
+  name: z.string().trim().min(1, "Должен быть хотя бы один символ").optional(),
   image: z
     .union([
       z.instanceof(Blob),

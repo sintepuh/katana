@@ -14,19 +14,19 @@ import { columns } from "./columns";
 import DataFilters from "./data-filters";
 import DataKanban from "./data-kanban";
 import { DataTable } from "./data-table";
-import { useCallback} from "react";
+import { useCallback } from "react";
 import { TaskStatus } from "../types";
 import { useBuildUpdateTask } from "../api/use-bulk-update-task";
 import DataCalender from "./calender/data-calender";
 import { useProjectId } from "@/features/projects/hooks/use-project-id";
-import TasksLoadingPage from "@/app/(dashboard)/workspaces/[workspaceId]/tasks/loading";
+import TasksLoadingPage from "@/app/dashboard/workspaces/[workspaceId]/tasks/loading";
 
 type TaskViewSwitcherProps = {
   hideProjectFilter?: boolean;
   isLoading?: boolean
 };
 
-const TaskViewSwitcher = ({ hideProjectFilter, isLoading}: TaskViewSwitcherProps) => {
+const TaskViewSwitcher = ({ hideProjectFilter, isLoading }: TaskViewSwitcherProps) => {
   const [view, setView] = useQueryState("task-view", {
     defaultValue: "table",
   });
@@ -86,7 +86,7 @@ const TaskViewSwitcher = ({ hideProjectFilter, isLoading}: TaskViewSwitcherProps
           </TabsList>
           <Button size="sm" className="w-full lg:w-auto" onClick={open}>
             <PlusIcon className="size-4 mr-2" />
-            New
+            Новая задача
           </Button>
         </div>
         <DottedSeparator className="my-4" />

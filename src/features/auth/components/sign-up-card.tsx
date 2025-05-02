@@ -47,15 +47,15 @@ const SignUpCard = () => {
   return (
     <Card className="w-full h-full md:w-[490px] border-none shadow-none">
       <CardHeader className=" flex items-center justify-center text-center p-7">
-        <CardTitle className="text-2xl">Get started!</CardTitle>
+        <CardTitle className="text-2xl">Начните!</CardTitle>
         <CardDescription className="text-balance">
-          By signing up you agree to out{" "}
+          Регистрируясь, вы соглашаетесь с нашей{" "}
           <Link href={"/privacy"}>
-            <span className="text-blue-700">Privacy Policy</span>
+            <span className="text-primary">Политикой конфиденциальности</span>
           </Link>{" "}
-          and{" "}
+          и{" "}
           <Link href={"/terms"}>
-            <span className="text-blue-700">Terms of Service</span>
+            <span className="text-primary">Условиями обслуживани</span>
           </Link>
         </CardDescription>
       </CardHeader>
@@ -74,7 +74,7 @@ const SignUpCard = () => {
                     <Input
                       {...field}
                       type="text"
-                      placeholder="Enter your name"
+                      placeholder="Введите логин"
                     />
                   </FormControl>
                   <FormMessage />
@@ -86,7 +86,7 @@ const SignUpCard = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input {...field} type="email" placeholder="Enter email" />
+                    <Input {...field} type="email" placeholder="Введите почту" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -100,7 +100,7 @@ const SignUpCard = () => {
                     <Input
                       {...field}
                       type="password"
-                      placeholder="Enter password"
+                      placeholder="Введите пароль"
                     />
                   </FormControl>
                   <FormMessage />
@@ -114,7 +114,7 @@ const SignUpCard = () => {
               className="w-full"
               disabled={isPending}
             >
-              Sign Up
+              Зарегистрироваться
             </Button>
           </form>
         </Form>
@@ -132,7 +132,7 @@ const SignUpCard = () => {
           onClick={() => signUpWithGoogle()}
           disabled={isPending}
         >
-          <FcGoogle className="mr-2 size-5" /> Sign up with Google
+          <FcGoogle className="mr-2 size-5" /> Войти через Google
         </Button>
         <Button
           variant="secondary"
@@ -142,7 +142,7 @@ const SignUpCard = () => {
           disabled={isPending}
         >
           <FaGithub className="mr-2 size-5" />
-          Sign up with Github
+          Войти через Github
         </Button>
       </CardContent>
 
@@ -152,9 +152,9 @@ const SignUpCard = () => {
 
       <CardFooter className="p-7 flex items-center justify-center">
         <p>
-          Already have an account?{" "}
-          <Link href="/sign-in" className="text-blue-700">
-            Sign in
+          Уже есть аккаунте?{" "}
+          <Link href="/sign-in" className="text-primary">
+            Зарегистрироваться
           </Link>
         </p>
       </CardFooter>

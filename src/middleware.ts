@@ -1,36 +1,49 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getCurrentUser } from "./features/auth/queries";
-import { getWorkspaces } from "./features/workspaces/queries";
+
+const publicRoutes = ['/', '/sign-in', '/sign-up'];
+const privateRoutes = ['/dashboard'];
+
+export const config = {
+  matcher: [
+    '/((?!api|_next/static|_next/image|favicon.ico).*)',
+  ],
+};
 
 export async function middleware(request: NextRequest) {
-  const url = request.nextUrl;
+  const { pathname } = request.nextUrl;
+  const token = request.cookies.get('katana-auth-token')?.value;
 
-  // Игнорируем статические файлы и API-роуты
-  const ignoreResourcesExt = ["ico", "css", "js", "svg", "png"];
-  if (
-    url.href.includes("static") ||
-    ignoreResourcesExt.some((ext) => url.href.includes(ext)) ||
-    url.pathname.includes("api")
-  ) {
+  // Если пользователь на публичной странице и уже авторизован, перенаправляем его в рабочую область
+  if (publicRoutes.includes(pathname)) {
+    if (token) {
+      return redirectToFirstWorkspace(request);
+    }
     return NextResponse.next();
   }
 
-  const user = await getCurrentUser();
-  const authRoutes = ["/sign-in", "/sign-up"];
-  const publicRoutes: string[] = []; // Добавьте сюда публичные маршруты при необходимости
-
-  // Обработка authRoutes
-  if (authRoutes.includes(url.pathname)) {
-    const searchParams = new URLSearchParams(url.search);
-    const redirectUrl = searchParams.get("q") ?? "/";
-    if (user) return NextResponse.redirect(new URL(redirectUrl, url.origin));
-    return NextResponse.next();
-  }
-
-  // Публичные маршруты доступны без авторизации
-  if (publicRoutes.includes(url.pathname)) {
-    return NextResponse.next();
+  // Если на приватной странице, а токена нет, перенаправляем на login
+  if (privateRoutes.some(route => pathname.startsWith(route))) {
+    if (!token) {
+      return NextResponse.redirect(new URL('/sign-in', request.url));
+    }
   }
 
   return NextResponse.next();
+}
+
+export async function redirectToFirstWorkspace(request: NextRequest) {
+  try {
+    const { getWorkspaces } = await import('@/features/workspaces/queries');
+    const workspaces = await getWorkspaces();
+    
+    if (workspaces.total === 0) {
+      return NextResponse.redirect(new URL('/dashboard/workspaces/create', request.url));
+    }
+    return NextResponse.redirect(
+      new URL(`/dashboard/workspaces/${workspaces.documents[0].$id}`, request.url)
+    );
+  } catch (error) {
+    console.error('Workspaces fetch error:', error);
+    return NextResponse.redirect(new URL('/dashboard', request.url));
+  }
 }

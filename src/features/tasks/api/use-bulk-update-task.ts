@@ -19,12 +19,12 @@ export const useBuildUpdateTask = () => {
   const mutation = useMutation<ResponseType, Error, RequestType>({
     mutationFn: async ({ json }) => {
       const res = await client.api.tasks["bulk-update"].$post({ json });
-      if (!res.ok) throw new Error("Failed to update tasks");
+      if (!res.ok) throw new Error("Не удалось обновить задачу.");
 
       return await res.json();
     },
     onSuccess: () => {
-      toast.success("Tasks updated!");
+      toast.success("Задача обновлена!");
       queryClient.invalidateQueries({
         queryKey: [QueryKeys.PROJECT_ANALYTICS],
       });
@@ -36,7 +36,7 @@ export const useBuildUpdateTask = () => {
       });
     },
     onError: () => {
-      toast.error("Failed to update tasks");
+      toast.error("Не удалось обновить задачу.");
     },
   });
 

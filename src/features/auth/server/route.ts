@@ -11,6 +11,31 @@ import { sessionMiddleware } from "@/lib/session-middleware";
 
 const authApp = new Hono()
   .get("/current", sessionMiddleware, (c) => c.json({ user: c.get("user") }))
+  // .get("/current", sessionMiddleware, async (c) => {
+  //   const user = c.get("user");
+
+  //   const { account } = await createSessionClient();
+
+  //   const session = await account.getSession("current");
+  //   const prefs = await account.getPrefs();
+
+  //   console.log("Session:", session);
+  //   console.log("Prefs:", prefs);
+
+  //   const providerАvatarUrl = `https://avatars.githubusercontent.com/u/${session.providerUid}`
+
+  //   const currPrefs = await account.updatePrefs({
+  //     ...prefs,
+  //     providerАvatarUrl
+  //   })
+
+  //   user.prefs = currPrefs
+
+
+  //   return c.json({
+  //     user
+  //   });
+  // })
   .post("/login", zValidator("json", loginSchema), async (c) => {
     const { email, password } = c.req.valid("json");
 

@@ -21,12 +21,12 @@ export const useUpdateTask = () => {
   const mutation = useMutation<ResponseType, Error, RequestType>({
     mutationFn: async ({ json, param }) => {
       const res = await client.api.tasks[":taskId"].$patch({ json, param });
-      if (!res.ok) throw new Error("Failed to update task");
+      if (!res.ok) throw new Error("Не удалось обновить задачу.");
 
       return await res.json();
     },
     onSuccess: ({ data }) => {
-      toast.success("Task updated!");
+      toast.success("Задача обновлена!");
       router.refresh();
       queryClient.invalidateQueries({
         queryKey: [QueryKeys.PROJECT_ANALYTICS],
@@ -42,7 +42,7 @@ export const useUpdateTask = () => {
       });
     },
     onError: () => {
-      toast.error("Failed to update task");
+      toast.error("Не удалось обновить задачу.");
     },
   });
 

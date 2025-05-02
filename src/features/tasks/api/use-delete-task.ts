@@ -22,12 +22,12 @@ export const useDeleteTask = () => {
         param,
       });
 
-      if (!res.ok) throw new Error("Failed to delete task");
+      if (!res.ok) throw new Error("Не удалось удалить задачу.");
 
       return await res.json();
     },
     onSuccess: ({ data }) => {
-      toast.success("Task deleted!");
+      toast.success("Задача удалена!");
       queryClient.invalidateQueries({
         queryKey: [QueryKeys.TASKS],
       });
@@ -36,7 +36,7 @@ export const useDeleteTask = () => {
       });
     },
     onError: () => {
-      toast.error("Failed to delete Task");
+      toast.error("Не удалось удалить задачу.");
     },
   });
 

@@ -1,9 +1,15 @@
 "use client";
 
-import PageLoader from "@/components/page-loader";
-
 const AuthLoadingPage = () => {
-  return <PageLoader />;
+  return (
+    <div className="w-full h-svh flex items-center justify-center">
+      <svg width="60" height="60" viewBox="0 0 38 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M9 25.5L9.16216 24.527C2.41998 22.2154 0.75 16.3519 0.75 13.75V1.25H13V13.75V14.8468L13.8279 14.1274L28.7054 1.20114L36.2914 9.70665L24.4202 20.1242L23.9036 20.5775L24.494 20.9295L37.059 28.4201L30.83 38.571L13.7527 28.5686L13 28.1277V29V38.25H0.75V25.5H9Z"
+          className="svg-elem-1">
+        </path>
+      </svg>
+    </div>
+  );
 };
 
 export default AuthLoadingPage;

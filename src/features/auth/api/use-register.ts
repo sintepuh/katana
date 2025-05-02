@@ -23,15 +23,15 @@ export const useRegister = () => {
     },
     onSuccess: ({ success }) => {
       if (!success) {
-        toast.error("Failed to register");
+        toast.error("Не удалось зарегистрироваться.");
       } else {
-        toast.success("Registered successfully");
+        toast.success("Вы успешно зарегистрировались!");
       }
       router.refresh();
       queryClient.invalidateQueries({ queryKey: [QueryKeys.USER] });
     },
     onError: () => {
-      toast.error("Failed to register");
+      toast.error("Не удалось зарегистрироваться.");
     },
   });
 

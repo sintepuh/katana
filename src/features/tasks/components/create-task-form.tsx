@@ -60,11 +60,11 @@ const CreateTaskForm = ({
 }: CreateTaskFormProps) => {
   const { mutate, isPending } = useCreateTask();
   const workspaceId = useWorkspaceId();
-
   const form = useForm<CreateTaskSchemaType>({
     resolver: zodResolver(createTaskSchema.omit({ workspaceId: true })),
     defaultValues: {
       workspaceId,
+      dueDate: new Date()
     },
   });
 
@@ -90,7 +90,7 @@ const CreateTaskForm = ({
   return (
     <Card className="!bg-card overflow-y-auto hide-scrollbar w-full h-full border-none shadow-none">
       <CardHeader className="flex p-7">
-        <CardTitle className="font-bold text-xl">Create a Task</CardTitle>
+        <CardTitle className="font-bold text-xl">Создать задачу</CardTitle>
       </CardHeader>
 
       <div className="px-7">
@@ -107,10 +107,11 @@ const CreateTaskForm = ({
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Task title</FormLabel>
+                    <FormLabel>Навание</FormLabel>
                     <FormControl>
-                      <Input className="bg-card" {...field} placeholder="Enter task name" />
+                      <Input {...field} placeholder="Введите название" />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -121,10 +122,11 @@ const CreateTaskForm = ({
                 name="dueDate"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Due Date</FormLabel>
+                    <FormLabel>Срок выполнения</FormLabel>
                     <FormControl>
-                      <DatePicker className="bg-card h-12" {...field} />
+                      <DatePicker className={'min-h-[48px]'} {...field} />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -135,21 +137,21 @@ const CreateTaskForm = ({
                 name="assigneeId"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Assignee</FormLabel>
+                    <FormLabel>Ответственный</FormLabel>
                     <Select
                       defaultValue={field.value}
                       onValueChange={field.onChange}
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select assignee" />
+                          <SelectValue placeholder="Выберите ответственного" />
                         </SelectTrigger>
                       </FormControl>
                       <FormMessage />
                       <SelectContent>
                         {membersOptions.map((member) => (
                           <SelectItem key={member.id} value={member.id}>
-                            <div className="flex items-center gap-x-2 py-1">
+                            <div className="flex items-center gap-x-2">
                               <MemberAvatar avatarUrl={member.imageUrl} name={member.name} />
                               {member.name}
                             </div>
@@ -166,14 +168,14 @@ const CreateTaskForm = ({
                 name="status"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Status</FormLabel>
+                    <FormLabel>Статус</FormLabel>
                     <Select
                       defaultValue={field.value}
                       onValueChange={field.onChange}
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select assignee" />
+                          <SelectValue placeholder="Выберите статус" />
                         </SelectTrigger>
                       </FormControl>
                       <FormMessage />
@@ -194,21 +196,21 @@ const CreateTaskForm = ({
                 name="projectId"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Project</FormLabel>
+                    <FormLabel>Проект</FormLabel>
                     <Select
                       defaultValue={field.value}
                       onValueChange={field.onChange}
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select Project" />
+                          <SelectValue placeholder="Выберите проект" />
                         </SelectTrigger>
                       </FormControl>
                       <FormMessage />
                       <SelectContent>
                         {projectOptions.map((project) => (
                           <SelectItem key={project.id} value={project.id}>
-                            <div className="flex items-center gap-x-2 py-1">
+                            <div className="flex items-center gap-x-2">
                               <ProjectAvatar
                                 image={project.imageUrl}
                                 name={project.name}
@@ -227,7 +229,7 @@ const CreateTaskForm = ({
 
             <div className="flex items-center justify-between flex-row-reverse">
               <Button disabled={isPending} size="lg">
-                Create
+                Создать
               </Button>
 
               {onCancel && (
@@ -238,7 +240,7 @@ const CreateTaskForm = ({
                   size="lg"
                   onClick={onCancel}
                 >
-                  Cancel
+                  Отмена
                 </Button>
               )}
             </div>

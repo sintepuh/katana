@@ -6,27 +6,28 @@ import {
   startOfWeek,
   subMonths,
 } from "date-fns";
-import { enUS } from "date-fns/locale";
 import { useState } from "react";
 import { Calendar, dateFnsLocalizer, NavigateAction } from "react-big-calendar";
 
 import { Task } from "@/features/tasks/types";
 
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import "./main.css";
+import "./main.scss";
 import EventCard from "./event-card";
 import CalenderToolbar from "./calender-toolbar";
+import { ru } from "date-fns/locale";
 
 const locales = {
-  "en-US": enUS,
+  ru: ru,
 };
 
 const localizer = dateFnsLocalizer({
   format,
   parse,
-  startOfWeek,
+  startOfWeek: () => startOfWeek(new Date(), { weekStartsOn: 1 }),
   getDay,
   locales,
+  defaultLocale: "ru",
 });
 
 type DataCalenderProps = {
@@ -52,38 +53,78 @@ const DataCalender = ({ data }: DataCalenderProps) => {
     else if (action === "TODAY") setValue(new Date());
   };
 
-  console.log({ events });
-
   return (
-    <Calendar
-      localizer={localizer}
-      date={value}
-      events={events}
-      views={["month"]}
-      defaultView="month"
-      toolbar
-      showAllEvents
-      className="h-full"
-      max={new Date(new Date().setFullYear(new Date().getFullYear() + 1))}
-      formats={{
-        weekdayFormat: (data, culture, localizer) =>
-          localizer?.format(data, "EEEE", culture) ?? "",
-      }}
-      components={{
-        eventWrapper: ({ event }) => (
-          <EventCard
-            id={event.id}
-            assignee={event.assignee}
-            project={event.project}
-            title={event.title}
-            status={event.status}
-          />
-        ),
-        toolbar: () => (
-          <CalenderToolbar date={value} onNavigate={handlerNavigation} />
-        ),
-      }}
-    />
+    <div className="calendar-container">
+      <div className="calendar-toolbar">
+        <CalenderToolbar date={value} onNavigate={handlerNavigation} />
+      </div>
+      <div className="calendar-scrollable">
+        <Calendar
+          localizer={localizer}
+          date={value}
+          events={events}
+          views={["month"]}
+          defaultView="month"
+          toolbar
+          showAllEvents
+          className="h-full min-w-fit"
+          max={new Date(new Date().setFullYear(new Date().getFullYear() + 1))}
+          formats={{
+            // Вариант 1: Сокращенное название с большой буквы ("Пн", "Вт")
+            weekdayFormat: (date, culture, localizer) => {
+              const day = localizer?.format(date, "EEEEEE", culture) ?? "";
+              return day.charAt(0).toUpperCase() + day.slice(1);
+            },
+
+            // ИЛИ Вариант 2: Полное название дня недели ("Понедельник")
+            // weekdayFormat: (date, culture, localizer) => {
+            //   const day = localizer?.format(date, "EEEE", culture) ?? "";
+            //   return day.charAt(0).toUpperCase() + day.slice(1);
+            // },
+
+            monthHeaderFormat: (date, culture, localizer) =>
+              localizer?.format(date, "LLLL yyyy", culture) ?? "",
+          }}
+          messages={{
+            today: "Сегодня",
+            previous: "Назад",
+            next: "Вперед",
+            month: "Месяц",
+            week: "Неделя",
+            day: "День",
+            agenda: "Повестка",
+            date: "Дата",
+            time: "Время",
+            event: "Событие",
+            noEventsInRange: "Нет событий в этом диапазоне.",
+          }}
+          dayPropGetter={(date) => {
+            const hasEvent = events.some(
+              (e) => new Date(e.start).toDateString() === date.toDateString()
+            );
+
+            return {
+              className: hasEvent ? "has-events" : "",
+            };
+          }}
+          components={{
+            eventWrapper: ({ event }) => (
+              <EventCard
+                id={event.id}
+                assignee={event.assignee}
+                project={event.project}
+                title={event.title}
+                status={event.status}
+              />
+            ),
+            toolbar: () => (
+              <></>
+            ),
+          }}
+          culture="ru"
+        />
+      </div>
+    </div>
   );
 };
 

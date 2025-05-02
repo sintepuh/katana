@@ -25,12 +25,12 @@ export const useUpdateWorkspace = () => {
         param,
       });
 
-      if (!res.ok) throw new Error("Failed to update workspace");
+      if (!res.ok) throw new Error("Не удалось обновить рабочее пространство.");
 
       return await res.json();
     },
     onSuccess: ({ data }) => {
-      toast.success("Workspace updated!");
+      toast.success("Рабочее пространство обновлено!");
       router.refresh();
       queryClient.invalidateQueries({
         queryKey: [QueryKeys.WORKSPACES],
@@ -42,7 +42,7 @@ export const useUpdateWorkspace = () => {
     onError: (err) => {
       console.log(err);
 
-      toast.error(err.message ?? "Failed to update workspace");
+      toast.error(err.message ?? "Не удалось обновить рабочее пространство.");
     },
   });
 

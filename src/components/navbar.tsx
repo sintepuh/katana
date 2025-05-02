@@ -1,29 +1,29 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import MobileSidebar from "./mobile-sidebar";
 import UserButton from "./user-button";
+import MobileSidebar from "./mobile-sidebar";
 
 const pathnameMap = {
   tasks: {
-    title: "Task",
-    description: "View your task here",
+    title: "Задачи",
+    description: "Здесь вы можете посмотреть задачи.",
   },
   projects: {
-    title: "Projects",
-    description: "View all tasks of your projects here",
+    title: "Проекты",
+    description: "Здесь вы можете посмотреть все задачи вашего проекта.",
   },
 };
 
 const defaultMap = {
-  title: "Home",
-  description: "Monitor all your projects and tasks here",
+  title: "Домашняя страница",
+  description: "Здесь вы можете контролировать все свои проекты и задачи.",
 };
 
 const Navbar = () => {
   const pathname = usePathname();
   const pathnameParts = pathname.split("/");
-  const pathnameKey = pathnameParts[3] as keyof typeof pathnameMap;
+  const pathnameKey = pathnameParts[4] as keyof typeof pathnameMap;
 
   const { title, description } = pathnameMap[pathnameKey] || defaultMap;
 

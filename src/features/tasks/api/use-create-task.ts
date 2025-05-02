@@ -15,12 +15,12 @@ export const useCreateTask = () => {
     mutationFn: async ({ json }) => {
       const res = await client.api.tasks.$post({ json });
 
-      if (!res.ok) throw new Error("Failed to create Task");
+      if (!res.ok) throw new Error("Не удалось создать задачу.");
 
       return await res.json();
     },
     onSuccess: () => {
-      toast.success("Task created");
+      toast.success("Задача создана!");
       queryClient.invalidateQueries({
         queryKey: [QueryKeys.PROJECT_ANALYTICS],
       });
@@ -31,7 +31,7 @@ export const useCreateTask = () => {
     },
     onError: (err) => {
       console.log(err);
-      toast.error(err.message ?? "Failed to create Task");
+      toast.error(err.message ?? "Не удалось создать задачу.");
     },
   });
 

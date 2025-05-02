@@ -27,13 +27,13 @@ export const useDeleteProject = () => {
         param,
       });
 
-      if (!res.ok) throw new Error("Failed to delete project");
+      if (!res.ok) throw new Error("Не удалось удалить проект.");
 
       return await res.json();
     },
     onSuccess: ({ data }) => {
-      toast.success("Project deleted!");
-      router.push(`/workspaces/${workspaceId}`);
+      toast.success("Проект удален!");
+      router.push(`/dashboard/workspaces/${workspaceId}`);
       queryClient.invalidateQueries({
         queryKey: [QueryKeys.PROJECTS],
       });
@@ -42,7 +42,7 @@ export const useDeleteProject = () => {
       });
     },
     onError: () => {
-      toast.error("Failed to delete Project");
+      toast.error("Не удалось удалить проект.");
     },
   });
 

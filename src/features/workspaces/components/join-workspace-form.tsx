@@ -37,7 +37,7 @@ const JoinWorkspaceForm = ({
       },
       {
         onSuccess: ({ data }) => {
-          router.push(`/workspaces/${data.$id}`);
+          router.push(`/dashboard/workspaces/${data.$id}`);
         },
       }
     );
@@ -46,10 +46,9 @@ const JoinWorkspaceForm = ({
   return (
     <Card className="w-full h-full border-none shadow-none">
       <CardHeader className="p-7">
-        <CardTitle className="text-xl font-bold">Join workspace</CardTitle>
+        <CardTitle className="text-xl font-bold">Присоединиться к рабочему пространству</CardTitle>
         <CardDescription>
-          You&apos;ve been invited to join <strong>{workspaceName}</strong>{" "}
-          workspace
+          Вас пригласили присоединиться к рабочему пространству <strong>{workspaceName}</strong>
         </CardDescription>
       </CardHeader>
       <div className="px-7">
@@ -66,7 +65,7 @@ const JoinWorkspaceForm = ({
             size="lg"
             disabled={isPending}
           >
-            <Link href="/">Cancel</Link>
+            <Link href="/">Отмена</Link>
           </Button>
           <Button
             className="w-full lg:w-fit"
@@ -74,7 +73,7 @@ const JoinWorkspaceForm = ({
             onClick={onJoin}
             disabled={isPending}
           >
-            Join Workspace
+            Присоединиться
           </Button>
         </div>
       </CardContent>

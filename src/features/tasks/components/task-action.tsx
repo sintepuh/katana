@@ -26,8 +26,8 @@ export const TaskAction = ({ id, projectId, children }: TaskActionProps) => {
   const { open } = useEditTaskModel();
 
   const [ConfirmDialog, confirmDelete] = useConfirm(
-    "Delete task",
-    "Are you sure you want to delete this task?",
+    "Удалить задачу",
+    "Вы уверены, что хотите удалить эту задачу?",
     "destructive"
   );
   const { mutate, isPending } = useDeleteTask();
@@ -40,11 +40,11 @@ export const TaskAction = ({ id, projectId, children }: TaskActionProps) => {
   };
 
   const onOpenTask = () => {
-    router.push(`/workspaces/${workspaceId}/tasks/${id}`);
+    router.push(`/dashboard/workspaces/${workspaceId}/tasks/${id}`);
   };
 
   const onOpenProject = () => {
-    router.push(`/workspaces/${workspaceId}/projects/${projectId}`);
+    router.push(`/dashboard/workspaces/${workspaceId}/projects/${projectId}`);
   };
 
   return (
@@ -58,21 +58,21 @@ export const TaskAction = ({ id, projectId, children }: TaskActionProps) => {
             className="font-medium p-[10px]"
           >
             <ExternalLinkIcon className="size-4 mr-2 stroke-2" />
-            Task details
+            Подробности
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={onOpenProject}
             className="font-medium p-[10px]"
           >
             <ExternalLinkIcon className="size-4 mr-2 stroke-2" />
-            Open Project
+            Открыть
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => open(id)}
             className="font-medium p-[10px]"
           >
             <PencilIcon className="size-4 mr-2 stroke-2" />
-            Edit task
+            Изменить
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={onDelete}
@@ -80,7 +80,7 @@ export const TaskAction = ({ id, projectId, children }: TaskActionProps) => {
             className="font-medium p-[10px] text-[#e13a60] focus:text-[#e13a60]"
           >
             <TrashIcon className="size-4 mr-2 stroke-2" />
-            Delete task
+            Удалить
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

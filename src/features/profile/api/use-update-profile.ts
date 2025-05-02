@@ -24,12 +24,12 @@ export const useUpdateProfile = () => {
         form,
       });
 
-      if (!res.ok) throw new Error("Failed to update profile");
+      if (!res.ok) throw new Error("Не удалось обновить профиль.");
 
       return await res.json();
     },
     onSuccess: () => {
-      toast.success("Profile updated!");
+      toast.success("Профиль обновлен!");
       router.refresh();
       queryClient.invalidateQueries({
         queryKey: [QueryKeys.USER],
@@ -38,7 +38,7 @@ export const useUpdateProfile = () => {
     onError: (err) => {
       console.log(err);
 
-      toast.error(err.message ?? "Failed to update profile");
+      toast.error(err.message ?? "Не удалось обновить профиль.");
     },
   });
 

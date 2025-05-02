@@ -13,8 +13,8 @@ type DeleteWorkspaceFormProps = {
 const DeleteWorkspaceForm = ({ workspaceId }: DeleteWorkspaceFormProps) => {
 
   const [DeleteDialog, confirm] = useConfirm(
-    "Delete Workspace",
-    "Are you sure you want to delete this workspace?",
+    "Удалить рабочее пространство",
+    "Вы уверены, что хотите удалить это рабочее пространство?",
     "destructive"
   );
 
@@ -38,13 +38,12 @@ const DeleteWorkspaceForm = ({ workspaceId }: DeleteWorkspaceFormProps) => {
 
   return (
     <>
-      <Card className="w-full h-full border-none shadow-none">
+      <Card className="w-full h-full border shadow-none">
         <CardContent className="p-7 flex items-center justify-between gap-4 ">
           <div className="flex flex-col">
-            <h3 className="font-bold">Danger Zone</h3>
+            <h3 className="font-bold">Опасаная зона</h3>
             <p className="text-sm text-muted-foreground text-pretty">
-              Deleting a workspace is irreversible and will delete all
-              associated data
+              Удаление рабочего пространства необратимо и приведет к удалению всех связанных с ним данных.
             </p>
           </div>
           <Button
@@ -55,7 +54,7 @@ const DeleteWorkspaceForm = ({ workspaceId }: DeleteWorkspaceFormProps) => {
             onClick={handleDelete}
             disabled={isPending}
           >
-            Delete Workspace
+            Удалить
           </Button>
         </CardContent>
       </Card>

@@ -20,7 +20,7 @@ const Analytics = ({ data, isLoading }: ProjectAnalyticsResponseTypeProps) => {
       <div className="w-full flex flex-row">
         <div className="flex items-center flex-1">
           <AnalyticsCard
-            title="Total Tasks"
+            title="Всего задач"
             value={data?.taskCount}
             trend={data?.taskDiff > 0 ? "up" : "down"}
             increaseValue={data?.taskDiff}
@@ -29,7 +29,7 @@ const Analytics = ({ data, isLoading }: ProjectAnalyticsResponseTypeProps) => {
         </div>
         <div className="flex items-center flex-1">
           <AnalyticsCard
-            title="Assigned Tasks"
+            title="Назначенные задачи"
             value={data?.assignedTaskCount}
             trend={data?.assignedTaskDiff > 0 ? "up" : "down"}
             increaseValue={data?.taskDiff}
@@ -38,7 +38,7 @@ const Analytics = ({ data, isLoading }: ProjectAnalyticsResponseTypeProps) => {
         </div>
         <div className="flex items-center flex-1">
           <AnalyticsCard
-            title="Completed Tasks"
+            title="Выполненные задачи"
             value={data?.completedTaskCount}
             trend={data?.completedTaskDiff > 0 ? "up" : "down"}
             increaseValue={data?.completedTaskDiff}
@@ -48,7 +48,7 @@ const Analytics = ({ data, isLoading }: ProjectAnalyticsResponseTypeProps) => {
 
         <div className="flex items-center flex-1">
           <AnalyticsCard
-            title="Overdue Tasks"
+            title="Просроченные задачи"
             value={data?.overDueTaskCount}
             trend={data?.overDueTaskDiff > 0 ? "up" : "down"}
             increaseValue={data?.overDueTaskDiff}
@@ -58,7 +58,7 @@ const Analytics = ({ data, isLoading }: ProjectAnalyticsResponseTypeProps) => {
 
         <div className="flex items-center flex-1">
           <AnalyticsCard
-            title="Incomplete Tasks"
+            title="Незавершенные задачи"
             value={data?.inCompletedTaskCount}
             trend={data?.inCompletedTaskDiff > 0 ? "up" : "down"}
             increaseValue={data?.inCompletedTaskDiff}

@@ -26,12 +26,12 @@ export const useResetInvite = () => {
         param,
       });
 
-      if (!res.ok) throw new Error("Failed to reset invite");
+      if (!res.ok) throw new Error("Не удалось сбросить приглашение");
 
       return await res.json();
     },
     onSuccess: ({ data }) => {
-      toast.success("Invite code reset");
+      toast.success("Кода приглашения сброшен");
       router.refresh();
       queryClient.invalidateQueries({ queryKey: [QueryKeys.WORKSPACES] });
       queryClient.invalidateQueries({
@@ -40,7 +40,7 @@ export const useResetInvite = () => {
     },
     onError: (err) => {
       console.log(err);
-      toast.error(err.message ?? "Failed to create workspace");
+      toast.error(err.message ?? "Не удалось сбросить приглашение");
     },
   });
 

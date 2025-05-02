@@ -18,16 +18,16 @@ type ResetInviteFormProps = {
 const ResetInviteForm = ({ initialValues }: ResetInviteFormProps) => {
   const { mutate, isPending } = useResetInvite();
   const [ResetDialog, confirmReset] = useConfirm(
-    "Reset Invite",
-    "This will invalidate the current invite link",
+    "Сбросить приглашение",
+    "Это сделает текущую ссылку-приглашение недействительной.",
     "destructive"
   );
 
-  const fullInviteLink = `${process.env.NEXT_PUBLIC_APP_URL}/workspaces/${initialValues.$id}/join/${initialValues.inviteCode}`;
+  const fullInviteLink = `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/workspaces/${initialValues.$id}/join/${initialValues.inviteCode}`;
   const handleCopy = () => {
     navigator.clipboard
       .writeText(fullInviteLink)
-      .then(() => toast.success("Copied to clipboard"));
+      .then(() => toast.success("Скопировано в буфер обмена"));
   };
 
   const handleResetInvite = async () => {
@@ -40,13 +40,13 @@ const ResetInviteForm = ({ initialValues }: ResetInviteFormProps) => {
   };
 
   return (
-    <Card className="w-full h-full border-none shadow-none">
+    <Card className="w-full h-full border shadow-none">
       <ResetDialog />
       <CardContent className="p-7">
         <div className="flex flex-col">
-          <h3 className="font-bold">Invite Member</h3>
+          <h3 className="font-bold">Пригласить участника</h3>
           <p className="text-sm text-muted-foreground text-pretty">
-            Share this link with members to invite them to this workspace
+            Поделитесь этой ссылкой с участниками, чтобы пригласить их в это рабочее пространство.
           </p>
           <div className="mt-4">
             <div className="flex items-center gap-x-2">
@@ -69,7 +69,7 @@ const ResetInviteForm = ({ initialValues }: ResetInviteFormProps) => {
             disabled={isPending}
             onClick={handleResetInvite}
           >
-            Reset Invite
+            Сбросить приглашение
           </Button>
         </div>
       </CardContent>

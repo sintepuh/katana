@@ -23,7 +23,7 @@ export const columns: ColumnDef<Task>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Title
+          Название
           <ColumnFilterIcon sort={column.getIsSorted()} />
         </Button>
       );
@@ -41,7 +41,7 @@ export const columns: ColumnDef<Task>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Project
+          Проект
           <ColumnFilterIcon sort={column.getIsSorted()} />
         </Button>
       );
@@ -69,7 +69,7 @@ export const columns: ColumnDef<Task>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Assignee
+          Ответственный
           <ColumnFilterIcon sort={column.getIsSorted()} />
         </Button>
       );
@@ -98,7 +98,7 @@ export const columns: ColumnDef<Task>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Due Date
+          Срок выполнения
           <ColumnFilterIcon sort={column.getIsSorted()} />
         </Button>
       );
@@ -117,7 +117,7 @@ export const columns: ColumnDef<Task>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Status
+          Статус
           <ColumnFilterIcon sort={column.getIsSorted()} />
         </Button>
       );
@@ -129,7 +129,7 @@ export const columns: ColumnDef<Task>[] = [
     },
   },
   {
-    accessorKey: "actions",
+    accessorKey: "Действия",
     cell: ({ row }) => {
       const id = row.original.$id;
       const projectId = row.original.projectId;
