@@ -1,4 +1,5 @@
 "use server";
+export const runtime = 'nodejs';
 
 import { createSessionClient } from "@/lib/appwrite";
 

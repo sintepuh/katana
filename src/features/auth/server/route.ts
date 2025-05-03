@@ -1,3 +1,4 @@
+export const runtime = 'nodejs';
 
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
