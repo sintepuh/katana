@@ -333,7 +333,7 @@ export default function LandingPage() {
               >
                 <div className="rounded-xl overflow-hidden shadow-2xl border border-border/40 bg-gradient-to-b from-background to-muted/20 min-w-[700px]">
                   <Image
-                    src="/app-screen.png"
+                    src="/img/app-screen.png"
                     width={1280}
                     height={720}
                     alt="SaaSify dashboard"

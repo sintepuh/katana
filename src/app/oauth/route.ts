@@ -1,11 +1,15 @@
+export const runtime = 'nodejs'; // 👈 Добавить это
+export const dynamic = 'force-dynamic';
+
 import { createAdminClient } from "@/lib/appwrite";
 import { AUTH_COOKIE_NAME } from "@/lib/constants";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
   try {
-    const userId = request.nextUrl.searchParams.get("userId");
-    const secret = request.nextUrl.searchParams.get("secret");
+    const { searchParams } = new URL(request.url);
+    const userId = searchParams.get("userId");
+    const secret = searchParams.get("secret");
 
     if (!userId || !secret) {
       return new NextResponse("Missing fields", { status: 400 });
@@ -20,6 +24,7 @@ export async function GET(request: NextRequest) {
       httpOnly: true,
       sameSite: "lax",
       secure: process.env.NODE_ENV === "production",
+      maxAge: 60 * 60 * 24 * 30, // 30 дней
     });
 
     return response;
