@@ -163,21 +163,19 @@ const DataKanban = ({ data, onChange }: DataKanbanProps) => {
                   <div
                     {...provided.droppableProps}
                     ref={provided.innerRef}
-                    className="py-1.5 gap-1 flex flex-col"
+                    className="py-1.5"
                   >
                     {tasks[board].map((task, index) => (
-                      <Draggable key={task.$id} draggableId={task.$id} index={index}>
+                      <Draggable
+                        key={task.$id}
+                        draggableId={task.$id}
+                        index={index}
+                      >
                         {(provided, snapshot) => (
                           <div
                             {...provided.dragHandleProps}
                             {...provided.draggableProps}
                             ref={provided.innerRef}
-                            style={{
-                              ...provided.draggableProps.style,
-                              transform: snapshot.isDragging
-                                ? provided.draggableProps.style?.transform
-                                : 'none' // Сбрасываем transform когда не перетаскиваем
-                            }}
                           >
                             <KanbanCard task={task} isDragging={snapshot.isDragging} />
                           </div>
