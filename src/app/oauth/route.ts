@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
     const { account } = await createAdminClient();
     const session = await account.createSession(userId, secret);
 
-    const response = NextResponse.redirect(`${request.nextUrl.origin}/sign-in`);
+    const response = NextResponse.redirect(`${process.env.NEXT_PUBLIC_APP_URL}/sign-in`);
     response.cookies.set(AUTH_COOKIE_NAME, session.secret, {
       path: "/",
       httpOnly: true,
@@ -30,6 +30,6 @@ export async function GET(request: NextRequest) {
     return response;
   } catch (error) {
     console.error("Auth error:", error);
-    return NextResponse.redirect(`${request.nextUrl.origin}/sign-in?error=auth_failed`);
+    return NextResponse.redirect(`${process.env.NEXT_PUBLIC_APP_URL}/sign-in?error=auth_failed`);
   }
 }
