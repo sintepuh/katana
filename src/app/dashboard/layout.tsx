@@ -6,6 +6,7 @@ import EditTaskModel from "@/features/tasks/components/edit-task-model";
 import UpdateProfileModel from "@/features/profile/components/update-profile-model";
 import CreateWorkspaceModel from "@/features/workspaces/components/create-workspace-model";
 import React from "react";
+import PageTransitionWrapper from "@/components/page-transition-wrapper";
 
 type DashboardLayoutProps = {
   children: React.ReactNode;
@@ -26,7 +27,13 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         <div className="lg:pl-[264px] w-full">
           <div className="mx-auto h-full">
             <Navbar />
-            <main className="h-full py-8 px-3 sm:px-6 flex flex-col">{children}</main>
+            <main className="h-full py-8 px-3 sm:px-6 flex flex-col">
+              <PageTransitionWrapper>
+                <div className="contents"> {/* Новый враппер */}
+                  {children}
+                </div>
+              </PageTransitionWrapper>
+            </main>
           </div>
         </div>
       </div>

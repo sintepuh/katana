@@ -54,7 +54,7 @@
 
 .calendar-scrollable {
   flex-grow: 1;
-  overflow-x: auto;
+  overflow-x: hidden;
   border-radius: var(--radius);
 }
 
@@ -98,7 +98,7 @@
     height: 10px;
     pointer-events: none;
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, var(--card) 100%);
-    z-index: 100;
+    z-index: 50;
   }
 
   &.has-events::before {
@@ -110,6 +110,6 @@
         height: 10px;
         pointer-events: none;
         background: linear-gradient(to top, rgba(255, 255, 255, 0) 0%, var(--card) 100%);
-        z-index: 100;
+        z-index: 40;
       }
   }

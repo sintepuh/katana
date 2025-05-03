@@ -115,6 +115,7 @@ svg.active .svg-elem-1 {
   --background-transparent: 240 10% 3.9%;
   --foreground: oklch(96.12% 0.000 0);
   --card: oklch(18.22% 0.000 0);
+  --task-card: oklch(0.17 0.0089 224.11);
   --card-foreground: oklch(96.12% 0.000 0);
   --popover: oklch(18.22% 0.000 0);
   --popover-foreground: oklch(96.12% 0.000 0);
@@ -127,7 +128,7 @@ svg.active .svg-elem-1 {
   --accent: oklch(27.39% 0.005 286.03);
   --accent-foreground: oklch(96.12% 0.000 0);
   --destructive: oklch(64.35% 0.245 16.50);
-  --border: oklch(1 0 0 / 10%);
+  --border: oklch(0.24 0 102.07);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(88.42% 0.107 168.47);
   --chart-1: oklch(0.488 0.243 264.376);
@@ -141,9 +142,13 @@ svg.active .svg-elem-1 {
   --sidebar-primary-foreground: oklch(13.44% 0.000 0);
   --sidebar-accent: oklch(27.39% 0.005 286.03);
   --sidebar-accent-foreground: oklch(96.12% 0.000 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-border: oklch(0.24 0 102.07);
   --sidebar-ring: oklch(88.42% 0.107 168.47);
   --skeleton: oklch(0.21 0 none);
+
+  /*--primary-transparent: oklch(0.88 0.11 168.45 / 0.06); */
+
+  /*--primary-border: oklch(0.88 0.11 168.28 / 0.12) */
 }
 
 

@@ -3,35 +3,24 @@
 import { usePathname } from "next/navigation";
 import { RiAddCircleFill } from "react-icons/ri";
 
-import { useGetProjects } from "@/features/projects/api/use-get-projects";
 import ProjectAvatar from "@/features/projects/components/project-avatar";
 import { useCreateProjectModel } from "@/features/projects/hooks/use-create-project-model";
-import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { Skeleton } from "./ui/skeleton";
 
-const Projects = () => {
+const Projects = ({
+  projects,
+  workspaceId
+}:
+  {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    projects: any;
+    workspaceId: string
+  }) => {
   const pathname = usePathname();
 
-  const workspaceId = useWorkspaceId();
-  const { data, isLoading } = useGetProjects({ workspaceId });
 
   const { open } = useCreateProjectModel();
-
-  if (isLoading)
-    return <div className="flex flex-col gap-y-2">
-      <div className="flex items-center justify-between">
-        <p className="text-xs uppercase text-neutral-500">Проекты</p>
-        <RiAddCircleFill
-          onClick={open}
-          className="size-5 text-neutral-500 hover:opacity-75 transition cursor-pointer"
-        />
-      </div>
-      <Skeleton className="h-[44px] w-full" />
-      <Skeleton className="h-[44px] w-full" />
-      <Skeleton className="h-[44px] w-full" />
-    </div>
 
   return (
     <div className="flex flex-col gap-y-2">
@@ -42,7 +31,9 @@ const Projects = () => {
           className="size-5 text-neutral-500 hover:opacity-75 transition cursor-pointer"
         />
       </div>
-      {data?.documents.map((project) => {
+      {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      projects?.documents.map((project: any) => {
         const href = `/dashboard/workspaces/${workspaceId}/projects/${project.$id}`;
         const isActive = pathname === href;
 

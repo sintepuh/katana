@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-
 import QueryProviders from "@/components/query-provider";
 import { Toaster } from "@/components/ui/sonner";
 
@@ -15,6 +14,7 @@ export const metadata: Metadata = {
   title: "Katana",
   description: "Project manager Katana",
 };
+
 const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({
@@ -25,8 +25,7 @@ export default function RootLayout({
   return (
     <StoreProvider>
       <html lang="en">
-        <body className={cn("antialiased min-h-screen", inter.className)}
-          suppressHydrationWarning>
+        <body className={cn("antialiased min-h-screen", inter.className)} suppressHydrationWarning>
           <QueryProviders>
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
               {children}
@@ -37,6 +36,5 @@ export default function RootLayout({
         </body>
       </html>
     </StoreProvider>
-
   );
 }

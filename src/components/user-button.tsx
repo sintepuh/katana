@@ -35,12 +35,14 @@ const UserButton = () => {
 
   if (isLoading) {
     return (
-      <Skeleton className="!rounded-full size-10" />
+      <div className="flex flex-row gap-2">
+        <Skeleton className="!rounded-full size-10" />
+        <div className="flex flex-row gap-1 items-center">
+          <Skeleton className="!rounded-full size-10" />
+          <Skeleton className="w-[100px] h-6" />
+        </div>
+      </div>
     );
-  }
-
-  if (!user) {
-    return null;
   }
 
   return (
@@ -48,11 +50,11 @@ const UserButton = () => {
       <ThemeSwitcher />
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger className="outline-none relative">
-          <div  className="flex flex-row gap-1 items-center">
+          <div className="flex flex-row gap-1 items-center">
             <Avatar className="size-10 hover:opacity-75 transition border">
-              <AvatarImage src={user.prefs.imageUrl} alt="avatar" />
-              <AvatarFallback className="bg-neutral-200 font-medium text-neutral-500 flex items-center justify-center">
-                {user.name ? user.name[0] : user.email[0] ?? "U"}
+              <AvatarImage src={user?.prefs.imageUrl} alt="avatar" />
+              <AvatarFallback className="font-medium text-neutral-500 flex items-center justify-center">
+                {user?.name ? user?.name[0] : user?.email[0] ?? "U"}
               </AvatarFallback>
             </Avatar>
             <p>{user?.name ?? "user"}</p>
@@ -67,17 +69,17 @@ const UserButton = () => {
         >
           <div className="flex flex-col items-center justify-center gap-2 px-2.5 py-4">
             <Avatar className="size-[52px] border cursor-pointer" onClick={open}>
-              <AvatarImage src={user.prefs.imageUrl} alt="avatar" />
-              <AvatarFallback className="bg-neutral-200 text-xl font-medium text-neutral-500 flex items-center justify-center">
-                {user?.name ? user.name[0] : user?.email[0] ?? "U"}
+              <AvatarImage src={user?.prefs.imageUrl} alt="avatar" />
+              <AvatarFallback className="text-xl font-medium text-neutral-500 flex items-center justify-center">
+                {user?.name ? user?.name[0] : user?.email[0] ?? "U"}
               </AvatarFallback>
             </Avatar>
 
             <div className="flex flex-col items-center justify-center">
               <p className="text-sm font-medium text">
-                {user.name ?? "User"}
+                {user?.name ?? "User"}
               </p>
-              <p className="text-sm text-neutral-500">{user.email}</p>
+              <p className="text-sm text-neutral-500">{user?.email}</p>
             </div>
           </div>
           <DottedSeparator className="mb-1" />

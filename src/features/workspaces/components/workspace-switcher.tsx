@@ -9,16 +9,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Loader2 } from "lucide-react";
 import { RiAddCircleFill } from "react-icons/ri";
-import { useGetWorkspaces } from "../api/use-get-workspaces";
 import { useCreateWorkspaceModel } from "../hooks/use-create-workspace-model";
-import { useWorkspaceId } from "../hooks/use-workspace-id";
 import WorkspaceAvatar from "./workspace-avatar";
 
-const WorkspaceSwitcher = () => {
-  const { data: workspaces, isLoading } = useGetWorkspaces();
-  const workspaceId = useWorkspaceId();
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const WorkspaceSwitcher = ({
+  workspaces,
+  workspaceId
+}:
+  {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    workspaces: any;
+    workspaceId: string
+  }) => {
+
   const { open } = useCreateWorkspaceModel();
 
   const router = useRouter();
@@ -44,16 +49,10 @@ const WorkspaceSwitcher = () => {
           <SelectValue placeholder="No workspace selected" />
         </SelectTrigger>
         <SelectContent>
-          {isLoading && (
-            <SelectItem disabled value="none">
-              <div className="flex text-neutral-700">
-                <Loader2 className="mr-2 animate-spin size-5" /> Загрузка...
-              </div>
-            </SelectItem>
-          )}
-          {!isLoading &&
-            Number(workspaces?.documents.length ?? 0) > 0 &&
-            workspaces?.documents?.map((workspace) => (
+
+          {Number(workspaces?.documents.length ?? 0) > 0 &&
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            workspaces?.documents?.map((workspace: any) => (
               <SelectItem key={workspace.$id} value={workspace.$id}>
                 <div className="flex justify-start items-center gap-3 font-medium">
                   <WorkspaceAvatar
@@ -64,7 +63,7 @@ const WorkspaceSwitcher = () => {
                 </div>
               </SelectItem>
             ))}
-          {!isLoading && !workspaces?.documents.length && (
+          {!workspaces?.documents.length && (
             <SelectItem disabled value="none">
               <span>У вас рабочих пространств.</span>
             </SelectItem>

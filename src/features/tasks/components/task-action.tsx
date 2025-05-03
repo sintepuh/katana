@@ -65,7 +65,7 @@ export const TaskAction = ({ id, projectId, children }: TaskActionProps) => {
             className="font-medium p-[10px]"
           >
             <ExternalLinkIcon className="size-4 mr-2 stroke-2" />
-            Открыть
+            Проект
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => open(id)}
