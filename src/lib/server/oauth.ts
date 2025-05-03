@@ -1,5 +1,4 @@
 "use server";
-export const runtime = 'nodejs';
 
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";

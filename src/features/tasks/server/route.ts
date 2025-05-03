@@ -1,5 +1,3 @@
-export const runtime = 'nodejs';
-
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { ID, Models, Query } from "node-appwrite";

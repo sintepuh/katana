@@ -1,6 +1,4 @@
 "use server";
-export const runtime = 'nodejs';
-
 import { Query } from "node-appwrite";
 
 import { DATABASE_ID, MEMBERS_ID, WORKSPACES_ID } from "@/config";

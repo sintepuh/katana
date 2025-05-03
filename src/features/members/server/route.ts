@@ -1,5 +1,3 @@
-export const runtime = 'nodejs';
-
 import { Hono } from "hono";
 import { Query } from "node-appwrite";
 import { z } from "zod";
