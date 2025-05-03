@@ -1,16 +1,19 @@
 import Link from "next/link";
 import React from "react";
-import LogoIcon  from "@/assets/logo.svg";
+import LogoIcon from "@/assets/logo.svg";
 
 type LogoProps = {
-  size?: number;
+  className?: string;
 };
 
-const Logo = ({ size = 40}: LogoProps) => {
+const Logo = ({ className = "" }: LogoProps) => {
   return (
-    <Link href={"/"} className="flex gap-2 items-center">
-      <LogoIcon  className="logo" alt="Logo" width={size} height={size} />
-      <span className="text-3xl font-extrabold">Katana</span>
+    <Link href="/" className={`flex gap-2 items-center ${className}`}>
+      <LogoIcon 
+        className="logo size-5 md:size-10" 
+        alt="Logo"
+      />
+      <span className="text-lg md:text-3xl font-extrabold">Katana</span>
     </Link>
   );
 };

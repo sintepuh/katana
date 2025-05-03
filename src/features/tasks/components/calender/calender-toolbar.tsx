@@ -22,7 +22,7 @@ const CalenderToolbar = ({ date, onNavigate }: CalenderToolbarProps) => {
         >
           <ChevronLeftIcon className="size-4" />
         </Button>
-        <div className="flex items-center border border-input rounded-md px-3 py-2 h-10 justify-center w-full lg:w-auto">
+        <div className="flex items-center border border-input rounded-md px-3 py-2 h-10 justify-center w-full lg:w-[160px]">
           <CalendarIcon className="size-4 mr-2" />
           <p className="text-sm">
             {monthNames[date.getMonth()]} {date.getFullYear()}

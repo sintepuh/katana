@@ -163,7 +163,7 @@ const DataKanban = ({ data, onChange }: DataKanbanProps) => {
                   <div
                     {...provided.droppableProps}
                     ref={provided.innerRef}
-                    className="py-1.5"
+                    className="py-1.5 flex flex-col gap-2"
                   >
                     {tasks[board].map((task, index) => (
                       <Draggable
