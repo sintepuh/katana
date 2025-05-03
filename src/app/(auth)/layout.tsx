@@ -1,10 +1,11 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
+import Logo from "@/components/logo";
+import PageTransitionWrapper from "@/components/page-transition-wrapper";
 
 type AuthLayoutProps = {
   children: React.ReactNode;
@@ -16,18 +17,20 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
   const isSignUp = pathName === "/sign-up";
 
   return (
-    <main className="bg-neutral-100 min-h-screen">
-      <div className="max-w-screen-2xl mx-auto  p-4">
+    <main className="min-h-screen ">
+      <div className="max-w-screen-2xl mx-auto  p-4 flex flex-col min-h-screen ">
         <nav className="flex justify-between items-center">
-          <Image src="/logo.svg" width={50} height={56} alt="Logo" />
+          <Logo />
           <Button asChild variant="secondary">
             <Link href={isSignUp ? "/sign-in" : "/sign-up"}>
-              {isSignUp ? "Sign In" : "Sign Up"}
+              {isSignUp ? "Войти" : "Зарегистрироваться"}
             </Link>
           </Button>
         </nav>
-        <div className="flex flex-col items-center justify-center pt-4 md:pt-14">
-          {children}
+        <div className="flex flex-col items-center justify-center py-4 md:py-14">
+          <PageTransitionWrapper>
+            {children}
+          </PageTransitionWrapper>
         </div>
       </div>
     </main>

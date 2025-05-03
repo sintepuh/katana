@@ -17,7 +17,7 @@ export const useLogin = () => {
     mutationFn: async ({ json }) => {
       const res = await client.api.auth.login["$post"]({ json });
 
-      if(!res.ok) throw new Error("Failed to login");
+      if(!res.ok) throw new Error("Не удалось войти.");
 
       return await res.json();
     },
@@ -26,7 +26,7 @@ export const useLogin = () => {
       queryClient.invalidateQueries({ queryKey: [QueryKeys.USER] });
     },
     onError: () => {
-      toast.error("Failed to login");
+      toast.error("Не удалось войти.");
     },
   });
 

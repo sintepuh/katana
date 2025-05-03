@@ -21,6 +21,7 @@ import { useGetMembers } from "../api/use-get-members";
 import { useUpdateMember } from "../api/use-update-member";
 import { MemberRole } from "../types";
 import MemberAvatar from "./member-avatar";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type MembersListProps = {
   workspaceId: string;
@@ -29,10 +30,10 @@ type MembersListProps = {
 const MembersList = ({ workspaceId }: MembersListProps) => {
   const router = useRouter();
 
-  const { data } = useGetMembers({ workspaceId });
+  const { data, isLoading } = useGetMembers({ workspaceId });
   const [ConfirmDialog, confirm] = useConfirm(
-    "Remove member",
-    "Are you sure you want to remove this member?",
+    "Исключить участника",
+    "Вы уверены, что хотите исключить этого участника?",
     "destructive"
   );
 
@@ -58,16 +59,20 @@ const MembersList = ({ workspaceId }: MembersListProps) => {
     updateMember({ param: { memberId }, json: { role } });
   };
 
+  if (!data || isLoading) {
+    return <Skeleton className="rounded-xl border bg-card w-full border-none shadow-none h-[300px]" />;
+  }
+
   return (
-    <Card className="w-full h-full border-none shadow-none">
+    <Card className="w-full h-full border shadow-none">
       <ConfirmDialog />
       <CardHeader className="flex flex-row items-center gap-x-4 p-7 space-y-0">
         <Button size="sm" variant="secondary" asChild>
-          <Link href={`/workspaces/${workspaceId}`}>
-            <ArrowLeftIcon className="size-2 mr-2" /> Back
+          <Link href={`/dashboard/workspaces/${workspaceId}`}>
+            <ArrowLeftIcon className="size-2 mr-2" /> Назад
           </Link>
         </Button>
-        <CardTitle className="text-xl font-bold">Members List</CardTitle>
+        <CardTitle className="text-xl font-bold">Список участников</CardTitle>
       </CardHeader>
 
       <div className="px-7">
@@ -79,6 +84,7 @@ const MembersList = ({ workspaceId }: MembersListProps) => {
           <Fragment key={member.$id}>
             <div className="flex items-center gap-2">
               <MemberAvatar
+                avatarUrl={member.imageUrl}
                 name={member.name}
                 className="size-10"
                 fallbackClassName="text-lg"
@@ -99,21 +105,21 @@ const MembersList = ({ workspaceId }: MembersListProps) => {
                     onClick={() => handleUpdate(member.$id, MemberRole.ADMIN)}
                     disabled={isUpdating || isDeleting}
                   >
-                    Set as Admin
+                    Назначить админом
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     className="font-medium"
                     onClick={() => handleUpdate(member.$id, MemberRole.MEMBER)}
                     disabled={isUpdating || isDeleting}
                   >
-                    Set as Member
+                    Назначить участником
                   </DropdownMenuItem>
                   <DropdownMenuItem
-                    className="font-medium text-amber-700"
+                    className="font-medium text-[#e13a60]"
                     onClick={() => handleDelete(member.$id)}
                     disabled={isUpdating || isDeleting}
                   >
-                    Remove {member.name}
+                    Исключить {member.name}
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>

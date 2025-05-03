@@ -18,21 +18,25 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
 import { useUpdateWorkspace } from "../api/use-update-workspace";
 import { updateWorkspaceSchema, UpdateWorkspaceSchemaType } from "../schemas";
 import { Workspace } from "../types";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type EditWorkspaceFormProps = {
   onCancel?: () => void;
   initialValues: Workspace;
+  isLoading?: boolean
 };
 
 const EditWorkspaceForm = ({
   onCancel,
   initialValues,
+  isLoading
 }: EditWorkspaceFormProps) => {
   const form = useForm<UpdateWorkspaceSchemaType>({
     resolver: zodResolver(updateWorkspaceSchema),
@@ -56,6 +60,7 @@ const EditWorkspaceForm = ({
       {
         onSuccess: () => {
           form.reset();
+          onCancel?.()
           if (inputRef.current) {
             inputRef.current.value = "";
           }
@@ -69,18 +74,20 @@ const EditWorkspaceForm = ({
 
     if (!file) return;
 
-    // Check if file is more than 1MB
     if (file.size > 1024 * 1024) {
-      toast.error("File size should not exceed 1MB");
+      toast.error("Размер файла не должен превышать 1 МБ.");
       return;
     }
 
     form.setValue("image", file);
   };
 
+  if (isLoading)
+    return <Skeleton className="rounded-xl border bg-card w-full border-none shadow-none h-[650px]" />
+
   return (
     <div className="flex flex-col gap-y-4">
-      <Card className="w-full h-full border-none shadow-none">
+      <Card className="w-full h-full border shadow-none">
         <CardHeader className="flex flex-row items-center gap-x-4 space-y-0 p-7">
           <Button
             size="sm"
@@ -88,10 +95,10 @@ const EditWorkspaceForm = ({
             onClick={
               onCancel
                 ? onCancel
-                : () => router.push(`/workspaces/${initialValues.$id}`)
+                : () => router.push(`/dashboard/workspaces/${initialValues.$id}`)
             }
           >
-            <ArrowLeftIcon className="size-4 mr-2" /> Back
+            <ArrowLeftIcon className="size-4 mr-2" /> Назад
           </Button>
           <CardTitle className="font-bold text-xl">
             {initialValues.name}
@@ -112,10 +119,11 @@ const EditWorkspaceForm = ({
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Workspace Name</FormLabel>
+                      <FormLabel>Название</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder="Enter workspace name" />
+                        <Input {...field} placeholder="Введите название" />
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -134,13 +142,13 @@ const EditWorkspaceForm = ({
                               src={
                                 field.value instanceof Blob
                                   ? URL.createObjectURL(
-                                      new File([field.value], "image", {
-                                        type: field.value.type,
-                                      })
-                                    )
+                                    new File([field.value], "image", {
+                                      type: field.value.type,
+                                    })
+                                  )
                                   : field.value
                               }
-                              alt="Workspace Icon"
+                              alt="Иконка рабочей области"
                             />
                           </div>
                         ) : (
@@ -152,9 +160,9 @@ const EditWorkspaceForm = ({
                         )}
 
                         <div className="flex flex-col">
-                          <p className="text-sm">Workspace Icon</p>
+                          <p className="text-sm">Иконка рабочей области</p>
                           <p className="text-sm text-muted-foreground">
-                            JPG, JPEG, PNG, SVG. Max size of 1MB
+                            JPG, JPEG, PNG, SVG. Максимальный размер 1 МБ
                           </p>
                           <input
                             ref={inputRef}
@@ -179,7 +187,7 @@ const EditWorkspaceForm = ({
                               className="w-fit mt-2"
                               variant="destructive"
                             >
-                              Remove Image
+                              Удалить изображение
                             </Button>
                           ) : (
                             <Button
@@ -188,9 +196,9 @@ const EditWorkspaceForm = ({
                               onClick={() => inputRef.current?.click()}
                               size="xs"
                               className="w-fit mt-2"
-                              variant="tertiary"
+
                             >
-                              Upload Image
+                              Загрузить изображение
                             </Button>
                           )}
                         </div>
@@ -203,7 +211,7 @@ const EditWorkspaceForm = ({
 
               <div className="flex items-center justify-between flex-row-reverse">
                 <Button disabled={isPending} size="lg">
-                  Save Changes
+                  Сохранить изменения
                 </Button>
 
                 {onCancel && (
@@ -214,7 +222,7 @@ const EditWorkspaceForm = ({
                     size="lg"
                     onClick={onCancel}
                   >
-                    Cancel
+                    Отмена
                   </Button>
                 )}
               </div>

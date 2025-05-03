@@ -12,27 +12,27 @@ import {
   GoHomeFill,
 } from "react-icons/go";
 
-const routes = [
+export const routes = [
   {
-    label: "Home",
+    label: "Домашняя страница",
     href: "",
     icon: GoHome,
     activeIcon: GoHomeFill,
   },
   {
-    label: "My Tasks",
+    label: "Задачи",
     href: "/tasks",
     icon: GoCheckCircle,
     activeIcon: GoCheckCircleFill,
   },
   {
-    label: "Settings",
+    label: "Настройки",
     href: "/settings",
     icon: Settings,
     activeIcon: Settings,
   },
   {
-    label: "Members",
+    label: "Участники",
     href: "/members",
     icon: UserIcon,
     activeIcon: UserIcon,
@@ -46,7 +46,7 @@ const Navigation = () => {
   return (
     <ul className="flex flex-col">
       {routes.map((route) => {
-        const fullHref = `/workspaces/${workspaceId}${route.href}`;
+        const fullHref = `/dashboard/workspaces/${workspaceId}${route.href}`;
         const isActive = pathname === fullHref;
         const Icon = isActive ? route.activeIcon : route.icon;
 
@@ -54,8 +54,8 @@ const Navigation = () => {
           <Link key={route.href} href={fullHref}>
             <div
               className={cn(
-                "flex items-center gap-2.5 p-2.5 rounded-md font-medium hover:text-primary transition text-neutral-500",
-                isActive && "bg-white shadow-sm hover:opacity-100 text-primary"
+                "flex items-center gap-2.5 p-2.5 rounded-md font-medium hover:text-accent-foreground transition text-neutral-500",
+                isActive && "bg-sidebar-accent shadow-sm hover:opacity-100 text-accent-foreground"
               )}
             >
               <Icon className="size-5 text-neutral-500" />

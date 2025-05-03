@@ -1,0 +1,115 @@
+.rbc-header {
+  @apply text-sm font-normal pb-4 text-muted-foreground border-b-0;
+}
+
+.rbc-header+.rbc-header {
+  @apply border-l-0;
+}
+
+.rbc-button-link {
+  @apply text-xs font-normal text-muted-foreground;
+}
+
+.rbc-month-row {
+  @apply min-h-[150px] border-t border-x;
+}
+
+:not(.rbc-month-row ~ .rbc-month-row).rbc-month-row {
+  @apply rounded-t-md;
+}
+
+.rbc-month-row:last-of-type {
+  @apply border-b rounded-b-md;
+}
+
+.rbc-month-view {
+  @apply border-none;
+}
+
+.rbc-today {
+  background: inherit;
+}
+
+.rbc-date-cell {
+  @apply p-2 min-w-[170px];
+}
+
+.rbc-row-content-scroll-container {
+  @apply flex gap-2 flex-col;
+}
+
+.rbc-off-range-bg {
+  @apply bg-accent;
+}
+
+.rbc-day-bg+.rbc-day-bg {
+  @apply border-l-border;
+}
+
+.rbc-month-row+.rbc-month-row {
+  @apply border-t-border;
+}
+
+
+
+.calendar-scrollable {
+  flex-grow: 1;
+  overflow-x: hidden;
+  border-radius: var(--radius);
+}
+
+// .rbc-row-content {
+//   position: relative;
+
+//   &.rbc-row-content-scrollable::after {
+//     content: "";
+//     position: absolute;
+//     left: 0;
+//     right: 0;
+//     bottom: 0;
+//     height: 20px;
+//     pointer-events: none;
+//     background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, var(--card) 100%);
+//     z-index: 1;
+//   }
+
+//   & .rbc-row-content-scroll-container::before {
+//     content: "";
+//     position: absolute;
+//     top: 0;
+//     left: 0;
+//     right: 0;
+//     height: 20px;
+//     pointer-events: none;
+//     background: linear-gradient(to top, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.1) 100%);
+//     z-index: 1;
+//   }
+// }
+
+.rbc-day-bg {
+  position: relative;
+
+  &.has-events::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 10px;
+    pointer-events: none;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, var(--card) 100%);
+    z-index: 50;
+  }
+
+  &.has-events::before {
+        content: "";
+        position: absolute;
+        top: 40px;
+        left: 0;
+        right: 0;
+        height: 10px;
+        pointer-events: none;
+        background: linear-gradient(to top, rgba(255, 255, 255, 0) 0%, var(--card) 100%);
+        z-index: 40;
+      }
+  }

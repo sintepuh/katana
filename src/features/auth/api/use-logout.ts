@@ -15,17 +15,18 @@ export const useLogout = () => {
   const mutation = useMutation<ResponseType, Error>({
     mutationFn: async () => {
       const res = await client.api.auth.logout["$post"]();
-
       return await res.json();
     },
     onSuccess: () => {
-      toast.success("Logged out successfully");
-      router.refresh();
+      toast.success("Вы вышли из системы.");
+
       queryClient.invalidateQueries({ queryKey: [QueryKeys.USER] });
       queryClient.invalidateQueries({ queryKey: [QueryKeys.WORKSPACES] });
+
+      router.refresh()
     },
     onError: () => {
-      toast.error("Failed to logout");
+      toast.error("Не удалось выйти.");
     },
   });
 

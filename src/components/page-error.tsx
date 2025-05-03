@@ -11,7 +11,7 @@ type PageErrorProps = {
 };
 
 const PageError = ({
-  message = "Something went wrong",
+  message = "Что-то пошло не так(",
   reset,
 }: PageErrorProps) => {
   return (
@@ -21,11 +21,11 @@ const PageError = ({
       <div className="flex gap-2">
         {reset && (
           <Button variant="outline" size="sm" onClick={() => reset()}>
-            <Link href="/">Try Again</Link>
+            <Link href="/">Попробовать снова</Link>
           </Button>
         )}
-        <Button variant="tertiary" size="sm" asChild>
-          <Link href="/">Back to home</Link>
+        <Button size="sm" asChild>
+          <Link href="/">На главную</Link>
         </Button>
       </div>
     </div>

@@ -6,23 +6,24 @@ import { ClipboardList } from "lucide-react";
 
 const NotFoundPage = () => {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-purple-50 to-pink-50 p-4">
+    
+    <div className="min-h-screen flex flex-col items-center justify-center  p-4">
       <div className="max-w-md w-full text-center">
-        <ClipboardList className="mx-auto h-24 w-24 text-purple-400 mb-8" />
-        <h1 className="text-4xl font-bold text-gray-800 mb-2">
-          404: Task Not Found
+        <ClipboardList className="mx-auto h-24 w-24 text-primary mb-8" />
+        <h1 className="text-4xl font-bold mb-2">
+          404: Задача не найдена
         </h1>
-        <p className="text-xl text-gray-600 mb-8">
-          Looks like this task fell off our to-do list!
+        <p className="text-xl text-muted-foreground mb-8">
+          Похоже, эта задача выпала из списка дел!
         </p>
-        <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
+        <div className="bg-accent rounded-lg shadow-lg p-6 mb-8">
           <div className="flex items-center space-x-2 text-left">
             <Checkbox id="task1" checked={true} />
             <label
               htmlFor="task1"
               className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
             >
-              Create awesome project
+              Создать потрясающий проект
             </label>
           </div>
           <div className="flex items-center space-x-2 text-left mt-2">
@@ -31,21 +32,21 @@ const NotFoundPage = () => {
               htmlFor="task2"
               className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
             >
-              Build amazing features
+              Создать потрясающие функции
             </label>
           </div>
           <div className="flex items-center space-x-2 text-left mt-2">
             <Checkbox id="task3" checked={false} />
             <label
               htmlFor="task3"
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 line-through text-gray-400"
+              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 line-through text-muted-foreground"
             >
-              Remember to create this page
+              Не забудыть создать эту страницу
             </label>
           </div>
         </div>
         <Button asChild className="w-full">
-          <Link href="/">Back to Our Well-Managed Projects</Link>
+          <Link href="/">Вернуться к проектам</Link>
         </Button>
       </div>
     </div>

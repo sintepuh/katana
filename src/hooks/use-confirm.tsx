@@ -12,7 +12,7 @@ import { useState } from "react";
 export const useConfirm = (
   title: string,
   message: string,
-  variant: ButtonProps["variant"] = "primary"
+  variant: ButtonProps["variant"] = "default"
 ): [() => JSX.Element, () => Promise<unknown>] => {
   const [promise, setPromise] = useState<{
     resolve: (value: boolean) => void;
@@ -52,14 +52,14 @@ export const useConfirm = (
               variant="outline"
               className="w-full lg:w-auto"
             >
-              Cancel
+              Отмена
             </Button>
             <Button
               onClick={handleConfirm}
               variant={variant}
               className="w-full lg:w-auto"
             >
-              Confirm
+              Подтвердить
             </Button>
           </div>
         </CardContent>

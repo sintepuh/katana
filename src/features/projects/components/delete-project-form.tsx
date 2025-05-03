@@ -13,8 +13,8 @@ type DeleteProjectFormProps = {
 const DeleteProjectForm = ({ projectId }: DeleteProjectFormProps) => {
 
   const [DeleteDialog, confirm] = useConfirm(
-    "Delete Project",
-    "Are you sure you want to delete this project?",
+    "Удалить проект",
+    "Вы уверены, что хотите удалить этот проект?",
     "destructive"
   );
 
@@ -31,13 +31,12 @@ const DeleteProjectForm = ({ projectId }: DeleteProjectFormProps) => {
 
   return (
     <>
-      <Card className="w-full h-full border-none shadow-none">
+      <Card className="w-full h-full border shadow-none">
         <CardContent className="p-7 flex items-center justify-between gap-4 ">
           <div className="flex flex-col">
-            <h3 className="font-bold">Danger Zone</h3>
+            <h3 className="font-bold">Опасаная зона</h3>
             <p className="text-sm text-muted-foreground text-pretty">
-              Deleting a workspace is irreversible and will delete all
-              associated data
+              Удаление проекта необратимо и приведет к удалению всех связанных с ним данных.
             </p>
           </div>
           <Button
@@ -48,7 +47,7 @@ const DeleteProjectForm = ({ projectId }: DeleteProjectFormProps) => {
             onClick={handleDelete}
             disabled={isPending}
           >
-            Delete Workspace
+            Удалить
           </Button>
         </CardContent>
       </Card>

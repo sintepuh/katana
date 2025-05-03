@@ -22,18 +22,18 @@ export const useDeleteMember = () => {
         param,
       });
 
-      if (!res.ok) throw new Error("Failed to delete member");
+      if (!res.ok) throw new Error("Не удалось исключить участника.");
 
       return await res.json();
     },
     onSuccess: () => {
-      toast.success("Member deleted");
+      toast.success("Участник исключен.");
       queryClient.invalidateQueries({ queryKey: [QueryKeys.MEMBERS] });
     },
     onError: (err) => {
       console.log(err);
 
-      toast.error(err.message ?? "Failed to delete member");
+      toast.error(err.message ?? "Не удалось исключить участника.");
     },
   });
 

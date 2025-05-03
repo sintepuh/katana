@@ -43,9 +43,9 @@ const SignInCard = () => {
   };
 
   return (
-    <Card className="w-full h-full md:w-[490px] border-none shadow-none">
+    <Card className="w-full h-full md:w-[490px] border shadow-none ">
       <CardHeader className=" flex items-center justify-center text-center p-7">
-        <CardTitle className="text-2xl">Welcome back!</CardTitle>
+        <CardTitle className="text-2xl">Добро пожаловать!</CardTitle>
       </CardHeader>
 
       <div className="px-7">
@@ -59,7 +59,7 @@ const SignInCard = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input {...field} type="email" placeholder="Enter email" />
+                    <Input {...field} type="email" placeholder="Введите почту" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -73,7 +73,7 @@ const SignInCard = () => {
                     <Input
                       {...field}
                       type="password"
-                      placeholder="Enter password"
+                      placeholder="Введите пароль"
                     />
                   </FormControl>
                   <FormMessage />
@@ -87,7 +87,7 @@ const SignInCard = () => {
               className="w-full"
               disabled={isPending}
             >
-              Login
+              Войти
             </Button>
           </form>
         </Form>
@@ -105,7 +105,8 @@ const SignInCard = () => {
           onClick={() => signUpWithGoogle()}
           disabled={isPending}
         >
-          <FcGoogle className="mr-2 size-5" /> Login with Google
+          <FcGoogle className="mr-2 size-5" />
+          Войти через Google
         </Button>
         <Button
           variant="secondary"
@@ -115,7 +116,7 @@ const SignInCard = () => {
           disabled={isPending}
         >
           <FaGithub className="mr-2 size-5" />
-          Login with Github
+          Войти через Github
         </Button>
       </CardContent>
 
@@ -125,9 +126,9 @@ const SignInCard = () => {
 
       <CardFooter className="p-7 flex items-center justify-center">
         <p>
-          Don&apos;t have an account?{" "}
-          <Link href="/sign-up" className="text-blue-700">
-            Sign Up
+          Нет аккаунта?{" "}
+          <Link href="/sign-up" className="text-primary">
+            Зарегистрироваться
           </Link>
         </p>
       </CardFooter>

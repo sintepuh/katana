@@ -25,19 +25,19 @@ export const useUpdateMember = () => {
         json,
       });
 
-      if (!res.ok) throw new Error("Failed to update member");
+      if (!res.ok) throw new Error("Не удалось назначить участника.");
 
       return await res.json();
     },
     onSuccess: () => {
-      toast.success("Member updated");
+      toast.success("Участник назначен!");
       router.refresh();
       queryClient.invalidateQueries({ queryKey: [QueryKeys.MEMBERS] });
     },
     onError: (err) => {
       console.log(err);
 
-      toast.error(err.message ?? "Failed to update members");
+      toast.error(err.message ?? "Не удалось назначить участника.");
     },
   });
 

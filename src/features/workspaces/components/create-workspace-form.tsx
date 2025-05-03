@@ -18,6 +18,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
@@ -53,7 +54,8 @@ const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
       {
         onSuccess: ({ data }) => {
           form.reset();
-          router.push(`/workspaces/${data.$id}`);
+          router.push(`/dashboard/workspaces/${data.$id}`);
+          onCancel?.()
           if (inputRef.current) {
             inputRef.current.value = "";
           }
@@ -69,7 +71,7 @@ const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
 
     // Check if file is more than 1MB
     if (file.size > 1024 * 1024) {
-      toast.error("File size should not exceed 1MB");
+      toast.error("Максимальный размер 1 МБ");
       return;
     }
 
@@ -79,7 +81,7 @@ const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
   return (
     <Card className="w-full h-full border-none shadow-none">
       <CardHeader className="flex p-7">
-        <CardTitle className="font-bold text-xl">Create a workspace</CardTitle>
+        <CardTitle className="font-bold text-xl">Создать рабочее пространство</CardTitle>
       </CardHeader>
 
       <div className="px-7">
@@ -96,10 +98,11 @@ const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Workspace Name</FormLabel>
+                    <FormLabel>Название</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="Enter workspace name" />
+                      <Input {...field} placeholder="Введите название" />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -118,13 +121,13 @@ const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
                             src={
                               field.value instanceof Blob
                                 ? URL.createObjectURL(
-                                    new File([field.value], "image", {
-                                      type: field.value.type,
-                                    })
-                                  )
+                                  new File([field.value], "image", {
+                                    type: field.value.type,
+                                  })
+                                )
                                 : field.value
                             }
-                            alt="Workspace Icon"
+                            alt="Иконка проекта"
                           />
                         </div>
                       ) : (
@@ -136,9 +139,9 @@ const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
                       )}
 
                       <div className="flex flex-col">
-                        <p className="text-sm">Workspace Icon</p>
+                        <p className="text-sm">Иконка проекта</p>
                         <p className="text-sm text-muted-foreground">
-                          JPG, JPEG, PNG, SVG. Max size of 1MB
+                          JPG, JPEG, PNG, SVG. Максимальный размер 1 МБ
                         </p>
                         <input
                           ref={inputRef}
@@ -162,7 +165,7 @@ const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
                             className="w-fit mt-2"
                             variant="destructive"
                           >
-                            Remove Image
+                            Удалить изображение
                           </Button>
                         ) : (
                           <Button
@@ -171,9 +174,9 @@ const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
                             onClick={() => inputRef.current?.click()}
                             size="xs"
                             className="w-fit mt-2"
-                            variant="tertiary"
+
                           >
-                            Upload Image
+                            Загрузить изображение
                           </Button>
                         )}
                       </div>

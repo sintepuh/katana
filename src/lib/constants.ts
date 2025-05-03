@@ -1,4 +1,4 @@
-export const AUTH_COOKIE_NAME = "katana";
+export const AUTH_COOKIE_NAME = "katana-auth-token";
 
 export enum QueryKeys {
   WORKSPACES = "workspaces",

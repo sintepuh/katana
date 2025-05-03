@@ -83,7 +83,7 @@ const DataKanban = ({ data, onChange }: DataKanbanProps) => {
       status: TaskStatus;
       position: number;
     }[] = [];
-    
+
     setTasks((prev) => {
       const newTasks = { ...prev };
 
@@ -152,7 +152,7 @@ const DataKanban = ({ data, onChange }: DataKanbanProps) => {
           return (
             <div
               key={board}
-              className="flex-1 mx-2 bg-muted p-1.5 rounded-md min-w-[200px]"
+              className="flex-1 mx-2 bg-accent p-1.5 rounded-md min-w-[200px] h-max"
             >
               <KanbanColumnHeader
                 board={board}
@@ -163,7 +163,7 @@ const DataKanban = ({ data, onChange }: DataKanbanProps) => {
                   <div
                     {...provided.droppableProps}
                     ref={provided.innerRef}
-                    className="min-h-[200px] py-1.5"
+                    className="py-1.5 flex flex-col gap-2"
                   >
                     {tasks[board].map((task, index) => (
                       <Draggable
@@ -171,13 +171,13 @@ const DataKanban = ({ data, onChange }: DataKanbanProps) => {
                         draggableId={task.$id}
                         index={index}
                       >
-                        {(provided) => (
+                        {(provided, snapshot) => (
                           <div
                             {...provided.dragHandleProps}
                             {...provided.draggableProps}
                             ref={provided.innerRef}
                           >
-                            <KanbanCard task={task} />
+                            <KanbanCard task={task} isDragging={snapshot.isDragging} />
                           </div>
                         )}
                       </Draggable>

@@ -17,10 +17,8 @@ const taskApp = new Hono();
 export default taskApp
   .get("/:taskId", sessionMiddleware, async (c) => {
     const { users } = await createAdminClient();
-
     const databases = c.get("databases");
     const currentUser = c.get("user");
-
     const { taskId } = c.req.param();
 
     const task = await databases.getDocument<Task>(
@@ -51,12 +49,16 @@ export default taskApp
       task.assigneeId
     );
 
-    const user = await users.get(member.userId);
+    const [user, userPrefs] = await Promise.all([
+      users.get(member.userId),
+      users.getPrefs(member.userId)
+    ]);
 
     const assignee = {
       ...member,
       name: user.name || user.email,
       email: user.email,
+      imageUrl: userPrefs?.imageUrl || null
     };
 
     return c.json({
@@ -139,12 +141,16 @@ export default taskApp
 
       const assignees = await Promise.all(
         members.documents.map(async (member) => {
-          const user = await users.get(member.userId);
+          const [user, userPrefs] = await Promise.all([
+            users.get(member.userId),
+            users.getPrefs(member.userId)
+          ]);
 
           return {
             ...member,
             name: user.name || user.email,
             email: user.email,
+            imageUrl: userPrefs?.imageUrl || null
           };
         })
       );
