@@ -8,22 +8,9 @@ type WorkspaceTaskStatisticResponseTypeProps = {
   isLoading?: boolean
 };
 
-const statistic = {
-  taskCount: 21,
-  taskDiff: 10,
-  assignedTaskCount: 15,
-  assignedTaskDiff: 13,
-  inCompletedTaskCount: 14,
-  inCompletedTaskDiff: -4,
-  completedTaskCount: 5,
-  completedTaskDiff: 2,
-  overDueTaskCount: 7,
-  overDueTaskDiff: -3
-}
-
 const Analytics = ({ data, isLoading }: WorkspaceTaskStatisticResponseTypeProps) => {
 
-  // const statistic = data?.analytic;
+  const statistic = data?.analytic;
 
   if (!statistic || isLoading) {
     return null;
@@ -46,7 +33,7 @@ const Analytics = ({ data, isLoading }: WorkspaceTaskStatisticResponseTypeProps)
             title="Назначенные задачи"
             value={statistic?.assignedTaskCount}
             trend={statistic?.assignedTaskDiff > 0 ? "up" : "down"}
-            increaseValue={statistic?.taskDiff}
+            increaseValue={statistic?.assignedTaskDiff}
           />
           <DottedSeparator direction="vertical" />
         </div>

@@ -2,7 +2,6 @@ import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { TrendingDown, TrendingUp } from "lucide-react";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "./ui/chart";
-import { useMemo } from "react";
 import { WorkspaceAnalyticsResponseType } from "@/features/workspaces/api/use-get-workspace-analytics";
 
 const chartConfig = {
@@ -16,34 +15,12 @@ const chartConfig = {
 
 type WorkspaceTaskStatisticResponseTypeProps = {
     data: WorkspaceAnalyticsResponseType["data"];
+    dateRange: string
     isLoading?: boolean
 };
 
-const dada = [
-    {
-        month: 'Март',
-        taskCount: 2
-    },
-    {
-        month: 'Апрель',
-        taskCount: 3
-    },
-    {
-        month: 'Май',
-        taskCount: 5
-    },
-    {
-        month: 'Июнь',
-        taskCount: 3
-    },
-    {
-        month: 'Июль',
-        taskCount: 3
-    },
 
-]
-
-export function TasksByMonth({ data, isLoading }: WorkspaceTaskStatisticResponseTypeProps) {
+export function TasksByMonth({ data, isLoading, dateRange }: WorkspaceTaskStatisticResponseTypeProps) {
 
     const statistic = data.taskStatistics;
 
@@ -60,15 +37,8 @@ export function TasksByMonth({ data, isLoading }: WorkspaceTaskStatisticResponse
     } else {
         const diff = current.taskCount - previous.taskCount;
         const percentage = ((diff / previous.taskCount) * 100).toFixed(0);
-        percentageChangeText += `${trendUp ? "больше" : "меньше"} на ${percentage}% чем за ${current.month}`;
+        percentageChangeText += `${trendUp ? "больше" : "меньше"} на ${percentage}% чем за ${previous.month}`;
     }
-
-
-    const dateRange = useMemo(() => {
-        if (statistic.length === 0) return '';
-        return `${statistic[0].month} - ${statistic[statistic.length - 1].month} ${new Date().getFullYear()}`;
-    }, [statistic]);
-
 
     if (isLoading)
         return null
@@ -90,7 +60,7 @@ export function TasksByMonth({ data, isLoading }: WorkspaceTaskStatisticResponse
                     ) : (
                         <AreaChart
                             accessibilityLayer
-                            data={dada}
+                            data={statistic}
                             margin={{
                                 left: 12,
                                 right: 12,

@@ -6,6 +6,7 @@ import { TasksByMonth } from "./statistics-by-month";
 import { TasksByStatus } from "./statistics-by-status";
 import { motion } from "framer-motion";
 import { Skeleton } from "./ui/skeleton";
+import { useMemo } from "react";
 
 
 type StatisticResponseTypeProps = {
@@ -14,6 +15,13 @@ type StatisticResponseTypeProps = {
 };
 
 export function Statistic({ data, isLoading }: StatisticResponseTypeProps) {
+
+    const dateRange = useMemo(() => {
+        if (data?.taskStatistics.length === 0 || isLoading) return '';
+        return `${data.taskStatistics[0].month} - ${data.taskStatistics[data.taskStatistics.length - 1].month} ${new Date().getFullYear()}`;
+    }, [data?.taskStatistics,isLoading]);
+
+
     if (isLoading)
         return (
             <div className="h-full flex flex-col gap-2 lg:gap-4">
@@ -43,7 +51,7 @@ export function Statistic({ data, isLoading }: StatisticResponseTypeProps) {
                     transition={{ duration: 0.5, delay: 0.2 }}
                     className="h-full col-span-1 min-[1780px]:col-span-2 order-0"
                 >
-                    <TasksByMonth data={data} isLoading={isLoading} />
+                    <TasksByMonth data={data} isLoading={isLoading} dateRange={dateRange} />
                 </motion.div>
                 <motion.div
                     initial={{ opacity: 0, y: 40 }}
@@ -51,7 +59,7 @@ export function Statistic({ data, isLoading }: StatisticResponseTypeProps) {
                     transition={{ duration: 0.5, delay: 0.4 }}
                     className="h-full col-span-1 lg:col-span-2 min-[1780px]:col-span-2 order-1 lg:order-2 min-[1780px]:order-1"
                 >
-                    <TasksByMembers data={data} isLoading={isLoading} />
+                    <TasksByMembers data={data} isLoading={isLoading} dateRange={dateRange} />
                 </motion.div>
                 <motion.div
                     initial={{ opacity: 0, y: 40 }}
@@ -59,7 +67,7 @@ export function Statistic({ data, isLoading }: StatisticResponseTypeProps) {
                     transition={{ duration: 0.5, delay: 0.6 }}
                     className="h-full col-span-1 order-2 lg:order-1 min-[1780px]:order-2"
                 >
-                    <TasksByStatus data={data} isLoading={isLoading} />
+                    <TasksByStatus data={data} isLoading={isLoading} dateRange={dateRange} />
                 </motion.div>
             </div>
         </div>

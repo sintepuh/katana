@@ -129,12 +129,38 @@ const UpdateProfileForm = ({ onCancel, initialValues }: UpdateProfileFormProps) 
                   <FormItem>
                     <FormLabel>Старый пароль</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="Введите старый пароль" />
+                      <Input {...field} placeholder="Введите старый пароль"
+                        type="password"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+
+              <FormField
+                control={form.control}
+                disabled={isPending}
+                name="newPassword"
+                render={({ field, fieldState }) => (
+                  <FormItem>
+                    <FormLabel>Новый пароль</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder="Введите новый пароль"
+                        type="password"
+                      />
+                    </FormControl>
+                    {fieldState.error?.message === "Заполните оба поля пароля" ? (
+                      <FormMessage>Новый пароль обязателен при изменении пароля</FormMessage>
+                    ) : (
+                      <FormMessage />
+                    )}
+                  </FormItem>
+                )}
+              />
+
 
               <FormField
                 control={form.control}

@@ -43,12 +43,24 @@ const chartConfig = {
 type WorkspaceTaskStatisticResponseTypeProps = {
     data: WorkspaceAnalyticsResponseType["data"];
     isLoading?: boolean
+    dateRange: string
 };
 
 
-export function TasksByStatus({ data, isLoading }: WorkspaceTaskStatisticResponseTypeProps) {
+export function TasksByStatus({ data, isLoading, dateRange }: WorkspaceTaskStatisticResponseTypeProps) {
     const statistic = data.taskStatusCounts;
     const hasData = statistic.some((item) => item.count > 0);
+
+    let maxStatus = null;
+    if (statistic.length > 0) {
+        maxStatus = statistic.reduce((max, current) =>
+            current.count > max.count ? current : max
+        );
+    }
+
+    const message = maxStatus
+        ? `Больше всего задач с статусом ${maxStatus.status}: ${maxStatus.count}`
+        : '';
 
     if (isLoading)
         return null
@@ -83,18 +95,20 @@ export function TasksByStatus({ data, isLoading }: WorkspaceTaskStatisticRespons
                 </ChartContainer>
             </CardContent>
 
-            <CardFooter className="flex-col gap-2 text-sm">
+            <CardFooter className="flex-col items-start gap-2 text-sm">
                 {hasData
                     &&
-                    <>
-                        <div className="flex gap-2 font-medium leading-none">
-                            Сюда нужно добавить вывод
+                    <div className="grid gap-2">
+                        <div className="flex items-center gap-2 font-medium leading-none">
+                            {message}
                         </div>
-                        <div className="leading-none text-muted-foreground">
-                            Показано общее количество задач относительно их статуса
+                        <div className="flex items-center gap-2 leading-none text-muted-foreground">
+                            {dateRange}
+
                         </div>
-                    </>
+                    </div>
                 }
+
             </CardFooter>
         </Card >
     )

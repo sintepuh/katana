@@ -20,8 +20,7 @@ import { generateInviteCode } from "@/lib/utils";
 
 import { createWorkspaceSchema, updateWorkspaceSchema } from "../schemas";
 import { Workspace } from "../types";
-import { endOfMonth, startOfMonth, subMonths } from "date-fns";
-import { TaskStatus } from "@/features/tasks/types";
+import { Task, TaskStatus } from "@/features/tasks/types";
 import { createAdminClient } from "@/lib/appwrite";
 
 const formatTaskStatus = (status: TaskStatus) => {
@@ -171,7 +170,7 @@ const workspaceApp = new Hono()
         );
       }
 
-      let uploadedImageUrl: string | null = null;
+      let uploadedImageUrl = null;
 
       if (image instanceof Blob) {
         const fileId = ID.unique();
@@ -187,8 +186,8 @@ const workspaceApp = new Hono()
         uploadedImageUrl = `${APPWRITE_ENDPOINT}/storage/buckets/${IMAGES_BUCKET_ID}/files/${fileId}/view?project=${PROJECT_ID}`;
       }
 
-      const updateData: { name: string | undefined; imageUrl?: string } = {
-        name: name,
+      const updateData: { name?: string; imageUrl?: string } = {
+        name,
       };
 
       if (uploadedImageUrl) {
@@ -338,14 +337,18 @@ const workspaceApp = new Hono()
 
     const now = new Date();
 
-    // Функция получения начала и конца месяца
-    const getRange = (date: Date): [string, string] => [
-      startOfMonth(date).toISOString(),
-      endOfMonth(date).toISOString(),
-    ];
 
-    const [thisMonthStart, thisMonthEnd] = getRange(now);
-    const [lastMonthStart, lastMonthEnd] = getRange(subMonths(now, 1));
+
+    // Подготовка меток месяцев, включая текущий, два предыдущих и два следующих
+    const months = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
+    const next6Months = Array.from({ length: 5 }, (_, i) => {
+      const date = new Date(now.getFullYear(), now.getMonth() - 2 + i, 1); // текущий месяц и два предыдущих, два следующих
+      return {
+        label: `${months[date.getMonth()]}`,
+        start: new Date(date.getFullYear(), date.getMonth(), 1),
+        end: new Date(date.getFullYear(), date.getMonth() + 1, 0, 23, 59, 59), // последний день месяца
+      };
+    });
 
     // Типизированная функция для выборки задач с фильтрами
     const queryTasks = async (filters: any[]): Promise<any> => {
@@ -357,16 +360,26 @@ const workspaceApp = new Hono()
 
     // Получение задач по различным условиям (текущий и прошлый месяц)
     const taskCounts = await Promise.all([
-      queryTasks([Query.greaterThanEqual("$createdAt", thisMonthStart), Query.lessThanEqual("$createdAt", thisMonthEnd)]),
-      queryTasks([Query.greaterThanEqual("$createdAt", lastMonthStart), Query.lessThanEqual("$createdAt", lastMonthEnd)]),
-      queryTasks([Query.greaterThanEqual("$createdAt", thisMonthStart), Query.lessThanEqual("$createdAt", thisMonthEnd), Query.equal("assigneeId", user.$id)]),
-      queryTasks([Query.greaterThanEqual("$createdAt", lastMonthStart), Query.lessThanEqual("$createdAt", lastMonthEnd), Query.equal("assigneeId", user.$id)]),
-      queryTasks([Query.greaterThanEqual("$createdAt", thisMonthStart), Query.lessThanEqual("$createdAt", thisMonthEnd), Query.notEqual("status", TaskStatus.DONE)]),
-      queryTasks([Query.greaterThanEqual("$createdAt", lastMonthStart), Query.lessThanEqual("$createdAt", lastMonthEnd), Query.notEqual("status", TaskStatus.DONE)]),
-      queryTasks([Query.greaterThanEqual("$createdAt", thisMonthStart), Query.lessThanEqual("$createdAt", thisMonthEnd), Query.equal("status", TaskStatus.DONE)]),
-      queryTasks([Query.greaterThanEqual("$createdAt", lastMonthStart), Query.lessThanEqual("$createdAt", lastMonthEnd), Query.equal("status", TaskStatus.DONE)]),
-      queryTasks([Query.greaterThanEqual("$createdAt", thisMonthStart), Query.lessThanEqual("$createdAt", thisMonthEnd), Query.lessThan("dueDate", now.toISOString()), Query.notEqual("status", TaskStatus.DONE)]),
-      queryTasks([Query.greaterThanEqual("$createdAt", lastMonthStart), Query.lessThanEqual("$createdAt", lastMonthEnd), Query.lessThan("dueDate", now.toISOString()), Query.notEqual("status", TaskStatus.DONE)]),
+      queryTasks([Query.greaterThanEqual("$createdAt", next6Months[2].start.toISOString()), Query.lessThanEqual("$createdAt", next6Months[2].end.toISOString())]),
+      queryTasks([Query.greaterThanEqual("$createdAt", next6Months[1].start.toISOString()), Query.lessThanEqual("$createdAt", next6Months[1].end.toISOString())]),
+      queryTasks([
+        Query.greaterThanEqual("$createdAt", next6Months[2].start.toISOString()),
+        Query.lessThanEqual("$createdAt", next6Months[2].end.toISOString()),
+        Query.notEqual("status", TaskStatus.BACKLOG),
+        Query.notEqual("status", TaskStatus.DONE),
+      ]),
+      queryTasks([
+        Query.greaterThanEqual("$createdAt", next6Months[1].start.toISOString()),
+        Query.lessThanEqual("$createdAt", next6Months[1].end.toISOString()),
+        Query.notEqual("status", TaskStatus.BACKLOG),
+        Query.notEqual("status", TaskStatus.DONE),
+      ]),
+      queryTasks([Query.greaterThanEqual("$createdAt", next6Months[2].start.toISOString()), Query.lessThanEqual("$createdAt", next6Months[2].end.toISOString()), Query.notEqual("status", TaskStatus.DONE)]),
+      queryTasks([Query.greaterThanEqual("$createdAt", next6Months[1].start.toISOString()), Query.lessThanEqual("$createdAt", next6Months[1].end.toISOString()), Query.notEqual("status", TaskStatus.DONE)]),
+      queryTasks([Query.greaterThanEqual("$createdAt", next6Months[2].start.toISOString()), Query.lessThanEqual("$createdAt", next6Months[2].end.toISOString()), Query.equal("status", TaskStatus.DONE)]),
+      queryTasks([Query.greaterThanEqual("$createdAt", next6Months[1].start.toISOString()), Query.lessThanEqual("$createdAt", next6Months[1].end.toISOString()), Query.equal("status", TaskStatus.DONE)]),
+      queryTasks([Query.greaterThanEqual("$createdAt", next6Months[2].start.toISOString()), Query.lessThanEqual("$createdAt", next6Months[2].end.toISOString()), Query.lessThan("dueDate", now.toISOString()), Query.notEqual("status", TaskStatus.DONE)]),
+      queryTasks([Query.greaterThanEqual("$createdAt", next6Months[1].start.toISOString()), Query.lessThanEqual("$createdAt", next6Months[1].end.toISOString()), Query.lessThan("dueDate", now.toISOString()), Query.notEqual("status", TaskStatus.DONE)]),
     ]);
 
     const [
@@ -399,45 +412,34 @@ const workspaceApp = new Hono()
       overDueTaskDiff: countDiff(thisMonthOverDueTasks, lastMonthOverDueTasks),
     };
 
-    // Подготовка меток месяцев, включая текущий, два предыдущих и два следующих
-    const months = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
-    const next6Months = Array.from({ length: 5 }, (_, i) => {
-      const date = new Date(now.getFullYear(), now.getMonth() - 2 + i, 1); // текущий месяц и два предыдущих, два следующих
-      return {
-        label: `${months[date.getMonth()]}`,
-        start: new Date(date.getFullYear(), date.getMonth(), 1),
-        end: new Date(date.getFullYear(), date.getMonth() + 1, 0, 23, 59, 59), // последний день месяца
-      };
-    });
 
     // Получаем все задачи за 5 месяцев (текущий, два предыдущих и два следующих)
-    const allTasks = await queryTasks([
+    const allTasks: Task = await queryTasks([
       Query.greaterThanEqual("dueDate", next6Months[0].start.toISOString()),
       Query.lessThanEqual("dueDate", next6Months[4].end.toISOString()),
     ]);
 
-
-
     // Подсчет задач по статусу
     const taskStatusCounts = Object.values(TaskStatus).map((status) => ({
       status: formatTaskStatus(status),
-      count: allTasks.documents.filter((t: any) => t.status === status).length as number,
+      count: allTasks.documents.filter((t: Task) => t.status === status).length as number,
     }));
-
 
     // Статистика задач по месяцам
     const taskStatistics = next6Months.map(({ label, start, end }) => {
-      const count = allTasks.documents.filter((task: any) => {
-        const createdAt = new Date(task.$createdAt);
-        return createdAt >= start && createdAt <= end;
-      }).length;
+      const count = allTasks.documents.filter((task: Task) => {
+        const dueDate = new Date(task.dueDate);
+        return dueDate >= start && dueDate <= end;
+      }).length as number;
       return { month: label, taskCount: count };
     });
 
     // Подсчет задач по каждому участнику с получением имени
     const memberTaskCounts: Record<string, { memberName: string; taskCount: number }> = {};
+
     for (const task of allTasks.documents) {
-      if (!task.assigneeId) continue;
+      if (!task.assigneeId || task.status == TaskStatus.BACKLOG || task.status == TaskStatus.DONE) continue;
+
       if (!memberTaskCounts[task.assigneeId]) {
         const member = await databases.getDocument(DATABASE_ID, MEMBERS_ID, task.assigneeId);
         const profile = await users.get(member.userId);

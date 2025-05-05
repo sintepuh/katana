@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeftIcon, ImageIcon } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -76,6 +76,13 @@ const EditWorkspaceForm = ({
       inputRef.current.value = "";
     }
   };
+
+  useEffect(() => {
+    form.reset({
+      ...initialValues,
+      image: initialValues.imageUrl ?? "",
+    });
+  }, [initialValues, form]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

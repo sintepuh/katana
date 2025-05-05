@@ -1,4 +1,4 @@
-import { Bar, BarChart, CartesianGrid, ResponsiveContainer, XAxis } from "recharts";
+import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "./ui/chart";
 import { WorkspaceAnalyticsResponseType } from "@/features/workspaces/api/use-get-workspace-analytics";
@@ -13,11 +13,12 @@ const chartConfig = {
 type WorkspaceTaskStatisticResponseTypeProps = {
     data: WorkspaceAnalyticsResponseType["data"];
     isLoading?: boolean
+    dateRange: string
 };
 
 
 
-export function TasksByMembers({ data, isLoading }: WorkspaceTaskStatisticResponseTypeProps) {
+export function TasksByMembers({ data, isLoading, dateRange }: WorkspaceTaskStatisticResponseTypeProps) {
     const statistic = data.memberTaskArray;
     let maxMember = null;
     if (statistic.length > 0) {
@@ -67,8 +68,13 @@ export function TasksByMembers({ data, isLoading }: WorkspaceTaskStatisticRespon
             {hasData
                 &&
                 <CardFooter className="flex-col items-start gap-2 text-sm">
-                    <div className="flex gap-2 font-medium leading-none">
-                        {message}
+                    <div className="grid gap-2">
+                        <div className="flex items-center gap-2 font-medium leading-none">
+                            {message}
+                        </div>
+                        <div className="flex items-center gap-2 leading-none text-muted-foreground">
+                            {dateRange}
+                        </div>
                     </div>
                 </CardFooter>
             }

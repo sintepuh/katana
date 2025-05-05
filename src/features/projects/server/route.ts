@@ -11,8 +11,7 @@ import { sessionMiddleware } from "@/lib/session-middleware";
 
 import { createProjectSchema, updateProjectSchema } from "../schema";
 import { Project } from "../types";
-import { endOfMonth, startOfMonth, subMonths } from "date-fns";
-import { TaskStatus } from "@/features/tasks/types";
+import { Task, TaskStatus } from "@/features/tasks/types";
 import { createAdminClient } from "@/lib/appwrite";
 
 const formatTaskStatus = (status: TaskStatus) => {
@@ -267,10 +266,6 @@ const projectApp = new Hono()
     }
 
     const now = new Date();
-    const thisMonthStart = startOfMonth(now);
-    const thisMonthEnd = endOfMonth(now);
-    const lastMonthStart = startOfMonth(subMonths(now, 1));
-    const lastMonthEnd = endOfMonth(subMonths(now, 1));
 
     const queryTasks = async (filters: any[]): Promise<any> => {
       return databases.listDocuments(DATABASE_ID, TASKS_ID, [
@@ -279,17 +274,37 @@ const projectApp = new Hono()
       ]);
     };
 
+    const months = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
+    const next6Months = Array.from({ length: 5 }, (_, i) => {
+      const date = new Date(now.getFullYear(), now.getMonth() - 2 + i, 1);
+      return {
+        label: `${months[date.getMonth()]}`,
+        start: new Date(date.getFullYear(), date.getMonth(), 1),
+        end: new Date(date.getFullYear(), date.getMonth() + 1, 0, 23, 59, 59),
+      };
+    });
+
     const taskCounts = await Promise.all([
-      queryTasks([Query.greaterThanEqual("$createdAt", thisMonthStart.toISOString()), Query.lessThanEqual("$createdAt", thisMonthEnd.toISOString())]),
-      queryTasks([Query.greaterThanEqual("$createdAt", lastMonthStart.toISOString()), Query.lessThanEqual("$createdAt", lastMonthEnd.toISOString())]),
-      queryTasks([Query.greaterThanEqual("$createdAt", thisMonthStart.toISOString()), Query.lessThanEqual("$createdAt", thisMonthEnd.toISOString()), Query.equal("assigneeId", user.$id)]),
-      queryTasks([Query.greaterThanEqual("$createdAt", lastMonthStart.toISOString()), Query.lessThanEqual("$createdAt", lastMonthEnd.toISOString()), Query.equal("assigneeId", user.$id)]),
-      queryTasks([Query.greaterThanEqual("$createdAt", thisMonthStart.toISOString()), Query.lessThanEqual("$createdAt", thisMonthEnd.toISOString()), Query.notEqual("status", TaskStatus.DONE)]),
-      queryTasks([Query.greaterThanEqual("$createdAt", lastMonthStart.toISOString()), Query.lessThanEqual("$createdAt", lastMonthEnd.toISOString()), Query.notEqual("status", TaskStatus.DONE)]),
-      queryTasks([Query.greaterThanEqual("$createdAt", thisMonthStart.toISOString()), Query.lessThanEqual("$createdAt", thisMonthEnd.toISOString()), Query.equal("status", TaskStatus.DONE)]),
-      queryTasks([Query.greaterThanEqual("$createdAt", lastMonthStart.toISOString()), Query.lessThanEqual("$createdAt", lastMonthEnd.toISOString()), Query.equal("status", TaskStatus.DONE)]),
-      queryTasks([Query.greaterThanEqual("$createdAt", thisMonthStart.toISOString()), Query.lessThanEqual("$createdAt", thisMonthEnd.toISOString()), Query.lessThan("dueDate", now.toISOString()), Query.notEqual("status", TaskStatus.DONE)]),
-      queryTasks([Query.greaterThanEqual("$createdAt", lastMonthStart.toISOString()), Query.lessThanEqual("$createdAt", lastMonthEnd.toISOString()), Query.lessThan("dueDate", now.toISOString()), Query.notEqual("status", TaskStatus.DONE)]),
+      queryTasks([Query.greaterThanEqual("$createdAt", next6Months[2].start.toISOString()), Query.lessThanEqual("$createdAt", next6Months[2].end.toISOString())]),
+      queryTasks([Query.greaterThanEqual("$createdAt", next6Months[1].start.toISOString()), Query.lessThanEqual("$createdAt", next6Months[1].end.toISOString())]),
+      queryTasks([
+        Query.greaterThanEqual("$createdAt", next6Months[2].start.toISOString()),
+        Query.lessThanEqual("$createdAt", next6Months[2].end.toISOString()),
+        Query.notEqual("status", TaskStatus.BACKLOG),
+        Query.notEqual("status", TaskStatus.DONE),
+      ]),
+      queryTasks([
+        Query.greaterThanEqual("$createdAt", next6Months[1].start.toISOString()),
+        Query.lessThanEqual("$createdAt", next6Months[1].end.toISOString()),
+        Query.notEqual("status", TaskStatus.BACKLOG),
+        Query.notEqual("status", TaskStatus.DONE),
+      ]),
+      queryTasks([Query.greaterThanEqual("$createdAt", next6Months[2].start.toISOString()), Query.lessThanEqual("$createdAt", next6Months[2].end.toISOString()), Query.notEqual("status", TaskStatus.DONE)]),
+      queryTasks([Query.greaterThanEqual("$createdAt", next6Months[1].start.toISOString()), Query.lessThanEqual("$createdAt", next6Months[1].end.toISOString()), Query.notEqual("status", TaskStatus.DONE)]),
+      queryTasks([Query.greaterThanEqual("$createdAt", next6Months[2].start.toISOString()), Query.lessThanEqual("$createdAt", next6Months[2].end.toISOString()), Query.equal("status", TaskStatus.DONE)]),
+      queryTasks([Query.greaterThanEqual("$createdAt", next6Months[1].start.toISOString()), Query.lessThanEqual("$createdAt", next6Months[1].end.toISOString()), Query.equal("status", TaskStatus.DONE)]),
+      queryTasks([Query.greaterThanEqual("$createdAt", next6Months[2].start.toISOString()), Query.lessThanEqual("$createdAt", next6Months[2].end.toISOString()), Query.lessThan("dueDate", now.toISOString()), Query.notEqual("status", TaskStatus.DONE)]),
+      queryTasks([Query.greaterThanEqual("$createdAt", next6Months[1].start.toISOString()), Query.lessThanEqual("$createdAt", next6Months[1].end.toISOString()), Query.lessThan("dueDate", now.toISOString()), Query.notEqual("status", TaskStatus.DONE)]),
     ]);
 
     const [
@@ -320,39 +335,31 @@ const projectApp = new Hono()
       overDueTaskDiff: countDiff(thisMonthOverDueTasks, lastMonthOverDueTasks),
     };
 
-    const months = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
-    const next6Months = Array.from({ length: 5 }, (_, i) => {
-      const date = new Date(now.getFullYear(), now.getMonth() - 2 + i, 1);
-      return {
-        label: `${months[date.getMonth()]}`,
-        start: new Date(date.getFullYear(), date.getMonth(), 1),
-        end: new Date(date.getFullYear(), date.getMonth() + 1, 0, 23, 59, 59),
-      };
-    });
+
 
     const allTasks = await queryTasks([
-      Query.greaterThanEqual("$createdAt", next6Months[0].start.toISOString()),
-      Query.lessThanEqual("$createdAt", next6Months[4].end.toISOString()),
+      Query.greaterThanEqual("dueDate", next6Months[0].start.toISOString()),
+      Query.lessThanEqual("dueDate", next6Months[4].end.toISOString()),
     ]);
 
     const taskStatusCounts = Object.values(TaskStatus).map((status) => ({
       status: formatTaskStatus(status),
-      count: allTasks.documents.filter((t: any) => t.status === status).length as number,
+      count: allTasks.documents.filter((t: Task) => t.status === status).length as number,
     }));
 
     const taskStatistics = next6Months.map(({ label, start, end }) => {
-      const count = allTasks.documents.filter((task: any) => {
-        const createdAt = new Date(task.$createdAt);
-        return createdAt >= start && createdAt <= end;
+      const count = allTasks.documents.filter((task: Task) => {
+        const dueDate = new Date(task.dueDate);
+        return dueDate >= start && dueDate <= end;
       }).length;
       return { month: label, taskCount: count };
     });
 
     const users = await createAdminClient().then(client => client.users);
-    
+
     const memberTaskCounts: Record<string, { memberName: string; taskCount: number }> = {};
     for (const task of allTasks.documents) {
-      if (!task.assigneeId) continue;
+      if (!task.assigneeId || task.status == TaskStatus.BACKLOG || task.status == TaskStatus.DONE) continue;
       if (!memberTaskCounts[task.assigneeId]) {
         const member = await databases.getDocument(DATABASE_ID, MEMBERS_ID, task.assigneeId);
         const profile = await users.get(member.userId);
