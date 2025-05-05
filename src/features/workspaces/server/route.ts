@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { ID, Query } from "node-appwrite";
@@ -21,6 +22,16 @@ import { createWorkspaceSchema, updateWorkspaceSchema } from "../schemas";
 import { Workspace } from "../types";
 import { endOfMonth, startOfMonth, subMonths } from "date-fns";
 import { TaskStatus } from "@/features/tasks/types";
+import { createAdminClient } from "@/lib/appwrite";
+
+const formatTaskStatus = (status: TaskStatus) => {
+  return status
+    .replace("_", " ")
+    .split(" ")
+    .map((word) => word[0].toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ");
+};
+
 
 const workspaceApp = new Hono()
   .get("/:workspaceId", sessionMiddleware, async (c) => {
@@ -176,14 +187,19 @@ const workspaceApp = new Hono()
         uploadedImageUrl = `${APPWRITE_ENDPOINT}/storage/buckets/${IMAGES_BUCKET_ID}/files/${fileId}/view?project=${PROJECT_ID}`;
       }
 
+      const updateData: { name: string | undefined; imageUrl?: string } = {
+        name: name,
+      };
+
+      if (uploadedImageUrl) {
+        updateData.imageUrl = uploadedImageUrl;
+      }
+
       const workspace = await databases.updateDocument(
         DATABASE_ID,
         WORKSPACES_ID,
         workspaceId,
-        {
-          name,
-          imageUrl: uploadedImageUrl ?? null,
-        }
+        updateData
       );
 
       return c.json({
@@ -313,154 +329,135 @@ const workspaceApp = new Hono()
   .get("/:workspaceId/analytic", sessionMiddleware, async (c) => {
     const databases = c.get("databases");
     const user = c.get("user");
-
+    const { users } = await createAdminClient();
     const { workspaceId } = c.req.param();
-    const member = await getMember({
-      databases,
-      workspaceId: workspaceId,
-      userId: user.$id,
-    });
 
-    if (!member) {
-      return c.json({ error: "Unauthorized" }, 401);
-    }
+    // Проверка прав участника
+    const member = await getMember({ databases, workspaceId, userId: user.$id });
+    if (!member) return c.json({ error: "Unauthorized" }, 401);
 
     const now = new Date();
-    const thisMonthStart = startOfMonth(now);
-    const thisMonthEnd = endOfMonth(now);
-    const lastMonthStart = startOfMonth(subMonths(now, 1));
-    const lastMonthEnd = endOfMonth(subMonths(now, 1));
 
-    const thisMonthTasks = await databases.listDocuments(
-      DATABASE_ID,
-      TASKS_ID,
-      [
-        Query.equal("workspaceId", workspaceId),
-        Query.greaterThanEqual("$createdAt", thisMonthStart.toISOString()),
-        Query.lessThanEqual("$createdAt", thisMonthEnd.toISOString()),
-      ]
-    );
-    const lastMonthTasks = await databases.listDocuments(
-      DATABASE_ID,
-      TASKS_ID,
-      [
-        Query.equal("workspaceId", workspaceId),
-        Query.greaterThanEqual("$createdAt", lastMonthStart.toISOString()),
-        Query.lessThanEqual("$createdAt", lastMonthEnd.toISOString()),
-      ]
-    );
-    const taskCount = thisMonthTasks.total;
-    const taskDiff = taskCount - lastMonthTasks.total;
+    // Функция получения начала и конца месяца
+    const getRange = (date: Date): [string, string] => [
+      startOfMonth(date).toISOString(),
+      endOfMonth(date).toISOString(),
+    ];
 
-    const thisMonthAssignedTasks = await databases.listDocuments(
-      DATABASE_ID,
-      TASKS_ID,
-      [
-        Query.equal("workspaceId", workspaceId),
-        Query.greaterThanEqual("$createdAt", thisMonthStart.toISOString()),
-        Query.lessThanEqual("$createdAt", thisMonthEnd.toISOString()),
-        Query.equal("assigneeId", user.$id),
-      ]
-    );
-    const lastMonthAssignedTasks = await databases.listDocuments(
-      DATABASE_ID,
-      TASKS_ID,
-      [
-        Query.equal("workspaceId", workspaceId),
-        Query.greaterThanEqual("$createdAt", lastMonthStart.toISOString()),
-        Query.lessThanEqual("$createdAt", lastMonthEnd.toISOString()),
-        Query.equal("assigneeId", user.$id),
-      ]
-    );
-    const assignedTaskCount = thisMonthAssignedTasks.total;
-    const assignedTaskDiff = assignedTaskCount - lastMonthAssignedTasks.total;
+    const [thisMonthStart, thisMonthEnd] = getRange(now);
+    const [lastMonthStart, lastMonthEnd] = getRange(subMonths(now, 1));
 
-    const thisMonthInCompletedTasks = await databases.listDocuments(
-      DATABASE_ID,
-      TASKS_ID,
-      [
+    // Типизированная функция для выборки задач с фильтрами
+    const queryTasks = async (filters: any[]): Promise<any> => {
+      return databases.listDocuments(DATABASE_ID, TASKS_ID, [
         Query.equal("workspaceId", workspaceId),
-        Query.greaterThanEqual("$createdAt", thisMonthStart.toISOString()),
-        Query.lessThanEqual("$createdAt", thisMonthEnd.toISOString()),
-        Query.notEqual("status", TaskStatus.DONE),
-      ]
-    );
-    const lastMonthInCompletedTasks = await databases.listDocuments(
-      DATABASE_ID,
-      TASKS_ID,
-      [
-        Query.equal("workspaceId", workspaceId),
-        Query.greaterThanEqual("$createdAt", lastMonthStart.toISOString()),
-        Query.lessThanEqual("$createdAt", lastMonthEnd.toISOString()),
-        Query.notEqual("status", TaskStatus.DONE),
-      ]
-    );
-    const inCompletedTaskCount = thisMonthInCompletedTasks.total;
-    const inCompletedTaskDiff =
-      inCompletedTaskCount - lastMonthInCompletedTasks.total;
+        ...filters,
+      ]);
+    };
 
-    const thisMonthCompletedTask = await databases.listDocuments(
-      DATABASE_ID,
-      TASKS_ID,
-      [
-        Query.equal("workspaceId", workspaceId),
-        Query.greaterThanEqual("$createdAt", thisMonthStart.toISOString()),
-        Query.lessThanEqual("$createdAt", thisMonthEnd.toISOString()),
-        Query.equal("status", TaskStatus.DONE),
-      ]
-    );
-    const lastMonthCompletedTask = await databases.listDocuments(
-      DATABASE_ID,
-      TASKS_ID,
-      [
-        Query.equal("workspaceId", workspaceId),
-        Query.greaterThanEqual("$createdAt", lastMonthStart.toISOString()),
-        Query.lessThanEqual("$createdAt", lastMonthEnd.toISOString()),
-        Query.equal("status", TaskStatus.DONE),
-      ]
-    );
-    const completedTaskCount = thisMonthCompletedTask.total;
-    const completedTaskDiff = completedTaskCount - lastMonthCompletedTask.total;
+    // Получение задач по различным условиям (текущий и прошлый месяц)
+    const taskCounts = await Promise.all([
+      queryTasks([Query.greaterThanEqual("$createdAt", thisMonthStart), Query.lessThanEqual("$createdAt", thisMonthEnd)]),
+      queryTasks([Query.greaterThanEqual("$createdAt", lastMonthStart), Query.lessThanEqual("$createdAt", lastMonthEnd)]),
+      queryTasks([Query.greaterThanEqual("$createdAt", thisMonthStart), Query.lessThanEqual("$createdAt", thisMonthEnd), Query.equal("assigneeId", user.$id)]),
+      queryTasks([Query.greaterThanEqual("$createdAt", lastMonthStart), Query.lessThanEqual("$createdAt", lastMonthEnd), Query.equal("assigneeId", user.$id)]),
+      queryTasks([Query.greaterThanEqual("$createdAt", thisMonthStart), Query.lessThanEqual("$createdAt", thisMonthEnd), Query.notEqual("status", TaskStatus.DONE)]),
+      queryTasks([Query.greaterThanEqual("$createdAt", lastMonthStart), Query.lessThanEqual("$createdAt", lastMonthEnd), Query.notEqual("status", TaskStatus.DONE)]),
+      queryTasks([Query.greaterThanEqual("$createdAt", thisMonthStart), Query.lessThanEqual("$createdAt", thisMonthEnd), Query.equal("status", TaskStatus.DONE)]),
+      queryTasks([Query.greaterThanEqual("$createdAt", lastMonthStart), Query.lessThanEqual("$createdAt", lastMonthEnd), Query.equal("status", TaskStatus.DONE)]),
+      queryTasks([Query.greaterThanEqual("$createdAt", thisMonthStart), Query.lessThanEqual("$createdAt", thisMonthEnd), Query.lessThan("dueDate", now.toISOString()), Query.notEqual("status", TaskStatus.DONE)]),
+      queryTasks([Query.greaterThanEqual("$createdAt", lastMonthStart), Query.lessThanEqual("$createdAt", lastMonthEnd), Query.lessThan("dueDate", now.toISOString()), Query.notEqual("status", TaskStatus.DONE)]),
+    ]);
 
-    const thisMonthOverDueTasks = await databases.listDocuments(
-      DATABASE_ID,
-      TASKS_ID,
-      [
-        Query.equal("workspaceId", workspaceId),
-        Query.greaterThanEqual("$createdAt", thisMonthStart.toISOString()),
-        Query.lessThanEqual("$createdAt", thisMonthEnd.toISOString()),
-        Query.lessThan("dueDate", new Date().toISOString()),
-        Query.notEqual("status", TaskStatus.DONE),
-      ]
-    );
-    const lastMonthOverDueTasks = await databases.listDocuments(
-      DATABASE_ID,
-      TASKS_ID,
-      [
-        Query.equal("workspaceId", workspaceId),
-        Query.greaterThanEqual("$createdAt", lastMonthStart.toISOString()),
-        Query.lessThanEqual("$createdAt", lastMonthEnd.toISOString()),
-        Query.lessThan("dueDate", new Date().toISOString()),
-        Query.notEqual("status", TaskStatus.DONE),
-      ]
-    );
-    const overDueTaskCount = thisMonthOverDueTasks.total;
-    const overDueTaskDiff = overDueTaskCount - lastMonthOverDueTasks.total;
+    const [
+      thisMonthTasks,
+      lastMonthTasks,
+      thisMonthAssignedTasks,
+      lastMonthAssignedTasks,
+      thisMonthInCompletedTasks,
+      lastMonthInCompletedTasks,
+      thisMonthCompletedTasks,
+      lastMonthCompletedTasks,
+      thisMonthOverDueTasks,
+      lastMonthOverDueTasks,
+    ] = taskCounts;
 
+    // Функция подсчета разницы между двумя выборками задач
+    const countDiff = (a: any, b: any): number => a.total - b.total;
+
+    // Общая аналитика по задачам
+    const analytic = {
+      taskCount: thisMonthTasks.total as number,
+      taskDiff: countDiff(thisMonthTasks, lastMonthTasks),
+      assignedTaskCount: thisMonthAssignedTasks.total as number,
+      assignedTaskDiff: countDiff(thisMonthAssignedTasks, lastMonthAssignedTasks),
+      inCompletedTaskCount: thisMonthInCompletedTasks.total as number,
+      inCompletedTaskDiff: countDiff(thisMonthInCompletedTasks, lastMonthInCompletedTasks),
+      completedTaskCount: thisMonthCompletedTasks.total as number,
+      completedTaskDiff: countDiff(thisMonthCompletedTasks, lastMonthCompletedTasks),
+      overDueTaskCount: thisMonthOverDueTasks.total as number,
+      overDueTaskDiff: countDiff(thisMonthOverDueTasks, lastMonthOverDueTasks),
+    };
+
+    // Подготовка меток месяцев, включая текущий, два предыдущих и два следующих
+    const months = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
+    const next6Months = Array.from({ length: 5 }, (_, i) => {
+      const date = new Date(now.getFullYear(), now.getMonth() - 2 + i, 1); // текущий месяц и два предыдущих, два следующих
+      return {
+        label: `${months[date.getMonth()]}`,
+        start: new Date(date.getFullYear(), date.getMonth(), 1),
+        end: new Date(date.getFullYear(), date.getMonth() + 1, 0, 23, 59, 59), // последний день месяца
+      };
+    });
+
+    // Получаем все задачи за 5 месяцев (текущий, два предыдущих и два следующих)
+    const allTasks = await queryTasks([
+      Query.greaterThanEqual("dueDate", next6Months[0].start.toISOString()),
+      Query.lessThanEqual("dueDate", next6Months[4].end.toISOString()),
+    ]);
+
+
+
+    // Подсчет задач по статусу
+    const taskStatusCounts = Object.values(TaskStatus).map((status) => ({
+      status: formatTaskStatus(status),
+      count: allTasks.documents.filter((t: any) => t.status === status).length as number,
+    }));
+
+
+    // Статистика задач по месяцам
+    const taskStatistics = next6Months.map(({ label, start, end }) => {
+      const count = allTasks.documents.filter((task: any) => {
+        const createdAt = new Date(task.$createdAt);
+        return createdAt >= start && createdAt <= end;
+      }).length;
+      return { month: label, taskCount: count };
+    });
+
+    // Подсчет задач по каждому участнику с получением имени
+    const memberTaskCounts: Record<string, { memberName: string; taskCount: number }> = {};
+    for (const task of allTasks.documents) {
+      if (!task.assigneeId) continue;
+      if (!memberTaskCounts[task.assigneeId]) {
+        const member = await databases.getDocument(DATABASE_ID, MEMBERS_ID, task.assigneeId);
+        const profile = await users.get(member.userId);
+        memberTaskCounts[task.assigneeId] = { memberName: profile.name, taskCount: 1 };
+      } else {
+        memberTaskCounts[task.assigneeId].taskCount++;
+      }
+    }
+
+    // Преобразуем в массив для фронтенда
+    const memberTaskArray = Object.values(memberTaskCounts);
+
+    // Финальный ответ с аналитикой
     return c.json({
       data: {
-        taskCount,
-        taskDiff,
-        assignedTaskCount,
-        assignedTaskDiff,
-        inCompletedTaskCount,
-        inCompletedTaskDiff,
-        completedTaskCount,
-        completedTaskDiff,
-        overDueTaskCount,
-        overDueTaskDiff,
+        analytic,
+        taskStatistics,
+        taskStatusCounts,
+        memberTaskArray,
       },
     });
-  });
-
+  })
 export default workspaceApp;

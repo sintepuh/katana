@@ -32,6 +32,10 @@ export default function LandingPage() {
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
+    setTheme("dark")
+  }, [])
+
+  useEffect(() => {
     setMounted(true)
     const handleScroll = () => {
       if (window.scrollY > 10) {
@@ -104,9 +108,13 @@ export default function LandingPage() {
       >
         <motion.div
           initial={{ opacity: 0, y: -64 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          animate={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.7, ease: [0.4, 0, 0.2, 1] }}
+          transition={{
+            duration: 0.5,
+            delay: 0.7,
+            ease: [0.4, 0, 0.2, 1]
+          }}
 
           className="container flex h-16 items-center justify-between"
         >
@@ -168,7 +176,7 @@ export default function LandingPage() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="lg:hidden absolute top-16 inset-x-0 bg-background-transparent/95 border-b"
+            className="lg:hidden top-16 inset-x-0 backdrop-blur-lg border-b"
           >
             <div className="container py-4 flex flex-col gap-4">
               <Link
@@ -211,7 +219,7 @@ export default function LandingPage() {
         <section className="w-full min-h-screen overflow-hidden flex relative -mt-16">
           <div className="container px-4 md:px-6 bg-linear-to-t from-primary to-indigo-500 flex flex-col justify-end">
             <div className="absolute inset-0 -z-10 h-full w-full bg-white dark:bg-black bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#1f1f1f_1px,transparent_1px),linear-gradient(to_bottom,#1f1f1f_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_110%)]"></div>
-            <div className="text-center max-w-4xl mx-auto mb-12 mt-16">
+            <div className="text-center max-w-4xl m-auto pt-16">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -245,7 +253,7 @@ export default function LandingPage() {
               <div className="absolute -top-6 left-24 -z-10 h-[300px] w-[300px] rounded-full bg-gradient-to-br from-secondary/30 to-primary/30 blur-3xl opacity-70"></div>
               <div
                 className=
-                "hidden xl:block absolute -top-4 right-24 z-20"
+                "hidden xl:block absolute -top-4 right-72 z-20"
               >
                 <motion.div
                   initial={{
@@ -266,7 +274,7 @@ export default function LandingPage() {
                   }}
 
                 >
-                  <div className="p-3 bg-card border rounded-xl border-l-8 flex flex-col gap-y-6  min-w-[250px] border-l-emerald-500 text-base ">
+                  <div className="p-3 bg-card border rounded-xl border-l-8 flex flex-col gap-y-6  min-w-[250px] border-l-emerald-500 text-base shadow-xl">
                     <p className="h-6 bg-skeleton w-[80px] rounded-md"></p>
                     <div className="flex items-center gap-x-2">
                       <div className="size-8 rounded-full bg-skeleton"></div>
@@ -279,7 +287,7 @@ export default function LandingPage() {
               </div>
               <div
                 className=
-                "hidden xl:block absolute bottom-14 left-14 z-20"
+                "hidden xl:block absolute bottom-14 left-56 z-20"
               >
                 <motion.div
                   initial={{
@@ -300,7 +308,7 @@ export default function LandingPage() {
                   }}
 
                 >
-                  <div className="p-3 bg-card border rounded-xl border-l-8 flex flex-col gap-y-6  min-w-[250px] border-l-blue-500 text-base ">
+                  <div className="p-3 bg-card border rounded-xl border-l-8 flex flex-col gap-y-6  min-w-[250px] border-l-blue-500 text-base shadow-xl">
                     <p className="h-6 bg-skeleton w-[120px] rounded-md"></p>
                     <div className="flex items-center gap-x-2">
                       <div className="size-8 rounded-full bg-skeleton"></div>
@@ -331,9 +339,9 @@ export default function LandingPage() {
                 }}
                 className="relative mx-auto max-w-5xl"
               >
-                <div className="rounded-xl overflow-hidden shadow-2xl border border-border/40 bg-gradient-to-b from-background to-muted/20 min-w-[700px]">
+                <div className="rounded-t-[5px] overflow-hidden shadow-2xl border border-border/40 bg-gradient-to-b from-background to-muted/20 min-w-[700px]">
                   <Image
-                    src="/img/app-screen.png"
+                    src={theme === "light" ? "/img/app-screen-light.png" : "/img/app-screen-dark.png"}
                     width={1280}
                     height={720}
                     alt="SaaSify dashboard"
@@ -446,7 +454,7 @@ export default function LandingPage() {
                   transition={{ duration: 0.5, delay: i * 0.1 }}
                   className="relative z-10 flex flex-col items-center text-center space-y-4"
                 >
-                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary/70 text-primary-foreground text-xl font-bold shadow-lg">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary/70 text-background-foreground text-xl font-bold shadow-lg">
                     {step.step}
                   </div>
                   <h3 className="text-xl font-bold">{step.title}</h3>

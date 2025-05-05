@@ -57,7 +57,9 @@ const profileApp = new Hono()
 
       const { account, storage } = await createSessionClient();
       const updates = [];
-      const currentPrefs = await account.getPrefs();
+      const prefs = await account.getPrefs();
+      const currentPrefs = prefs ?? {};
+
 
 
       let imageUrl: string | null = null;
@@ -79,7 +81,7 @@ const profileApp = new Hono()
       if (imageUrl) {
         updates.push(account.updatePrefs({
           ...currentPrefs,
-          imageUrl
+          imageUrl: imageUrl
         }));
       }
 

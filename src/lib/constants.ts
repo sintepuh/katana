@@ -4,6 +4,7 @@ export enum QueryKeys {
   WORKSPACES = "workspaces",
   WORKSPACE = "workspace",
   WORKSPACE_ANALYTICS = "workspace-analytics",
+  WORKSPACE_TASK_STATISTICS = "workspace-task-statistics",
   USERS = "users",
   USER = "current",
   MEMBERS = "members",

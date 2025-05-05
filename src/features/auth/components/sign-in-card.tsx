@@ -25,7 +25,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useLogin } from "@/features/auth/api/use-login";
 import { type LoginSchema, loginSchema } from "@/features/auth/schemas";
-import { signUpWithGithub, signUpWithGoogle } from "@/lib/server/oauth";
+import { signUpWithGithub, signUpWithGoogle, signUpWithYandex } from "@/lib/server/oauth";
 
 const SignInCard = () => {
   const form = useForm<LoginSchema>({
@@ -44,14 +44,14 @@ const SignInCard = () => {
 
   return (
     <Card className="w-full h-full md:w-[490px] border shadow-none ">
-      <CardHeader className=" flex items-center justify-center text-center p-7">
+      <CardHeader className=" flex items-center justify-center text-center p-5 lg:p-7">
         <CardTitle className="text-2xl">Добро пожаловать!</CardTitle>
       </CardHeader>
 
       <div className="px-7">
         <DottedSeparator />
       </div>
-      <CardContent className="p-7">
+      <CardContent className="p-5 lg:p-7">
         <Form {...form}>
           <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
             <FormField
@@ -97,7 +97,7 @@ const SignInCard = () => {
         <DottedSeparator />
       </div>
 
-      <CardContent className="p-7 flex flex-col gap-y-4">
+      <CardContent className="p-5 lg:p-7 flex flex-col gap-y-4">
         <Button
           variant="secondary"
           size="lg"
@@ -118,13 +118,23 @@ const SignInCard = () => {
           <FaGithub className="mr-2 size-5" />
           Войти через Github
         </Button>
+        <Button
+          variant="secondary"
+          size="lg"
+          className="w-full"
+          onClick={() => signUpWithYandex()}
+          disabled={isPending}
+        >
+          <FaGithub className="mr-2 size-5" />
+          Войти через Яндекс
+        </Button>
       </CardContent>
 
       <div className="px-7">
         <DottedSeparator />
       </div>
 
-      <CardFooter className="p-7 flex items-center justify-center">
+      <CardFooter className="p-5 lg:p-7 flex items-center justify-center">
         <p>
           Нет аккаунта?{" "}
           <Link href="/sign-up" className="text-primary">

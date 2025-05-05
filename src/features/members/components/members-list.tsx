@@ -64,9 +64,9 @@ const MembersList = ({ workspaceId }: MembersListProps) => {
   }
 
   return (
-    <Card className="w-full h-full border shadow-none">
+    <Card className="w-full h-full border shadow">
       <ConfirmDialog />
-      <CardHeader className="flex flex-row items-center gap-x-4 p-7 space-y-0">
+      <CardHeader className="flex flex-row items-center gap-x-4 p-5 lg:p-7 space-y-0">
         <Button size="sm" variant="secondary" asChild>
           <Link href={`/dashboard/workspaces/${workspaceId}`}>
             <ArrowLeftIcon className="size-2 mr-2" /> Назад
@@ -79,7 +79,7 @@ const MembersList = ({ workspaceId }: MembersListProps) => {
         <DottedSeparator />
       </div>
 
-      <CardContent className="p-7">
+      <CardContent className="p-5 lg:p-7">
         {data?.documents.map((member, index) => (
           <Fragment key={member.$id}>
             <div className="flex items-center gap-2">

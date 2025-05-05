@@ -1,4 +1,4 @@
-export const runtime = 'nodejs'; // 👈 Добавить это
+export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 import { createAdminClient } from "@/lib/appwrite";
@@ -19,15 +19,26 @@ export async function GET(request: NextRequest) {
     const { account } = await createAdminClient();
     const session = await account.createSession(userId, secret);
 
-    const response = NextResponse.redirect(`${request.nextUrl.origin}/sign-in`);
+    const inviteCookie = request.cookies.get('postAuthRedirect')?.value;
+
+    const redirectUrl = inviteCookie
+      ? new URL(inviteCookie, request.url)
+      : new URL('/sign-in', request.url);
+
+    const response = NextResponse.redirect(redirectUrl);
+
     response.cookies.set(AUTH_COOKIE_NAME, session.secret, {
       path: "/",
       httpOnly: true,
       sameSite: "lax",
       secure: process.env.NODE_ENV === "production",
-      maxAge: 60 * 60 * 24 * 30, // 30 дней
+      maxAge: 60 * 60 * 24 * 30,
     });
 
+    if (inviteCookie) {
+      response.cookies.delete('postAuthRedirect');
+    }
+    
     return response;
   } catch (error) {
     console.error("Auth error:", error);

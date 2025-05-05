@@ -6,7 +6,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 const TaskIdLoadingPage = () => {
   return (
     <div className="flex flex-col">
-      <Skeleton className="w-[325px] h-[32px]" />
+      <Skeleton className="w-[180px] h-[32px]" />
       <DottedSeparator className="my-6" />
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <Skeleton className="w-full" />

@@ -25,7 +25,7 @@ const Sidebar = () => {
   }
 
   return (
-    <aside className="h-full bg-sidebar p-4 w-full border-r border-border">
+    <aside className="h-full bg-sidebar p-4 w-full border-r border-border shadow">
       <Logo />
       <DottedSeparator className="my-4" />
       <WorkspaceSwitcher workspaces={workspaces} workspaceId={workspaceId} />

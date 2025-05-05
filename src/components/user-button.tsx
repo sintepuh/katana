@@ -37,7 +37,7 @@ const UserButton = () => {
     return (
       <div className="flex flex-row gap-2">
         <Skeleton className="!rounded-full size-10" />
-        <div className="flex flex-row gap-1 items-center">
+        <div className="flex flex-row gap-2 items-center">
           <Skeleton className="!rounded-full size-10" />
           <Skeleton className="w-[100px] h-6" />
         </div>
@@ -50,7 +50,7 @@ const UserButton = () => {
       <ThemeSwitcher />
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger className="outline-none relative">
-          <div className="flex flex-row gap-1 items-center">
+          <div className="flex flex-row gap-2 items-center">
             <Avatar className="size-10 hover:opacity-75 transition border">
               <AvatarImage src={user?.prefs.imageUrl} alt="avatar" />
               <AvatarFallback className="font-medium text-neutral-500 flex items-center justify-center">

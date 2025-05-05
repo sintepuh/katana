@@ -68,6 +68,13 @@ const CreateProjectForm = ({ onCancel }: CreateProjectFormProps) => {
     );
   };
 
+  const handleClearImage = () => {
+    form.setValue("image", "");
+    if (inputRef.current) {
+      inputRef.current.value = "";
+    }
+  };
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
 
@@ -83,7 +90,7 @@ const CreateProjectForm = ({ onCancel }: CreateProjectFormProps) => {
 
   return (
     <Card className="w-full h-full border-none shadow-none !bg-card">
-      <CardHeader className="flex p-7">
+      <CardHeader className="flex p-5 lg:p-7">
         <CardTitle className="font-bold text-xl">Создать проект</CardTitle>
       </CardHeader>
 
@@ -91,7 +98,7 @@ const CreateProjectForm = ({ onCancel }: CreateProjectFormProps) => {
         <DottedSeparator />
       </div>
 
-      <CardContent className="p-7">
+      <CardContent className="p-5 lg:p-7">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className="flex flex-col gap-y-4">
@@ -141,9 +148,9 @@ const CreateProjectForm = ({ onCancel }: CreateProjectFormProps) => {
                         </Avatar>
                       )}
 
-                      <div className="flex flex-col">
-                        <p className="text-sm">Иконка проекта</p>
-                        <p className="text-sm text-muted-foreground">
+                      <div className="flex flex-col text-xs md:text-sm">
+                        <p >Иконка проекта</p>
+                        <p className="text-muted-foreground">
                           JPG, JPEG, PNG, SVG. Максимальный размер 1 МБ
                         </p>
                         <input
@@ -158,12 +165,7 @@ const CreateProjectForm = ({ onCancel }: CreateProjectFormProps) => {
                           <Button
                             type="button"
                             disabled={isPending}
-                            onClick={() => {
-                              form.setValue("image", "");
-                              if (inputRef.current) {
-                                inputRef.current.value = "";
-                              }
-                            }}
+                            onClick={handleClearImage}
                             size="xs"
                             className="w-fit mt-2"
                             variant="destructive"
@@ -177,7 +179,6 @@ const CreateProjectForm = ({ onCancel }: CreateProjectFormProps) => {
                             onClick={() => inputRef.current?.click()}
                             size="xs"
                             className="w-fit mt-2"
-
                           >
                             Загрузить изображение
                           </Button>

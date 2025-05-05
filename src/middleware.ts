@@ -12,18 +12,33 @@ export const config = {
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get('katana-auth-token')?.value;
+  
 
   // Если пользователь на публичной странице и уже авторизован, перенаправляем его в рабочую область
   if (publicRoutes.includes(pathname)) {
     if (token) {
       return redirectToFirstWorkspace(request);
     }
+
     return NextResponse.next();
   }
 
   // Если на приватной странице, а токена нет, перенаправляем на login
   if (privateRoutes.some(route => pathname.startsWith(route))) {
     if (!token) {
+      if (pathname.includes('/join/')) {
+        const inviteUrl = request.nextUrl.pathname;
+        const response = NextResponse.redirect(new URL('/sign-in', request.url));
+        response.cookies.set('postAuthRedirect', inviteUrl, {
+          path: '/',
+          httpOnly: true,
+          sameSite: 'lax',
+          secure: process.env.NODE_ENV === 'production',
+          maxAge: 60 * 5, // 5 минут
+        });
+        return response;
+      }
+
       return NextResponse.redirect(new URL('/sign-in', request.url));
     }
   }
@@ -31,11 +46,12 @@ export async function middleware(request: NextRequest) {
   return NextResponse.next();
 }
 
+
 export async function redirectToFirstWorkspace(request: NextRequest) {
   try {
     const { getWorkspaces } = await import('@/features/workspaces/queries');
     const workspaces = await getWorkspaces();
-    
+
     if (workspaces.total === 0) {
       return NextResponse.redirect(new URL('/dashboard/workspaces/create', request.url));
     }

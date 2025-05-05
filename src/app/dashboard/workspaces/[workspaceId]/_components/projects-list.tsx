@@ -9,6 +9,7 @@ import { useCreateProjectModel } from "@/features/projects/hooks/use-create-proj
 import { Project } from "@/features/projects/types";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { Skeleton } from "@/components/ui/skeleton";
+import { motion } from "framer-motion";
 
 type ProjectListProps = {
   data?: Project[];
@@ -26,8 +27,13 @@ const ProjectList = ({ data, total, isLoading }: ProjectListProps) => {
   }
 
   return (
-    <div className="flex flex-col gap-y-4 col-span-1">
-      <div className="bg-card border rounded-lg p-4">
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 1 }}
+      className="flex flex-col gap-y-4 col-span-1"
+    >
+      <div className="bg-card border rounded-lg p-4 shadow">
         <div className="flex items-center justify-between">
           <p className="text-lg font-semibold">Проекты ({total})</p>
           <Button variant="secondary" size="icon" onClick={createProject}>
@@ -61,7 +67,7 @@ const ProjectList = ({ data, total, isLoading }: ProjectListProps) => {
           </li>
         </ul>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

@@ -38,8 +38,8 @@ const DeleteWorkspaceForm = ({ workspaceId }: DeleteWorkspaceFormProps) => {
 
   return (
     <>
-      <Card className="w-full h-full border shadow-none">
-        <CardContent className="p-7 flex items-center justify-between gap-4 ">
+      <Card className="w-full h-full border shadow">
+        <CardContent className="p-5 lg:p-7 flex items-center justify-between gap-4 ">
           <div className="flex flex-col">
             <h3 className="font-bold">Опасаная зона</h3>
             <p className="text-sm text-muted-foreground text-pretty">

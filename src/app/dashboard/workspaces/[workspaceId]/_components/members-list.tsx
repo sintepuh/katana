@@ -8,6 +8,7 @@ import MemberAvatar from "@/features/members/components/member-avatar";
 import { Member } from "@/features/members/types";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { Skeleton } from "@/components/ui/skeleton";
+import { motion } from "framer-motion";
 
 type MemberListProps = {
   data?: Member[];
@@ -23,8 +24,13 @@ const MembersList = ({ data, total, isLoading }: MemberListProps) => {
   }
 
   return (
-    <div className="flex flex-col gap-y-4 col-span-1">
-      <div className="bg-card border rounded-lg p-4">
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 1.2 }}
+      className="flex flex-col gap-y-4 col-span-1"
+    >
+      <div className="bg-card border rounded-lg p-4 shadow">
         <div className="flex items-center justify-between">
           <p className="text-lg font-semibold">Участники ({total})</p>
           <Button variant="secondary" size="icon" asChild>
@@ -63,7 +69,7 @@ const MembersList = ({ data, total, isLoading }: MemberListProps) => {
           </li>
         </ul>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

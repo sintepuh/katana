@@ -40,9 +40,9 @@ const ResetInviteForm = ({ initialValues }: ResetInviteFormProps) => {
   };
 
   return (
-    <Card className="w-full h-full border shadow-none">
+    <Card className="w-full h-full border shadow">
       <ResetDialog />
-      <CardContent className="p-7">
+      <CardContent className="p-5 lg:p-7">
         <div className="flex flex-col">
           <h3 className="font-bold">Пригласить участника</h3>
           <p className="text-sm text-muted-foreground text-pretty">

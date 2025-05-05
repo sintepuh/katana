@@ -89,7 +89,7 @@ const CreateTaskForm = ({
 
   return (
     <Card className="!bg-card overflow-y-auto hide-scrollbar w-full h-full border-none shadow-none">
-      <CardHeader className="flex p-7">
+      <CardHeader className="flex p-5 lg:p-7">
         <CardTitle className="font-bold text-xl">Создать задачу</CardTitle>
       </CardHeader>
 
@@ -97,7 +97,7 @@ const CreateTaskForm = ({
         <DottedSeparator />
       </div>
 
-      <CardContent className="p-7">
+      <CardContent className="p-5 lg:p-7">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className="flex flex-col gap-y-4">

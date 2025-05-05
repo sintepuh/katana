@@ -4,10 +4,11 @@ import { QueryKeys } from "@/lib/constants";
 import { client } from "@/lib/rpc";
 import { InferResponseType } from "hono";
 
-export type ProjectAnalyticsResponseType = InferResponseType<
+export type WorkspaceAnalyticsResponseType = InferResponseType<
   (typeof client.api.workspaces)[":workspaceId"]["analytic"]["$get"],
   200
 >;
+
 export const useGetWorkspaceAnalytics = ({
   workspaceId,
 }: {

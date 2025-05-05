@@ -27,7 +27,7 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
             </Link>
           </Button>
         </nav>
-        <div className="flex flex-col items-center justify-center py-4 md:py-14">
+        <div className="flex flex-col items-center justify-center py-4 md:py-14 m-auto">
           <PageTransitionWrapper>
             {children}
           </PageTransitionWrapper>
