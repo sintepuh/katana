@@ -31,7 +31,6 @@ export async function middleware(request: NextRequest) {
         const response = NextResponse.redirect(new URL('/sign-in', request.url));
         response.cookies.set('postAuthRedirect', inviteUrl, {
           path: '/',
-          httpOnly: true,
           sameSite: 'lax',
           secure: process.env.NODE_ENV === 'production',
           maxAge: 60 * 5, // 5 минут

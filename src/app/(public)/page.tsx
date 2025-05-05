@@ -552,7 +552,7 @@ export default function LandingPage() {
               transition={{ duration: 0.5 }}
               className="flex flex-col items-center justify-center space-y-6 text-center text-background-foreground">
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-background-foreground">
-                Готовы ли вы преобразовать свой рабочий процесс?
+                Готовы ли вы преобразить свой рабочий процесс?
               </h2>
               <p className="mx-auto max-w-[700px] md:text-xl text-background-foreground">
                 Присоединяйтесь к тысячам довольных клиентов, которые оптимизировали свои процессы и повысили производительность с помощью нашей платформы.

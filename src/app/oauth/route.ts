@@ -29,7 +29,6 @@ export async function GET(request: NextRequest) {
 
     response.cookies.set(AUTH_COOKIE_NAME, session.secret, {
       path: "/",
-      httpOnly: true,
       sameSite: "lax",
       secure: process.env.NODE_ENV === "production",
       maxAge: 60 * 60 * 24 * 30,
