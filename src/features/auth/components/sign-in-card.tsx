@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-import { FaGithub } from "react-icons/fa";
+import { FaGithub, FaYandex } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 
 import DottedSeparator from "@/components/dotted-separator";
@@ -125,7 +125,8 @@ const SignInCard = () => {
           onClick={() => signUpWithYandex()}
           disabled={isPending}
         >
-          <FaGithub className="mr-2 size-5" />
+          <FaYandex className="mr-2 size-5" />
+
           Войти через Яндекс
         </Button>
       </CardContent>

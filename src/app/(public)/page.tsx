@@ -24,6 +24,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { useTheme } from "next-themes"
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"
 import Logo from "@/components/logo"
+import clsx from "clsx"
 
 export default function LandingPage() {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -341,11 +342,20 @@ export default function LandingPage() {
               >
                 <div className="rounded-t-[5px] overflow-hidden shadow-2xl border border-border/40 bg-gradient-to-b from-background to-muted/20 min-w-[700px]">
                   <Image
-                    src={theme === "light" ? "/img/app-screen-light.png" : "/img/app-screen-dark.png"}
+                    src={"/img/app-screen-dark.png"}
                     width={1280}
                     height={720}
                     alt="SaaSify dashboard"
-                    className="w-full h-auto"
+                    className={clsx("w-full h-auto hidden", { ['!block']: theme === 'dark' })}
+                    priority
+                  />
+
+                  <Image
+                    src={"/img/app-screen-light.png"}
+                    width={1280}
+                    height={720}
+                    alt="SaaSify dashboard"
+                    className={clsx("w-full h-auto hidden", { ['!block']: theme != 'dark' })}
                     priority
                   />
                 </div>
