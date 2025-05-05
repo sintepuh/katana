@@ -1,4 +1,4 @@
-import { getWorkspace } from "@/features/workspaces/queries";
+import { getWorkspace } from "@/lib/workspace-server";
 import EditWorkspaceForm from "@/features/workspaces/components/edit-workspace-form";
 import DeleteWorkspaceForm from "@/features/workspaces/components/delete-workspace-form";
 import ResetInviteForm from "@/features/workspaces/components/reset-invite-form";

@@ -49,7 +49,7 @@ export async function middleware(request: NextRequest) {
 
 export async function redirectToFirstWorkspace(request: NextRequest) {
   try {
-    const { getWorkspaces } = await import('@/features/workspaces/queries');
+    const { getWorkspaces } = await import('@/lib/workspace-server');
     const workspaces = await getWorkspaces();
 
     if (workspaces.total === 0) {

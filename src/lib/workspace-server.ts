@@ -1,17 +1,15 @@
-"use server";
 import { Query } from "node-appwrite";
 
 import { DATABASE_ID, MEMBERS_ID, WORKSPACES_ID } from "@/config";
 import { createSessionClient } from "@/lib/appwrite";
+import { getMember } from "@/features/members/utils";
+import { Workspace } from "@/features/workspaces/types";
 
-import { getMember } from "../members/utils";
-import { Workspace } from "./types";
 
 export const getWorkspaces = async () => {
   const { account, databases } = await createSessionClient();
 
   const user = await account.get();
-  console.log(user)
 
   const members = await databases.listDocuments(DATABASE_ID, MEMBERS_ID, [
     Query.equal("userId", user.$id),

@@ -1,5 +1,5 @@
 import JoinWorkspaceForm from "@/features/workspaces/components/join-workspace-form";
-import { getWorkspaceInfo } from "@/features/workspaces/queries";
+import { getWorkspaceInfo } from "@/lib/workspace-server";
 import { PageWithWorkspaceId } from "@/features/workspaces/types";
 import { redirect } from "next/navigation";
 import React from "react";
