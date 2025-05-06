@@ -171,7 +171,7 @@ const DataKanban = ({ data, onChange }: DataKanbanProps) => {
             return (
               <div
                 key={board}
-                className="bg-accent p-1.5 rounded-md min-w-[calc(100vw-33px)] min-[425px]:min-w-[calc(50vw-20.6px)] sm:min-w-[200px] h-max snap-start"
+                className="flex-1 bg-accent p-1.5 rounded-md min-w-[calc(100vw-33px)] min-[425px]:min-w-[calc(50vw-20.6px)] sm:min-w-[200px] h-max snap-start"
               >
                 <KanbanColumnHeader
                   board={board}
