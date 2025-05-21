@@ -346,7 +346,7 @@ export default function LandingPage() {
                     width={1280}
                     height={720}
                     alt="SaaSify dashboard"
-                    className={clsx("w-full h-auto hidden", { ['!block']: theme === 'dark' })}
+                    className={clsx("w-full h-auto hidden", { ['!block']: theme != 'light' })}
                     priority
                   />
 
@@ -355,7 +355,7 @@ export default function LandingPage() {
                     width={1280}
                     height={720}
                     alt="SaaSify dashboard"
-                    className={clsx("w-full h-auto hidden", { ['!block']: theme != 'dark' })}
+                    className={clsx("w-full h-auto hidden", { ['!block']: theme === 'light' })}
                     priority
                   />
                 </div>

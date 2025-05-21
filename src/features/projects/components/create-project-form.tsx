@@ -193,7 +193,7 @@ const CreateProjectForm = ({ onCancel }: CreateProjectFormProps) => {
 
             <div className="flex items-center justify-between flex-row-reverse">
               <Button disabled={isPending} size="lg">
-                Создать проект
+                Создать
               </Button>
 
               {onCancel && (

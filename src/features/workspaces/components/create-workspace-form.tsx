@@ -190,7 +190,7 @@ const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
 
             <div className="flex items-center justify-between flex-row-reverse">
               <Button disabled={isPending} size="lg">
-                Create Workspace
+                Создать
               </Button>
 
               {onCancel && (
@@ -201,7 +201,7 @@ const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
                   size="lg"
                   onClick={onCancel}
                 >
-                  Cancel
+                  Отмена
                 </Button>
               )}
             </div>
