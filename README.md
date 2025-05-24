@@ -2,7 +2,7 @@
 
 <p align="center">
 <a href="https://katana-project-manager.vercel.app">
-  <img src="https://i.ibb.co/Rp3wnC6k/Group-2.png" alt="Plane Logo" width="70">
+  <img src="https://github.com/sintepuh/katana/blob/master/public/img/hero-readme.png" alt="Plane Logo" width="70">
 </a>
 </p>
 <h1 align="center"><b>Katana</b></h1>
