@@ -61,10 +61,35 @@
 ## 📦 Установка проекта
 
 ```bash
-git clone https://github.com/your-username/task-manager.git
-cd task-manager
+git clone https://github.com/sintepuh/katana.git
+cd katana
 npm install
 ```
+
+## 🛠 Установка Appwrite
+
+Для работы проекта необходимо локально развернуть [Appwrite](https://appwrite.io/). Ниже приведены команды установки через Docker для разных операционных систем:
+
+### 🐧 Unix / macOS
+
+```bash
+docker run -it --rm \
+    --volume /var/run/docker.sock:/var/run/docker.sock \
+    --volume "$(pwd)"/appwrite:/usr/src/code/appwrite:rw \
+    --entrypoint="install" \
+    appwrite/appwrite:1.7.3
+```
+
+### 🪟 Windows / CMD
+
+```bash
+docker run -it --rm ^
+    --volume //var/run/docker.sock:/var/run/docker.sock ^
+    --volume "%cd%"/appwrite:/usr/src/code/appwrite:rw ^
+    --entrypoint="install" ^
+    appwrite/appwrite:1.7.3
+```
+
 
 ## ⚙️ Built with
 [![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
