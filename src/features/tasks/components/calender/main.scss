@@ -54,37 +54,10 @@
 
 .calendar-scrollable {
   flex-grow: 1;
-  overflow-x: hidden;
+  overflow-x: scroll;
+  scrollbar-width: none;
   border-radius: var(--radius);
 }
-
-// .rbc-row-content {
-//   position: relative;
-
-//   &.rbc-row-content-scrollable::after {
-//     content: "";
-//     position: absolute;
-//     left: 0;
-//     right: 0;
-//     bottom: 0;
-//     height: 20px;
-//     pointer-events: none;
-//     background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, var(--card) 100%);
-//     z-index: 1;
-//   }
-
-//   & .rbc-row-content-scroll-container::before {
-//     content: "";
-//     position: absolute;
-//     top: 0;
-//     left: 0;
-//     right: 0;
-//     height: 20px;
-//     pointer-events: none;
-//     background: linear-gradient(to top, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.1) 100%);
-//     z-index: 1;
-//   }
-// }
 
 .rbc-day-bg {
   position: relative;
@@ -98,18 +71,18 @@
     height: 10px;
     pointer-events: none;
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, var(--card) 100%);
-    z-index: 50;
+    z-index: 10;
   }
 
   &.has-events::before {
-        content: "";
-        position: absolute;
-        top: 40px;
-        left: 0;
-        right: 0;
-        height: 10px;
-        pointer-events: none;
-        background: linear-gradient(to top, rgba(255, 255, 255, 0) 0%, var(--card) 100%);
-        z-index: 40;
-      }
+    content: "";
+    position: absolute;
+    top: 40px;
+    left: 0;
+    right: 0;
+    height: 10px;
+    pointer-events: none;
+    background: linear-gradient(to top, rgba(255, 255, 255, 0) 0%, var(--card) 100%);
+    z-index: 10;
   }
+}

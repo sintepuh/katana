@@ -1,3 +1,5 @@
+export const runtime = 'nodejs';
+
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { ID } from "node-appwrite";
@@ -54,8 +56,9 @@ const profileApp = new Hono()
       } = c.req.valid("form");
 
       const { account, storage } = await createSessionClient();
-      const updates = [];
-      const currentPrefs = await account.getPrefs();
+      const prefs = await account.getPrefs();
+      const currentPrefs = prefs ?? {};
+
 
 
       let imageUrl: string | null = null;
@@ -74,32 +77,35 @@ const profileApp = new Hono()
         imageUrl = `${APPWRITE_ENDPOINT}/storage/buckets/${IMAGES_BUCKET_ID}/files/${fileId}/view?project=${PROJECT_ID}`;
       }
 
-      if (imageUrl) {
-        updates.push(account.updatePrefs({
-          ...currentPrefs,
-          imageUrl
-        }));
-      }
+      let updatedName = null;
+      let updatedImageUrl = null;
+      let updatedPassword = false;
 
       if (name) {
-        updates.push(account.updateName(name));
+        await account.updateName(name);
+        updatedName = name;
+      }
+
+      if (imageUrl) {
+        await account.updatePrefs({
+          ...currentPrefs,
+          imageUrl,
+        });
+        updatedImageUrl = imageUrl;
       }
 
       if (currentPassword && newPassword) {
-        updates.push(
-          account.updatePassword(newPassword, currentPassword)
-        );
+        await account.updatePassword(newPassword, currentPassword);
+        updatedPassword = true;
       }
-
-      await Promise.all(updates);
 
       return c.json({
         success: true,
         data: {
-          name,
-          imageUrl,
-          newPassword,
-        }
+          name: updatedName,
+          imageUrl: updatedImageUrl,
+          passwordUpdated: updatedPassword,
+        },
       });
     }
   );

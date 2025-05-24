@@ -44,8 +44,8 @@ const JoinWorkspaceForm = ({
   };
 
   return (
-    <Card className="w-full h-full border-none shadow-none">
-      <CardHeader className="p-7">
+    <Card className="w-full h-full border-none shadow">
+      <CardHeader className="p-5 lg:p-7">
         <CardTitle className="text-xl font-bold">Присоединиться к рабочему пространству</CardTitle>
         <CardDescription>
           Вас пригласили присоединиться к рабочему пространству <strong>{workspaceName}</strong>
@@ -55,7 +55,7 @@ const JoinWorkspaceForm = ({
         <DottedSeparator />
       </div>
 
-      <CardContent className="p-7">
+      <CardContent className="p-5 lg:p-7">
         <div className="flex items-center justify-between flex-col lg:flex-row gap-2">
           <Button
             className="w-full lg:w-fit"

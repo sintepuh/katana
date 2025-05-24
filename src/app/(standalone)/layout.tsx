@@ -6,7 +6,7 @@ const StandAloneLayout = ({ children }: PropsWithChildren) => {
   return (
     <PageTransitionWrapper>
       <main className="min-h-screen">
-        <div className="mx-auto max-w-screen-2xl p-4">
+        <div className="mx-auto max-w-screen-2xl p-2 sm:p-4">
           <nav className="flex items-center justify-between py-4 h-[73px]">
             <Logo />
           </nav>

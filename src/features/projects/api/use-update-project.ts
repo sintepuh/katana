@@ -36,6 +36,9 @@ export const useUpdateProject = () => {
       queryClient.invalidateQueries({
         queryKey: [QueryKeys.PROJECT, data.$id],
       });
+      queryClient.invalidateQueries({
+        queryKey: [QueryKeys.TASKS],
+      });
     },
     onError: () => {
       toast.error("Не удалось обновить проект.");

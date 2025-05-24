@@ -64,6 +64,13 @@ const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
     );
   };
 
+  const handleClearImage = () => {
+    form.setValue("image", "");
+    if (inputRef.current) {
+      inputRef.current.value = "";
+    }
+  };
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
 
@@ -80,7 +87,7 @@ const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
 
   return (
     <Card className="w-full h-full border-none shadow-none">
-      <CardHeader className="flex p-7">
+      <CardHeader className="flex p-5 lg:p-7">
         <CardTitle className="font-bold text-xl">Создать рабочее пространство</CardTitle>
       </CardHeader>
 
@@ -88,7 +95,7 @@ const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
         <DottedSeparator />
       </div>
 
-      <CardContent className="p-7">
+      <CardContent className="p-5 lg:p-7">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className="flex flex-col gap-y-4">
@@ -127,7 +134,7 @@ const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
                                 )
                                 : field.value
                             }
-                            alt="Иконка проекта"
+                            alt="Иконка рабочего пространства"
                           />
                         </div>
                       ) : (
@@ -138,9 +145,9 @@ const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
                         </Avatar>
                       )}
 
-                      <div className="flex flex-col">
-                        <p className="text-sm">Иконка проекта</p>
-                        <p className="text-sm text-muted-foreground">
+                      <div className="flex flex-col text-xs md:text-sm">
+                        <p >Иконка рабочего пространства</p>
+                        <p className="text-muted-foreground">
                           JPG, JPEG, PNG, SVG. Максимальный размер 1 МБ
                         </p>
                         <input
@@ -155,12 +162,7 @@ const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
                           <Button
                             type="button"
                             disabled={isPending}
-                            onClick={() => {
-                              form.setValue("image", "");
-                              if (inputRef.current) {
-                                inputRef.current.value = "";
-                              }
-                            }}
+                            onClick={handleClearImage}
                             size="xs"
                             className="w-fit mt-2"
                             variant="destructive"
@@ -174,7 +176,6 @@ const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
                             onClick={() => inputRef.current?.click()}
                             size="xs"
                             className="w-fit mt-2"
-
                           >
                             Загрузить изображение
                           </Button>
@@ -189,7 +190,7 @@ const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
 
             <div className="flex items-center justify-between flex-row-reverse">
               <Button disabled={isPending} size="lg">
-                Create Workspace
+                Создать
               </Button>
 
               {onCancel && (
@@ -200,7 +201,7 @@ const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
                   size="lg"
                   onClick={onCancel}
                 >
-                  Cancel
+                  Отмена
                 </Button>
               )}
             </div>

@@ -27,7 +27,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         <div className="lg:pl-[264px] w-full">
           <div className="mx-auto h-full">
             <Navbar />
-            <main className="h-full py-8 px-3 sm:px-6 flex flex-col">
+            <main className="h-full py-8 px-2 sm:px-4 md:px-6 flex flex-col">
               <PageTransitionWrapper>
                 <div className="contents"> {/* Новый враппер */}
                   {children}

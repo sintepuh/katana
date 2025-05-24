@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeftIcon, ImageIcon } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -26,6 +26,7 @@ import { useUpdateWorkspace } from "../api/use-update-workspace";
 import { updateWorkspaceSchema, UpdateWorkspaceSchemaType } from "../schemas";
 import { Workspace } from "../types";
 import { Skeleton } from "@/components/ui/skeleton";
+import { removeUndefined } from "@/lib/helpers/removeUndefined";
 
 type EditWorkspaceFormProps = {
   onCancel?: () => void;
@@ -51,10 +52,10 @@ const EditWorkspaceForm = ({
   const { mutate, isPending } = useUpdateWorkspace();
 
   const onSubmit = (data: UpdateWorkspaceSchemaType) => {
-    const finalData = {
+    const finalData = removeUndefined({
       ...data,
-      image: data.image instanceof File ? data.image : "",
-    };
+      image: data.image instanceof File ? data.image : undefined
+    });
     mutate(
       { form: finalData, param: { workspaceId: initialValues.$id } },
       {
@@ -68,6 +69,20 @@ const EditWorkspaceForm = ({
       }
     );
   };
+
+  const handleClearImage = () => {
+    form.setValue("image", "");
+    if (inputRef.current) {
+      inputRef.current.value = "";
+    }
+  };
+
+  useEffect(() => {
+    form.reset({
+      ...initialValues,
+      image: initialValues.imageUrl ?? "",
+    });
+  }, [initialValues, form]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -87,8 +102,8 @@ const EditWorkspaceForm = ({
 
   return (
     <div className="flex flex-col gap-y-4">
-      <Card className="w-full h-full border shadow-none">
-        <CardHeader className="flex flex-row items-center gap-x-4 space-y-0 p-7">
+      <Card className="w-full h-full border shadow">
+        <CardHeader className="flex flex-row items-center gap-x-4 space-y-0 p-5 lg:p-7">
           <Button
             size="sm"
             variant="secondary"
@@ -109,7 +124,7 @@ const EditWorkspaceForm = ({
           <DottedSeparator />
         </div>
 
-        <CardContent className="p-7">
+        <CardContent className="p-5 lg:p-7">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
               <div className="flex flex-col gap-y-4">
@@ -148,7 +163,7 @@ const EditWorkspaceForm = ({
                                   )
                                   : field.value
                               }
-                              alt="Иконка рабочей области"
+                              alt="Иконка рабочего пространства"
                             />
                           </div>
                         ) : (
@@ -159,9 +174,9 @@ const EditWorkspaceForm = ({
                           </Avatar>
                         )}
 
-                        <div className="flex flex-col">
-                          <p className="text-sm">Иконка рабочей области</p>
-                          <p className="text-sm text-muted-foreground">
+                        <div className="flex flex-col text-xs md:text-sm">
+                          <p >Иконка рабочего пространства</p>
+                          <p className="text-muted-foreground">
                             JPG, JPEG, PNG, SVG. Максимальный размер 1 МБ
                           </p>
                           <input
@@ -172,17 +187,11 @@ const EditWorkspaceForm = ({
                             disabled={isPending}
                             onChange={handleImageChange}
                           />
-
                           {field.value ? (
                             <Button
                               type="button"
                               disabled={isPending}
-                              onClick={() => {
-                                form.setValue("image", "");
-                                if (inputRef.current) {
-                                  inputRef.current.value = "";
-                                }
-                              }}
+                              onClick={handleClearImage}
                               size="xs"
                               className="w-fit mt-2"
                               variant="destructive"
@@ -196,7 +205,6 @@ const EditWorkspaceForm = ({
                               onClick={() => inputRef.current?.click()}
                               size="xs"
                               className="w-fit mt-2"
-
                             >
                               Загрузить изображение
                             </Button>

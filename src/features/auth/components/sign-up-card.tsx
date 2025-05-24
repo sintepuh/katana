@@ -3,9 +3,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-import { FaGithub } from "react-icons/fa";
+import { FaGithub, FaYandex } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
-
 import DottedSeparator from "@/components/dotted-separator";
 import { Button } from "@/components/ui/button";
 import {
@@ -25,7 +24,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { type RegisterSchema, registerSchema } from "@/features/auth/schemas";
-import { signUpWithGithub, signUpWithGoogle } from "@/lib/server/oauth";
+import { signUpWithGithub, signUpWithGoogle, signUpWithYandex } from "@/lib/server/oauth";
 import { useRegister } from "../api/use-register";
 
 const SignUpCard = () => {
@@ -46,7 +45,7 @@ const SignUpCard = () => {
 
   return (
     <Card className="w-full h-full md:w-[490px] border shadow-none ">
-      <CardHeader className=" flex items-center justify-center text-center p-7">
+      <CardHeader className=" flex items-center justify-center text-center p-5 lg:p-7">
         <CardTitle className="text-2xl">Начните!</CardTitle>
         <CardDescription className="text-balance">
           Регистрируясь, вы соглашаетесь с нашей{" "}
@@ -63,7 +62,7 @@ const SignUpCard = () => {
       <div className="px-7">
         <DottedSeparator />
       </div>
-      <CardContent className="p-7">
+      <CardContent className="p-5 lg:p-7">
         <Form {...form}>
           <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
             <FormField
@@ -124,7 +123,7 @@ const SignUpCard = () => {
         <DottedSeparator />
       </div>
 
-      <CardContent className="p-7 flex flex-col gap-y-4">
+      <CardContent className="p-5 lg:p-7 flex flex-col gap-y-4">
         <Button
           variant="secondary"
           size="lg"
@@ -144,13 +143,23 @@ const SignUpCard = () => {
           <FaGithub className="mr-2 size-5" />
           Войти через Github
         </Button>
+        <Button
+          variant="secondary"
+          size="lg"
+          className="w-full"
+          onClick={() => signUpWithYandex()}
+          disabled={isPending}
+        >
+          <FaYandex className="mr-2 size-5" />
+          Войти через Яндекс
+        </Button>
       </CardContent>
 
       <div className="px-7">
         <DottedSeparator />
       </div>
 
-      <CardFooter className="p-7 flex items-center justify-center">
+      <CardFooter className="p-5 lg:p-7 flex items-center justify-center">
         <p>
           Уже есть аккаунте?{" "}
           <Link href="/sign-in" className="text-primary">

@@ -1,47 +1,48 @@
-import { ProjectAnalyticsResponseType } from "@/features/projects/api/use-get-project-analytics";
 import { ScrollArea, ScrollBar } from "./ui/scroll-area";
 import AnalyticsCard from "./analytics-card";
 import DottedSeparator from "./dotted-separator";
-import { Skeleton } from "./ui/skeleton";
+import { WorkspaceAnalyticsResponseType } from "@/features/workspaces/api/use-get-workspace-analytics";
 
-type ProjectAnalyticsResponseTypeProps = {
-  data?: ProjectAnalyticsResponseType["data"];
+type WorkspaceTaskStatisticResponseTypeProps = {
+  data: WorkspaceAnalyticsResponseType["data"];
   isLoading?: boolean
 };
 
-const Analytics = ({ data, isLoading }: ProjectAnalyticsResponseTypeProps) => {
+const Analytics = ({ data, isLoading }: WorkspaceTaskStatisticResponseTypeProps) => {
 
-  if (!data || isLoading) {
-    return <Skeleton className="rounded-lg w-full whitespace-nowrap shrink-0 h-[120px]" />;
+  const statistic = data?.analytic;
+
+  if (!statistic || isLoading) {
+    return null;
   }
 
   return (
-    <ScrollArea className="border rounded-lg w-full whitespace-nowrap shrink-0">
+    <ScrollArea className=" rounded-lg w-full whitespace-nowrap shrink-0 shadow ">
       <div className="w-full flex flex-row">
         <div className="flex items-center flex-1">
           <AnalyticsCard
             title="Всего задач"
-            value={data?.taskCount}
-            trend={data?.taskDiff > 0 ? "up" : "down"}
-            increaseValue={data?.taskDiff}
+            value={statistic?.taskCount}
+            trend={statistic?.taskDiff > 0 ? "up" : "down"}
+            increaseValue={statistic?.taskDiff}
           />
           <DottedSeparator direction="vertical" />
         </div>
         <div className="flex items-center flex-1">
           <AnalyticsCard
             title="Назначенные задачи"
-            value={data?.assignedTaskCount}
-            trend={data?.assignedTaskDiff > 0 ? "up" : "down"}
-            increaseValue={data?.taskDiff}
+            value={statistic?.assignedTaskCount}
+            trend={statistic?.assignedTaskDiff > 0 ? "up" : "down"}
+            increaseValue={statistic?.assignedTaskDiff}
           />
           <DottedSeparator direction="vertical" />
         </div>
         <div className="flex items-center flex-1">
           <AnalyticsCard
             title="Выполненные задачи"
-            value={data?.completedTaskCount}
-            trend={data?.completedTaskDiff > 0 ? "up" : "down"}
-            increaseValue={data?.completedTaskDiff}
+            value={statistic?.completedTaskCount}
+            trend={statistic?.completedTaskDiff > 0 ? "up" : "down"}
+            increaseValue={statistic?.completedTaskDiff}
           />
           <DottedSeparator direction="vertical" />
         </div>
@@ -49,9 +50,9 @@ const Analytics = ({ data, isLoading }: ProjectAnalyticsResponseTypeProps) => {
         <div className="flex items-center flex-1">
           <AnalyticsCard
             title="Просроченные задачи"
-            value={data?.overDueTaskCount}
-            trend={data?.overDueTaskDiff > 0 ? "up" : "down"}
-            increaseValue={data?.overDueTaskDiff}
+            value={statistic?.overDueTaskCount}
+            trend={statistic?.overDueTaskDiff > 0 ? "up" : "down"}
+            increaseValue={statistic?.overDueTaskDiff}
           />
           <DottedSeparator direction="vertical" />
         </div>
@@ -59,9 +60,9 @@ const Analytics = ({ data, isLoading }: ProjectAnalyticsResponseTypeProps) => {
         <div className="flex items-center flex-1">
           <AnalyticsCard
             title="Незавершенные задачи"
-            value={data?.inCompletedTaskCount}
-            trend={data?.inCompletedTaskDiff > 0 ? "up" : "down"}
-            increaseValue={data?.inCompletedTaskDiff}
+            value={statistic?.inCompletedTaskCount}
+            trend={statistic?.inCompletedTaskDiff > 0 ? "up" : "down"}
+            increaseValue={statistic?.inCompletedTaskDiff}
           />
         </div>
       </div>

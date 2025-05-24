@@ -30,6 +30,12 @@ export type DataKanbanProps = {
 };
 
 const DataKanban = ({ data, onChange }: DataKanbanProps) => {
+  const [isDragging, setIsDragging] = useState(false);
+
+  const onDragStart = () => {
+    setIsDragging(true);
+  };
+
   const [tasks, setTasks] = useState<TaskState>(() => {
     const initialTask: TaskState = {
       [TaskStatus.BACKLOG]: [],
@@ -71,7 +77,10 @@ const DataKanban = ({ data, onChange }: DataKanbanProps) => {
   }, [data])
 
   const onDragEnd = useCallback((result: DropResult) => {
-    if (!result.destination) return;
+    if (!result.destination) {
+      setIsDragging(false);
+      return;
+    }
 
     const { source, destination } = result;
 
@@ -143,54 +152,67 @@ const DataKanban = ({ data, onChange }: DataKanbanProps) => {
       return newTasks;
     });
     onChange(updatesPayload);
+    setIsDragging(false); 
   }, [onChange]);
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <div className="flex overflow-x-auto">
-        {boards.map((board) => {
-          return (
-            <div
-              key={board}
-              className="flex-1 mx-2 bg-accent p-1.5 rounded-md min-w-[200px] h-max"
-            >
-              <KanbanColumnHeader
-                board={board}
-                taskCount={tasks[board].length}
-              />
-              <Droppable droppableId={board}>
-                {(provided) => (
-                  <div
-                    {...provided.droppableProps}
-                    ref={provided.innerRef}
-                    className="py-1.5 flex flex-col gap-2"
-                  >
-                    {tasks[board].map((task, index) => (
-                      <Draggable
-                        key={task.$id}
-                        draggableId={task.$id}
-                        index={index}
-                      >
-                        {(provided, snapshot) => (
-                          <div
-                            {...provided.dragHandleProps}
-                            {...provided.draggableProps}
-                            ref={provided.innerRef}
-                          >
-                            <KanbanCard task={task} isDragging={snapshot.isDragging} />
-                          </div>
-                        )}
-                      </Draggable>
-                    ))}
-                    {provided.placeholder}
-                  </div>
-                )}
-              </Droppable>
-            </div>
-          );
-        })}
-      </div>
-    </DragDropContext>
+    <div
+      id="scroll-container"
+      style={{ maxWidth: "100%", scrollBehavior: "smooth" }}
+    >
+      <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
+        <div
+          className={`transition-all flex gap-2 overflow-x-auto ${isDragging
+            ? ""
+            : "snap-x snap-mandatory sm:snap-none"
+            }`}
+        >
+          {boards.map((board) => {
+            return (
+              <div
+                key={board}
+                className="flex-1 bg-accent p-1.5 rounded-md min-w-[calc(100vw-33px)] min-[425px]:min-w-[calc(50vw-20.6px)] sm:min-w-[200px] h-max snap-start"
+              >
+                <KanbanColumnHeader
+                  board={board}
+                  taskCount={tasks[board].length}
+                />
+                <Droppable
+                  droppableId={board}
+                >
+                  {(provided) => (
+                    <div
+                      {...provided.droppableProps}
+                      ref={provided.innerRef}
+                      className="py-1.5 flex flex-col gap-2"
+                    >
+                      {tasks[board].map((task, index) => (
+                        <Draggable
+                          key={task.$id}
+                          draggableId={task.$id}
+                          index={index}
+                        >
+                          {(provided, snapshot) => (
+                            <div
+                              {...provided.dragHandleProps}
+                              {...provided.draggableProps}
+                              ref={provided.innerRef}
+                            >
+                              <KanbanCard task={task} isDragging={snapshot.isDragging} />
+                            </div>
+                          )}
+                        </Draggable>
+                      ))}
+                      {provided.placeholder}
+                    </div>
+                  )}
+                </Droppable>
+              </div>
+            );
+          })}
+        </div>
+      </DragDropContext>
+    </div>
   );
 };
 

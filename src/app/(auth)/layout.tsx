@@ -18,7 +18,7 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
 
   return (
     <main className="min-h-screen ">
-      <div className="max-w-screen-2xl mx-auto  p-4 flex flex-col min-h-screen ">
+      <div className="max-w-screen-2xl mx-auto p-2 sm:p-4 flex flex-col min-h-screen ">
         <nav className="flex justify-between items-center">
           <Logo />
           <Button asChild variant="secondary">
@@ -27,7 +27,7 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
             </Link>
           </Button>
         </nav>
-        <div className="flex flex-col items-center justify-center py-4 md:py-14">
+        <div className="flex flex-col items-center justify-center py-4 sm:py-14 m-auto">
           <PageTransitionWrapper>
             {children}
           </PageTransitionWrapper>

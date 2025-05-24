@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { ArrowLeftIcon, ImageIcon } from "lucide-react";
@@ -25,6 +25,7 @@ import { Input } from "@/components/ui/input";
 import { updateProjectSchema, UpdateProjectSchemaType } from "../schema";
 import { useUpdateProject } from "../api/use-update-project";
 import { Project } from "../types";
+import { removeUndefined } from "@/lib/helpers/removeUndefined";
 
 type EditProjectFormProps = {
   onCancel?: () => void;
@@ -45,11 +46,27 @@ const EditProjectForm = ({ onCancel, initialValues }: EditProjectFormProps) => {
   const { mutate, isPending } = useUpdateProject();
 
   const onSubmit = (data: UpdateProjectSchemaType) => {
-    const finalData = {
+    const finalData = removeUndefined({
       ...data,
-      image: data.image instanceof File ? data.image : "",
-    };
+      image: data.image instanceof File ? data.image : undefined
+    });
+
     mutate({ form: finalData, param: { projectId: initialValues.$id } });
+  };
+
+
+  useEffect(() => {
+    form.reset({
+      ...initialValues,
+      image: initialValues.imageUrl ?? "",
+    });
+  }, [initialValues, form]);
+
+  const handleClearImage = () => {
+    form.setValue("image", "");
+    if (inputRef.current) {
+      inputRef.current.value = "";
+    }
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -68,8 +85,8 @@ const EditProjectForm = ({ onCancel, initialValues }: EditProjectFormProps) => {
 
   return (
     <div className="flex flex-col gap-y-4">
-      <Card className="w-full h-full border shadow-none">
-        <CardHeader className="flex flex-row items-center gap-x-4 space-y-0 p-7">
+      <Card className="w-full h-full border shadow">
+        <CardHeader className="flex flex-row items-center gap-x-4 space-y-0 p-5 lg:p-7">
           <Button
             size="sm"
             variant="secondary"
@@ -93,7 +110,7 @@ const EditProjectForm = ({ onCancel, initialValues }: EditProjectFormProps) => {
           <DottedSeparator />
         </div>
 
-        <CardContent className="p-7">
+        <CardContent className="p-5 lg:p-7">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
               <div className="flex flex-col gap-y-4">
@@ -145,9 +162,9 @@ const EditProjectForm = ({ onCancel, initialValues }: EditProjectFormProps) => {
                           </Avatar>
                         )}
 
-                        <div className="flex flex-col">
-                          <p className="text-sm">Иконка проекта</p>
-                          <p className="text-sm text-muted-foreground">
+                        <div className="flex flex-col text-xs md:text-sm">
+                          <p >Иконка проекта</p>
+                          <p className="text-muted-foreground">
                             JPG, JPEG, PNG, SVG. Максимальный размер 1 МБ
                           </p>
                           <input
@@ -158,17 +175,11 @@ const EditProjectForm = ({ onCancel, initialValues }: EditProjectFormProps) => {
                             disabled={isPending}
                             onChange={handleImageChange}
                           />
-
                           {field.value ? (
                             <Button
                               type="button"
                               disabled={isPending}
-                              onClick={() => {
-                                form.setValue("image", "");
-                                if (inputRef.current) {
-                                  inputRef.current.value = "";
-                                }
-                              }}
+                              onClick={handleClearImage}
                               size="xs"
                               className="w-fit mt-2"
                               variant="destructive"
@@ -182,7 +193,6 @@ const EditProjectForm = ({ onCancel, initialValues }: EditProjectFormProps) => {
                               onClick={() => inputRef.current?.click()}
                               size="xs"
                               className="w-fit mt-2"
-
                             >
                               Загрузить изображение
                             </Button>

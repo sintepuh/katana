@@ -34,6 +34,12 @@ export const useUpdateProfile = () => {
       queryClient.invalidateQueries({
         queryKey: [QueryKeys.USER],
       });
+      queryClient.invalidateQueries({
+        queryKey: [QueryKeys.MEMBERS],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QueryKeys.TASKS],
+      });
     },
     onError: (err) => {
       console.log(err);

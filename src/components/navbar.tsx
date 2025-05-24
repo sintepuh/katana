@@ -28,7 +28,7 @@ const Navbar = () => {
   const { title, description } = pathnameMap[pathnameKey] || defaultMap;
 
   return (
-    <nav className="mt-4 px-6 flex items-center justify-between h-16">
+    <nav className="pt-4 pb-2 px-2 sm:px-6 flex items-center justify-between sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur shadow-navbar">
       <div className="lg:flex flex-col hidden">
         <h1 className="text-2xl font-semibold">{title}</h1>
         <p className="text-muted-foreground">{description}</p>

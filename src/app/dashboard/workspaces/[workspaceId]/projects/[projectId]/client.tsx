@@ -9,19 +9,29 @@ import { useGetProjectAnalytics } from "@/features/projects/api/use-get-project-
 import ProjectAvatar from "@/features/projects/components/project-avatar";
 import { useProjectId } from "@/features/projects/hooks/use-project-id";
 import TaskViewSwitcher from "@/features/tasks/components/task-view-switcher";
-import Analytics from "@/components/analytics";
 import TaskIdLoadingPage from "./loading";
+import { Statistic } from "@/components/statistic";
+import { WorkspaceAnalyticsResponseType } from "@/features/workspaces/api/use-get-workspace-analytics";
+import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
+import { GetTasksResponseType, useGetTasks } from "@/features/tasks/api/use-get-tasks";
 
 const ProjectIdClient = () => {
   const projectId = useProjectId();
 
   const { data: project, isLoading: isLoadingProject } = useGetProject({ projectId });
   const { data: analytics, isLoading: isLoadingAnalytics } =
-    useGetProjectAnalytics({ projectId });
+    useGetProjectAnalytics({ projectId }) as { data: WorkspaceAnalyticsResponseType["data"], isLoading: boolean };
+  const workspaceId = useWorkspaceId();
+
+  const { data: tasks, isLoading: isLoadingTasks } = useGetTasks({
+    workspaceId,
+    projectId
+  }) as { data: GetTasksResponseType["data"], isLoading: boolean };
 
   const isLoading =
     isLoadingProject ||
-    isLoadingAnalytics
+    isLoadingAnalytics ||
+    isLoadingTasks
 
   if (isLoading)
     return <TaskIdLoadingPage />
@@ -48,8 +58,8 @@ const ProjectIdClient = () => {
           </Button>
         </div>
       </div>
-      {analytics && <Analytics data={analytics} />}
-      <TaskViewSwitcher hideProjectFilter />
+      <TaskViewSwitcher hideProjectFilter data={tasks} />
+      {analytics && <Statistic data={analytics} isLoading={isLoading} />}
     </div>
   );
 };

@@ -7,7 +7,7 @@ import { routes } from "./navigation";
 
 const SidebarLoader = () => {
     return (
-        <aside className="h-full bg-sidebar p-4 w-full border-r border-border">
+        <aside className="h-full bg-sidebar p-4 w-full border-r border-border shadow">
             <Logo />
             <DottedSeparator className="my-4" />
             <div className="flex flex-col gap-y-2">

@@ -153,7 +153,6 @@ const FormMessage = React.forwardRef<
     return null
   }
 
-  console.log(error)
   return (
     <p
       ref={ref}

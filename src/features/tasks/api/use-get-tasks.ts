@@ -4,6 +4,8 @@ import { QueryKeys } from "@/lib/constants";
 import { client } from "@/lib/rpc";
 
 import { TaskStatus } from "../types";
+import { InferResponseType } from "hono";
+
 
 type useGetTasksProps = {
   workspaceId: string;
@@ -13,6 +15,11 @@ type useGetTasksProps = {
   search?: string | null;
   status?: TaskStatus | null;
 };
+
+export type GetTasksResponseType = InferResponseType<
+  (typeof client.api.tasks)["$get"],
+  200
+>;
 
 export const useGetTasks = ({
   workspaceId,

@@ -1,6 +1,7 @@
 import React from "react";
 import { useMedia } from "react-use";
-import { Dialog, DialogContent } from "./ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "./ui/dialog";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { Drawer, DrawerContent } from "./ui/drawer";
 
 type ResponsiveModelProps = {
@@ -16,6 +17,9 @@ const ResponsiveModel = ({ children, onOpen, open }: ResponsiveModelProps) => {
     return (
       <Dialog open={open} onOpenChange={onOpen}>
         <DialogContent className="w-full sm:max-w-lg p-0 border-none overflow-y-auto hide-scrollbar max-h-[85vh]">
+          <VisuallyHidden>
+            <DialogTitle>Модальное окно</DialogTitle>
+          </VisuallyHidden>
           {children}
         </DialogContent>
       </Dialog>
@@ -24,6 +28,9 @@ const ResponsiveModel = ({ children, onOpen, open }: ResponsiveModelProps) => {
   return (
     <Drawer open={open} onOpenChange={onOpen}>
       <DrawerContent className="overflow-y-auto hide-scrollbar max-h-[85vh]">
+        <VisuallyHidden>
+          <DialogTitle>Модальное окно</DialogTitle>
+        </VisuallyHidden>
         {children}
       </DrawerContent>
     </Drawer>
