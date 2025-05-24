@@ -75,4 +75,4 @@ npm install
 Если вы обнаружили уязвимость безопасности в Plane, пожалуйста, сообщите об этом ответственно, а не открывайте публичную проблему. Я серьезно отношусь ко всем законным сообщениям и буду оперативно их расследовать.
 
 ## License
-This project is licensed under the [GNU Affero General Public License v3.0](https://github.com/makeplane/plane/blob/master/LICENSE.txt).
+This project is licensed under the [GNU Affero General Public License v3.0](https://github.com/sintepuh/katana/blob/master/LICENSE).
