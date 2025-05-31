@@ -91,13 +91,13 @@ docker run -it --rm ^
 ```
 
 
-## ⚙️ Built with
+## ⚙️ Создано с помощью
 [![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
 [![Appwrite](https://img.shields.io/badge/Appwrite-F02E65?style=for-the-badge&logo=appwrite&logoColor=white)](https://appwrite.io/)
 
-## 🛡️ Security
+## 🛡️ Безопасность
 
 Если вы обнаружили уязвимость безопасности в Plane, пожалуйста, сообщите об этом ответственно, а не открывайте публичную проблему. Я серьезно отношусь ко всем законным сообщениям и буду оперативно их расследовать.
 
-## License
-This project is licensed under the [GNU Affero General Public License v3.0](https://github.com/sintepuh/katana/blob/master/LICENSE).
+## 📄 Лицензия
+Этот проект распространяется под лицензией [GNU Affero General Public License v3.0]. Подробнее см. в файле (https://github.com/sintepuh/katana/blob/master/LICENSE).
